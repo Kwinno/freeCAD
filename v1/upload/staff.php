@@ -532,7 +532,7 @@ include('includes/header.php')
                </div>
              </div>
              <div class="col">
-               <label>Please report any bugs to s11k#2532 on discord with a brief description, and how it happened.</label>
+               <label>Please report any bugs to our <a href="https://discord.gg/KhQMeuA">Discord</a></label>
              </div>
            </div>
          <?php endif; ?>
