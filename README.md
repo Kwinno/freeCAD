@@ -13,7 +13,7 @@ https://discord.gg/NeRrWZC
 + Recommended: 7.0 (Or Greater)
 - Database
 - MySQL
-* PDO Must be enabled.
+* PDO Must be enabled. (Some hosts require you to request this)
 
 # Support
 If you are in-need of support, have a question, need to report an issue, etc, You can join
