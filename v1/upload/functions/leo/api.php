@@ -534,7 +534,7 @@ if ($a === "get911calls") {
         $stmt->bindValue(':license_status', $license_status);
         $stmt->execute();
         logme('(LEO) Suspended License ('. $char_id .')', $user_username . ' / ' . $_SESSION['identifier']);
-        header('Location: ../../dispatch-index.php?license=suspended');
+        header('Location: ../../leo-index.php?license=suspended');
         exit();
     }
     if ($_GET['deletewarrant']) {
