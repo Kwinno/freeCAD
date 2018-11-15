@@ -13,7 +13,7 @@ https://discord.gg/NeRrWZC
 + Recommended: 7.0 (Or Greater)
 - Database
 - MySQL
-* PDO Must be enabled.
+* PDO Must be enabled. (Some hosts require you to request this)
 
 # Support
 If you are in-need of support, have a question, need to report an issue, etc, You can join
@@ -21,7 +21,7 @@ our Discord: https://discord.gg/NeRrWZC and open a ticket.
 *We will not provide support for modified files unless you have been given permission.*
 
 # Known Issues
-- Select2 assets seem to have broken all the sudden. Fixing
+- N/A
 
 # License
 Hydrid is released under GNU Affero General Public License.
