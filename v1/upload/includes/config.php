@@ -13,7 +13,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 **/
-$version = "PR-004";
+$version = "PR-005";
 error_reporting(0); // Turn off all error reporting
 $update_in_progress = "No";
 
@@ -112,14 +112,15 @@ $url_civ_firearms = "civ-firearms.php";
 $url_civ_newarrant = "civ-addwarrant.php";
 $url_civ_viewwarratns = "civ-mywarrants.php";
 $url_leo_index = "leo-index.php";
-$url_leo_setId = "leo-setid.php";
 $url_staff_edit_user = "staff-edituser.php";
 $url_staff_index = "staff.php";
+$url_fire_index = "fire-index.php";
 $url_leo_supervisor_view_pending_identities = "leo-pending-identities.php";
 $url_leo_supervisor_view_all_identities = "leo-all-identities.php";
 $url_dispatch_index = "dispatch-index.php";
-$url_dispatch_setid = "dispatch-setid.php";
 $url_staff_setup = "setup.php";
+$url_settings = "user-settings.php";
+$url_logout = "logout.php";
 
 $message     = '';
 

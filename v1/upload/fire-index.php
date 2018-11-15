@@ -22,6 +22,54 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
 }
 include 'includes/isLoggedIn.php';
 
+if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
+  $i   = $_GET['setid'];
+  $sql  = "SELECT * FROM identities WHERE identity_id = :i";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindValue(':i', $i);
+  $stmt->execute();
+  $identity = $stmt->fetch(PDO::FETCH_ASSOC);
+  if ($identity === false) {
+     header('Location: ' . $url_index . '');
+     exit();
+  } else {
+    //set the needed session variables
+     $sidentity_id    = $identity['identity_id'];
+     $_SESSION['identity_id'] = $sidentity_id;
+
+     $sidentity_name    = $identity['identifier'];
+     $_SESSION['identifier'] = $sidentity_name;
+
+     $sis_fire    = $identity['is_fire'];
+     $_SESSION['is_fire'] = $sis_fire;
+
+     $_SESSION['leo_supervisor'] = "No";
+
+     $_SESSION['active_dispatch'] = "No";
+
+     $_SESSION['sub_division'] = "None";
+
+     if ($identity['fire_supervisor'] === "Yes") {
+       $_SESSION['fire_supervisor'] = "Yes";
+     } else {
+       $_SESSION['fire_supervisor'] = "No";
+     }
+
+     $_SESSION['notepad'] = "";
+
+     $_SESSION['current_station'] = "";
+
+     $sidentity_user    = $identity['user'];
+     $_SESSION['on_duty'] = "No";
+     header('Location: fire-index.php');
+     exit();
+
+  } if ($sidentity_user !== $user_id) {
+    header('Location: ../../' . $url_index . '');
+    exit();
+  }
+}
+
 if ($_SESSION['is_fire'] === "No") {
   header('Location: ' . $url_index . '?np=fire');
   exit();
@@ -30,7 +78,6 @@ if ($_SESSION['is_fire'] === "No") {
 $stmts    = $pdo->prepare("SELECT * FROM settings");
 $stmts->execute();
 $leo_gsettings = $stmts->fetch(PDO::FETCH_ASSOC);
-
 ?>
 <!DOCTYPE html>
 <html>

@@ -99,8 +99,8 @@ include('includes/header.php')
          <img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/>
          <div class="main-header">
             Hello, <?php echo $user_username ?> <?php if (staff_access) {
-              echo '<a href="staff.php"><i class="fab fa-adn"></i></a>';
-            } ?>
+              echo '<a href="staff.php"><i class="fas fa-fingerprint"></i></a>';
+            } ?> <a href="user-settings.php"><i class="fas fa-cog"></i></a> <a href="logout.php"><i class="fas fa-sign-out-alt"></i></a>
          </div>
          <?php
          if ($update_in_progress === "Yes") {
@@ -219,7 +219,7 @@ include('includes/header.php')
                    $result = $pdo->prepare($getIdentities);
                    $result->execute();
                    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                     echo '<option value="'. $url_leo_setId .'?i='. $row['identity_id'] .'">'. $row['identifier'] .'</option>';
+                     echo '<option value="'. $url_leo_index .'?setid='. $row['identity_id'] .'">'. $row['identifier'] .'</option>';
                    }
                     ?>
                  </select>
@@ -247,7 +247,7 @@ include('includes/header.php')
                    $result = $pdo->prepare($getIdentities);
                    $result->execute();
                    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                     echo '<option value="'. $url_dispatch_setid .'?i='. $row['identity_id'] .'">'. $row['identifier'] .'</option>';
+                     echo '<option value="'. $url_dispatch_index .'?setid='. $row['identity_id'] .'">'. $row['identifier'] .'</option>';
                    }
                     ?>
                  </select>
@@ -296,7 +296,7 @@ include('includes/header.php')
                    $result = $pdo->prepare($getIdentities);
                    $result->execute();
                    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                     echo '<option value="fire-setid.php?i='. $row['identity_id'] .'">'. $row['identifier'] .'</option>';
+                     echo '<option value="'. $url_fire_index .'?setid='. $row['identity_id'] .'">'. $row['identifier'] .'</option>';
                    }
                     ?>
                  </select>

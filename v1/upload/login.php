@@ -60,6 +60,8 @@ if (isset($_GET['user']) && strip_tags($_GET['user']) === 'notfound') {
   $message = '<div class="alert alert-danger" role="alert"><strong>CRITICAL ERROR - This panel has been suspended for <i>'.$settings_panel_suspended.'</i>. If you believe this was a mistake, contact support on our discord. <i>You have a 48 hour grace period to contact support or your panel will be removed from our system.</i></strong></div>';
 } elseif (isset($_GET['update']) && strip_tags($_GET['update']) === 'ip') {
   $message = '<div class="alert alert-danger" role="alert"><strong>Hydrid is currently being updated. This is a panel wide update, thus please do not message the server owner about this.</i></strong></div>';
+} elseif (isset($_GET['settings']) && strip_tags($_GET['settings']) === 'updated') {
+   $message = '<div class="alert alert-success" role="alert">Your settings have been updated. Please login again!</div>';
 }
 ?>
 <!DOCTYPE html>

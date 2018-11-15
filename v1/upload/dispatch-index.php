@@ -22,6 +22,48 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
 }
 include 'includes/isLoggedIn.php';
 
+if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
+  $i   = $_GET['setid'];
+  $sql  = "SELECT * FROM identities WHERE identity_id = :i";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindValue(':i', $i);
+  $stmt->execute();
+  $identity = $stmt->fetch(PDO::FETCH_ASSOC);
+  if ($identity === false) {
+     header('Location: ' . $url_index . '');
+     exit();
+  } else {
+    //set the needed session variables
+     $sidentity_id    = $identity['identity_id'];
+     $_SESSION['identity_id'] = $sidentity_id;
+
+     $sidentity_name    = $identity['identifier'];
+     $_SESSION['identifier'] = $sidentity_name;
+
+     $sis_dispatch    = $identity['is_dispatch'];
+     $_SESSION['is_dispatch'] = $sis_dispatch;
+
+     if ($identity['leo_supervisor'] === "Yes") {
+       $_SESSION['leo_supervisor'] = "Yes";
+     } else {
+       $_SESSION['leo_supervisor'] = "No";
+     }
+
+     $_SESSION['active_dispatch'] = "Yes";
+
+     $_SESSION['sub_division'] = "None";
+
+     $sidentity_user    = $identity['user'];
+     $_SESSION['on_duty'] = "No";
+     header('Location: ' . $url_dispatch_index . '');
+     exit();
+
+  } if ($sidentity_user !== $user_id) {
+    header('Location: ' . $url_index . '');
+    exit();
+  }
+}
+
 if ($_SESSION['is_dispatch'] === "No") {
   header('Location: ' . $url_index . '?np=dispatch');
   exit();
@@ -170,7 +212,10 @@ include('includes/header.php')
                <a data-toggle="modal" href="#searchWeaponDB" style="width:200px; margin-bottom: 4px;" class="btn btn-success">Weapon Lookup</a>
                <a data-toggle="modal" href="#addBoloModal" style="width:200px; margin-bottom: 4px;" class="btn btn-danger">Add Bolo</a>
                <a data-toggle="modal" href="#modal911" style="width:200px; margin-bottom: 4px;" class="btn btn-info">New Call</a>
-               <a data-toggle="modal" href="#aop" style="width:200px; margin-bottom: 4px;" class="btn btn-danger btn-block center">Change AOP</a><br-leo>
+               <a data-toggle="modal" href="#aop" style="width:200px; margin-bottom: 4px;" class="btn btn-danger">Change AOP</a>
+               <?php if (mapModule_isInstalled): ?>
+                 <a data-toggle="modal" href="#liveMap" style="width:200px; margin-bottom: 4px;" class="btn btn-info">Map</a><br-leo>
+               <?php endif; ?>
                <?php print($message); ?>
                <div class="row">
                <div class="col">
@@ -418,6 +463,23 @@ include('includes/header.php')
       </div>
    </div>
    <!-- end modal -->
+
+   <!-- live map modal -->
+   <div class="modal fade" id="liveMap" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+         <div class="modal-content">
+            <div class="modal-header">
+               <h5 class="modal-title" id="exampleModalLabel">Live Map</h5>
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+               </button>
+            </div>
+            <div class="modal-body">
+              <iframe frameborder="0" width="100%" height="720" src="<?php echo $mapModule_link; ?>"></iframe>
+            </div>
+      </div>
+   </div>
+  </div>
    <!-- end modals -->
    <!-- js -->
    <script src="assets/js/pages/dispatch.js"></script>

@@ -22,6 +22,47 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
 }
 include 'includes/isLoggedIn.php';
 
+if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
+  $i   = $_GET['setid'];
+  $sql  = "SELECT * FROM identities WHERE identity_id = :i";
+  $stmt = $pdo->prepare($sql);
+  $stmt->bindValue(':i', $i);
+  $stmt->execute();
+  $identity = $stmt->fetch(PDO::FETCH_ASSOC);
+  if ($identity === false) {
+     header('Location: ' . $url_index . '');
+     exit();
+  } else {
+    //set the needed session variables
+     $sidentity_id    = $identity['identity_id'];
+     $_SESSION['identity_id'] = $sidentity_id;
+
+     $sidentity_name    = $identity['identifier'];
+     $_SESSION['identifier'] = $sidentity_name;
+
+     if ($identity['leo_supervisor'] === "Yes") {
+       $_SESSION['leo_supervisor'] = "Yes";
+     } else {
+       $_SESSION['leo_supervisor'] = "No";
+     }
+
+     $_SESSION['active_dispatch'] = "No";
+
+     $_SESSION['sub_division'] = "None";
+
+     $_SESSION['notepad'] = "";
+
+     $sidentity_user    = $identity['user'];
+     $_SESSION['on_duty'] = "No";
+     header('Location: ' . $url_leo_index . '');
+     exit();
+
+  } if ($sidentity_user !== $user_id) {
+    header('Location: ' . $url_index . '');
+    exit();
+  }
+}
+
 $stmts    = $pdo->prepare("SELECT * FROM settings");
 $stmts->execute();
 $leo_gsettings = $stmts->fetch(PDO::FETCH_ASSOC);
