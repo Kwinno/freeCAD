@@ -98,13 +98,6 @@ if (banned) {
   exit();
 }
 
-// Check Panel Suspended
-if ($settings_panel_suspended != "No") {
-  session_destroy();
-  header('Location: ' . $url_login . '?panel=banned');
-  exit();
-}
-
 // Check Update Status
 if ($update_in_progress === "Yes") {
   if ($user_usergroup !== "Developer") {
