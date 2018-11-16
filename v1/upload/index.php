@@ -39,7 +39,7 @@ if (isset($_POST['createIdentityBtn'])) {
         header('Location: ' . $url_index . '?identifier=taken');
         exit();
     }
-    
+
     //else if everything passes, than continue
     if ($identity_approval_needed === "no") {
       dbquery('INSERT INTO identities (identifier, user, user_name) VALUES ("' . escapestring($_POST['identifier']) . '", "' . escapestring($user_id) . '", "' . escapestring($user_username) . '")', false);

@@ -39,6 +39,16 @@ if (isset($_POST['loginbtn'])) {
         if ($validPassword) {
             $_SESSION['user_id']   = $user['user_id'];
             $_SESSION['logged_in'] = time();
+
+            //if user id is 1, set as admin by default
+            if ($_SESSION['user_id'] === 1) {
+              $sql     = "UPDATE `users` SET `usergroup`=:ug WHERE user_id=:userid";
+              $stmt    = $pdo->prepare($sql);
+              $newUserGroup = "Management";
+              $stmt->bindValue(':ug', $newUserGroup);
+              $stmt->bindValue(':userid', $_SESSION['user_id']);
+              $updateUser = $stmt->execute();
+            }
             header('Location: ' . $url_index . '?logged=in');
             exit();
         } else {
