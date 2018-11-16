@@ -189,10 +189,8 @@ if ($a === "get911calls") {
     }
     exit();
 } elseif ($a === "dynamicTime") {
-  
-    $data = array();
-    $data['time'] = $time;
-    echo json_encode($data);
+
+    echo $time;
 
 } elseif ($a === "endShift") {
     $i    = $_SESSION['identifier'];

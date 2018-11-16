@@ -149,19 +149,17 @@ function showWpn(str) {
  getPendingIds();
  getPriorityStatus();
 
-
-function getTime() {
-  $(document).ready(function () {
-   setInterval(function() {
-     $.ajax({
-           dataType: "json",
-           url: "functions/leo/api.php?a=dynamicTime",
-           success: function(result){
-               $('#getTime').html(result.time);
-           }
-       });
-   }, 1000);
-});
+function getTime(){
+    $.ajax({
+        url: "functions/leo/api.php?a=dynamicTime",
+        success:
+        function(result){
+            $('#getTime').text(result); //insert text of test.php into your div
+            setTimeout(function(){
+                sendRequest(); //this will send request again and again;
+            }, 1000);
+        }
+    });
 }
 
 function getBolos() {
