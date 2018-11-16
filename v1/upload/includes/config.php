@@ -13,7 +13,7 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 **/
-$version = "PR-005";
+$version = "PR-006";
 error_reporting(0); // Turn off all error reporting
 $update_in_progress = "No";
 
