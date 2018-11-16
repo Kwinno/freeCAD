@@ -7,7 +7,7 @@ define("DB_PASS", "");
 define("DB_NAME", "hydrid_v1");
 
 
-// Do Not Edit Below
+// Do Not Edit Below --- SERIOUSLY DON'T TOUCH THIS STUFF.
 $pdoOptions = array(
     PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT,
     PDO::ATTR_EMULATE_PREPARES => false

@@ -15,7 +15,7 @@
 **/
 
 // Version Number -- Do Not Change
-$version = "PR-006";
+$version = "v1.0.6";
 
 
 // Disable Error Reporting
@@ -55,15 +55,6 @@ if (isset($settingsRow['discord_module'])) {
   define("discordModule_isInstalled", false);
 }
 
-//CUSTOM 10 CODE MODULE
-if (isset($settingsRow['custom10codes_module'])) {
-  if ($settingsRow['custom10codes_module'] === "Enabled") {
-    define("custom10codesModule_isInstalled", true);
-  }
-} else {
-  define("custom10codesModule_isInstalled", false);
-}
-
 //MAP MODULE
 if (isset($settingsRow['map_module'])) {
   if ($settingsRow['map_module'] === "Enabled") {
@@ -86,13 +77,6 @@ if (isset($settingsRow['subdivision_module'])) {
 }
 
 //End Module Checks
-
-
-if ($settings_site_name_db === "CHANGE IN SETTINGS" || $settings_site_name_db === "CHANGE ME IN SETTINGS") {
-  define("setupComplete", false);
-} else {
-  define("setupComplete", true);
-}
 
 //Important Settings
 $background_color = ""; //light_blue, blue, red, gold

@@ -274,27 +274,17 @@ include('includes/header.php')
                <?php endif; ?>
              </div>
              <div class="col-sm-8">
-               <?php if (!custom10codesModule_isInstalled): ?>
                  <a id="10-6" class="btn btn-info btn-md <?php if ($_SESSION['on_duty'] === "No") {echo 'disabled';} ?>" style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">10-6</a>
                  <a id="10-7" class="btn btn-info btn-md <?php if ($_SESSION['on_duty'] === "No") {echo 'disabled';} ?>" style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">10-7</a>
                  <a id="10-8" class="btn btn-info btn-md <?php if ($_SESSION['on_duty'] === "No") {echo 'disabled';} ?>" style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">10-8</a>
                  <a id="10-15" class="btn btn-info btn-md <?php if ($_SESSION['on_duty'] === "No") {echo 'disabled';} ?>" style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">10-15</a>
                  <a id="10-23" class="btn btn-info btn-md <?php if ($_SESSION['on_duty'] === "No") {echo 'disabled';} ?>" style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">10-23</a>
+                   <!-- ADD MORE BUTTONS HERE
+                   Replace id="10-XX" with the 10-code - and add the 10-code at the end as well
+                   *IF THIS IS THE LAST BUTTON, MAKE SURE YOU PUT <br /> AT THE END OF IT. IF IT IS NOT THE LAST BUTTON, DON'T PUT <br />*
+                   <a id="10-XX" class="btn btn-info btn-md style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">10-XX</a> -->
                  <a id="10-97" class="btn btn-info btn-md <?php if ($_SESSION['on_duty'] === "No") {echo 'disabled';} ?>" style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">10-97</a><br>
-               <?php else: ?>
-                 <?php
-                 $getBolos = "SELECT * FROM custom10codes";
-             	 	$result = $pdo->prepare($getBolos);
-             		$result->execute();
-             		while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-						echo '<a id="'. $row['btn_value'] .'" class="btn btn-info btn-md ';
-						if ($_SESSION['on_duty'] === "No") {echo 'disabled';}
-						echo '" style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">'. $row['btn_value'] .'</a> ';
-					}
-                 ?>
-				 <br>
-               <?php endif; ?><br>
-                 <form method="post" action="leo-index.php">
+               <form method="post" action="leo-index.php">
                <button class="btn btn-info btn-md" name="1041btn" style="width:140px; margin-bottom: 4px;" type="submit" type="button" <?php if ($_SESSION['on_duty'] === "Yes") {echo 'disabled';} ?>>10-41</button>
                <button class="btn btn-info btn-md" name="1042btn" style="width:140px; margin-bottom: 4px;" type="submit" type="button" <?php if ($_SESSION['on_duty'] === "No") {echo 'disabled';} ?>>10-42</button>
                </form>

@@ -46,39 +46,7 @@ if (isset($_POST['discordModule_install'])) {
   exit();
 }
 
-if (isset($_POST['custom10codesModule_install'])) {
-  $stmt = $pdo->prepare( "ALTER TABLE `settings` ADD `custom10codes_module` VARCHAR(36) NOT NULL DEFAULT 'Enabled' AFTER `donator`" );
-  $stmt->execute();
-  sleep(2.3);
-  $stmt1 = $pdo->prepare( "CREATE TABLE `custom10codes` (`id` int(11) NOT NULL, `btn_name` varchar(36) NOT NULL DEFAULT 'NaN', `btn_value` varchar(36) NOT NULL DEFAULT 'NaN')" );
-  $stmt1->execute();
-  sleep(2.3);
-  $stmt11 = $pdo->prepare( "ALTER TABLE `custom10codes`
-  ADD PRIMARY KEY (`id`)" );
-  $stmt11->execute();
-  sleep(2.3);
-  $sql2 = $pdo->prepare( "INSERT INTO `custom10codes` (id, btn_name, btn_value) VALUES ('1', '10_6_btn', '10-6')" );
-  $sql2->execute();
-  sleep(2.3);
-  $sql3 = $pdo->prepare( "INSERT INTO `custom10codes` (id, btn_name, btn_value) VALUES ('2', '10_7_btn', '10-7')" );
-  $sql3->execute();
-  sleep(2.3);
-  $sql4 = $pdo->prepare( "INSERT INTO `custom10codes` (id, btn_name, btn_value) VALUES ('3', '10_8_btn', '10-8')" );
-  $sql4->execute();
-  sleep(2.3);
-  $sql5 = $pdo->prepare( "INSERT INTO `custom10codes` (id, btn_name, btn_value) VALUES ('4', '10_15_btn', '10-15')" );
-  $sql5->execute();
-  sleep(2.3);
-  $sql6 = $pdo->prepare( "INSERT INTO `custom10codes` (id, btn_name, btn_value) VALUES ('5', '10_23_btn', '10-23')" );
-  $sql6->execute();
-  sleep(2.3);
-  $sql7 = $pdo->prepare( "INSERT INTO `custom10codes` (id, btn_name, btn_value) VALUES ('6', '10_97_btn', '10-97')" );
-  $sql7->execute();
-  sleep(3);
-  logAction('(STAFF) Installed Custom 10 Codes Module', $user_username);
-  header('Location: ' . $url_staff_index . '?module=installed');
-  exit();
-} elseif (isset($_POST['custom10codesModule_uninstall'])) {
+if (isset($_POST['custom10codesModule_uninstall'])) {
   $stmt1 = $pdo->prepare( "DROP TABLE `custom10codes`" );
   $stmt1->execute();
   sleep(4);
@@ -88,47 +56,6 @@ if (isset($_POST['custom10codesModule_install'])) {
   logAction('(STAFF) Uninstalled Custom 10 Codes Module', $user_username);
   header('Location: ' . $url_staff_index . '?module=uninstalled');
   exit();
-}
-
-if (isset($_POST['custom10codesModule_updateSettings'])) {
-    //Pull the variables from the form
-    $ten6btn = $_POST['10_6_btn'] ? trim($_POST['10_6_btn']) : null;
-    $ten7btn = $_POST['10_7_btn'] ? trim($_POST['10_7_btn']) : null;
-    $ten8btn = $_POST['10_8_btn'] ? trim($_POST['10_8_btn']) : null;
-    $ten15btn = $_POST['10_15_btn'] ? trim($_POST['10_15_btn']) : null;
-    $ten23btn = $_POST['10_23_btn'] ? trim($_POST['10_23_btn']) : null;
-    $ten97btn = $_POST['10_97_btn'] ? trim($_POST['10_97_btn']) : null;
-
-    //Sanitize the variables, prevents xss, etc.
-    $update_ten6btn       = strip_tags($ten6btn);
-    $update_ten7btn        = strip_tags($ten7btn);
-    $update_ten8btn        = strip_tags($ten8btn);
-    $update_ten15btn        = strip_tags($ten15btn);
-    $update_ten23btn        = strip_tags($ten23btn);
-    $update_ten97btn        = strip_tags($ten97btn);
-
-    $sql2 = $pdo->prepare( "UPDATE `custom10codes` SET btn_value='$update_ten6btn' WHERE btn_name='10_6_btn'" );
-    $sql2->execute();
-    sleep(2.3);
-    $sql3 = $pdo->prepare( "UPDATE `custom10codes` SET btn_value='$update_ten7btn' WHERE btn_name='10_7_btn'" );
-    $sql3->execute();
-    sleep(2.3);
-    $sql4 = $pdo->prepare( "UPDATE `custom10codes` SET btn_value='$update_ten8btn' WHERE btn_name='10_8_btn'" );
-    $sql4->execute();
-    sleep(2.3);
-    $sql5 = $pdo->prepare( "UPDATE `custom10codes` SET btn_value='$update_ten15btn' WHERE btn_name='10_15_btn'" );
-    $sql5->execute();
-    sleep(2.3);
-    $sql6 = $pdo->prepare( "UPDATE `custom10codes` SET btn_value='$update_ten23btn' WHERE btn_name='10_23_btn'" );
-    $sql6->execute();
-    sleep(2.3);
-    $sql7 = $pdo->prepare( "UPDATE `custom10codes` SET btn_value='$update_ten97btn' WHERE btn_name='10_97_btn'" );
-    $sql7->execute();
-    sleep(2.3);
-    logAction('(STAFF) Updated Custom 10 Codes Module', $user_username);
-    header('Location: staff.php?module=updated');
-    exit();
-
 }
 
 if (isset($_POST['mapModule_install'])) {
