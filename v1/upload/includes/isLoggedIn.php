@@ -106,20 +106,3 @@ if ($update_in_progress === "Yes") {
     exit();
   }
 }
-
-// Log Function
-function logme($action, $username) {
-  $username_c = strip_tags($username);
-  $action_c = strip_tags($action);
-
-  global $pdo;
-  global $time;
-  global $us_date;
-
-  $log_sql = "INSERT INTO logs (action, username, timestamp) VALUES (:action, :username, :timedate)";
-  $log_stmt = $pdo->prepare($log_sql);
-  $log_stmt->bindValue(':action', $action_c);
-  $log_stmt->bindValue(':username', $username_c);
-  $log_stmt->bindValue(':timedate', $time . ' ' . $us_date);
-  $log_result = $log_stmt->execute();
-}
