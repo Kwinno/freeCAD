@@ -17,7 +17,7 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
@@ -31,7 +31,7 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
   $identity = $stmt->fetch(PDO::FETCH_ASSOC);
   if ($identity === false) {
      $_SESSION['is_leo'] = "No";
-     header('Location: ' . $url_index . '');
+     header('Location: ' . $url['index'] . '');
      exit();
   } else {
     //set the needed session variables
@@ -57,17 +57,17 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
 
      $sidentity_user    = $identity['user'];
      $_SESSION['on_duty'] = "No";
-     header('Location: ' . $url_leo_index . '');
+     header('Location: ' . $url['leo_index'] . '');
      exit();
 
   } if ($sidentity_user !== $user_id) {
-    header('Location: ' . $url_index . '');
+    header('Location: ' . $url['index'] . '');
     exit();
   }
 }
 
 if ($_SESSION['is_leo'] === "No") {
-  header('Location: ' . $url_index . '?np=leo');
+  header('Location: ' . $url['index'] . '?np=leo');
   exit();
 }
 
@@ -186,7 +186,7 @@ if (isset($_POST['1041btn'])) {
   $result = $stmt->execute();
   $_SESSION['on_duty'] = "Yes";
   logAction('(LEO) Went On Duty', $user_username . ' / ' . $_SESSION['identifier']);
-  header('Location: ' . $url_leo_index . '');
+  header('Location: ' . $url['leo_index'] . '');
   exit();
 }
 if (isset($_POST['1042btn'])) {
@@ -197,7 +197,7 @@ if (isset($_POST['1042btn'])) {
   $endShift = $stmt->execute();
   $_SESSION['on_duty'] = "No";
 
-  header('Location: ' . $url_leo_index . '');
+  header('Location: ' . $url['leo_index'] . '');
   exit();
 }
 
@@ -298,8 +298,8 @@ include('includes/header.php')
              </div>
              <?php if ($_SESSION['leo_supervisor'] === "Yes"): ?>
                <div class="col-sm-2">
-                 <a href="<?php echo $url_leo_supervisor_view_all_identities ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
-                 <a href="<?php echo $url_leo_supervisor_view_pending_identities ?>" class="btn btn-warning btn-block">Pending Identities</a><br-leo>
+                 <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
+                 <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-warning btn-block">Pending Identities</a><br-leo>
                  <a data-toggle="modal" href="#aop" class="btn btn-danger btn-block">Change AOP</a><br-leo>
                </div>
              <?php endif; ?>

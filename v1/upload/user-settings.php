@@ -17,14 +17,14 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
 
 if (!panel_access) {
   session_unset();
-  header('Location: ' . $url_login . '?unverified=true');
+  header('Location: ' . $url['login'] . '?unverified=true');
   exit();
 }
 
@@ -46,7 +46,7 @@ if (isset($_POST['updateUserBtn'])) {
     $stmt->bindValue(':userid', $user_id);
     $updateUser = $stmt->execute();
     if ($updateUser) {
-      header('Location: ' . $url_logout . '?settings=updated');
+      header('Location: ' . $url['logout'] . '?settings=updated');
       exit();
     }
   } else {
@@ -59,7 +59,7 @@ if (isset($_POST['updateUserBtn'])) {
     $stmt->bindValue(':userid', $user_id);
     $updateUser = $stmt->execute();
     if ($updateUser) {
-      header('Location: ' . $url_logout . '?settings=updated');
+      header('Location: ' . $url['logout'] . '?settings=updated');
       exit();
     }
   }

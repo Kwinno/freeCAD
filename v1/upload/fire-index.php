@@ -17,7 +17,7 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
@@ -30,7 +30,7 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
   $stmt->execute();
   $identity = $stmt->fetch(PDO::FETCH_ASSOC);
   if ($identity === false) {
-     header('Location: ' . $url_index . '');
+     header('Location: ' . $url['index'] . '');
      exit();
   } else {
     //set the needed session variables
@@ -65,13 +65,13 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
      exit();
 
   } if ($sidentity_user !== $user_id) {
-    header('Location: ../../' . $url_index . '');
+    header('Location: ../../' . $url['index'] . '');
     exit();
   }
 }
 
 if ($_SESSION['is_fire'] === "No") {
-  header('Location: ' . $url_index . '?np=fire');
+  header('Location: ' . $url['index'] . '?np=fire');
   exit();
 }
 

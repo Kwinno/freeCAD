@@ -94,7 +94,7 @@ define("staff_siteSettings", $perms['staff_siteSettings']);
 // Check If Banned
 if (banned) {
   session_destroy();
-  header('Location: ' . $url_login . '?account=banned');
+  header('Location: ' . $url['login'] . '?account=banned');
   exit();
 }
 
@@ -102,7 +102,7 @@ if (banned) {
 if ($update_in_progress === "Yes") {
   if ($user_usergroup !== "Developer") {
     session_destroy();
-    header('Location: ' . $url_login . '?update=ip');
+    header('Location: ' . $url['login'] . '?update=ip');
     exit();
   }
 }

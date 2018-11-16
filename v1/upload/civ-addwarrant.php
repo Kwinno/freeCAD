@@ -17,7 +17,7 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
@@ -38,7 +38,7 @@ if (isset($_POST['addWarrant'])) {
   $result = $stmt->execute();
   if ($result) {
       logAction('Added warrant to character', $user_username);
-      header('Location: ' . $url_civ_newarrant . '?warrant=added');
+      header('Location: ' . $url['civ_newwarrant'] . '?warrant=added');
   }
 }
 
@@ -56,7 +56,7 @@ include('includes/header.php')
    <body>
       <div class="container">
          <div class="main">
-            <a href="<?php print $url_civ_view ?>?id=<?php echo $_SESSION['character_id'] ?>"><img src="assets/imgs/doj.png" class="main-logo" draggable="false"/></a>
+            <a href="<?php print $url['civ_view'] ?>?id=<?php echo $_SESSION['character_id'] ?>"><img src="assets/imgs/doj.png" class="main-logo" draggable="false"/></a>
             <div class="main-header">
                Hello, <?php echo $_SESSION['character_first_name'] ?>
             </div>

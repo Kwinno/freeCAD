@@ -17,18 +17,18 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
 
 if (!staff_access) {
-  header('Location: ' . $url_index . '');
+  header('Location: ' . $url['index'] . '');
   exit();
 }
 
 if (!staff_editUsers) {
-  header('Location: ' . $url_index . '');
+  header('Location: ' . $url['index'] . '');
   exit();
 }
 
@@ -40,11 +40,11 @@ if (isset($_GET['user']) && filter_var($_GET['user'], FILTER_VALIDATE_INT)) {
     $stmt->execute();
     $userTable = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($userTable === false) {
-       header('Location: ' . $url_civ_index . '');
+       header('Location: ' . $url['civ_index'] . '');
        exit();
     } elseif ($id == 1) {
       if ($user_id != $id) {
-        header('Location: ' . $url_staff_index . '?np=rootuser');
+        header('Location: ' . $url['staff_index'] . '?np=rootuser');
         exit();
       } else {
         $_SESSION['edit_user_id'] = $userTable['user_id'];
@@ -90,7 +90,7 @@ if (isset($_POST['updateUserBtn'])) {
         $stmt->bindValue(':discord', $update_discord);
         $updateUser = $stmt->execute();
         if ($updateUser) {
-          header('Location: ' . $url_staff_index . '?user=edited');
+          header('Location: ' . $url['staff_index'] . '?user=edited');
           exit();
         }
       } else {
@@ -105,7 +105,7 @@ if (isset($_POST['updateUserBtn'])) {
         $stmt->bindValue(':discord', $update_discord);
         $updateUser = $stmt->execute();
         if ($updateUser) {
-          header('Location: ' . $url_staff_index . '?user=edited');
+          header('Location: ' . $url['staff_index'] . '?user=edited');
           exit();
         }
       }
@@ -119,7 +119,7 @@ if (isset($_POST['updateUserBtn'])) {
         $stmt->bindValue(':userid', $_SESSION['edit_user_id']);
         $updateUser = $stmt->execute();
         if ($updateUser) {
-          header('Location: ' . $url_staff_index . '?user=edited');
+          header('Location: ' . $url['staff_index'] . '?user=edited');
           exit();
         }
       } else {
@@ -133,7 +133,7 @@ if (isset($_POST['updateUserBtn'])) {
         $stmt->bindValue(':userid', $_SESSION['edit_user_id']);
         $updateUser = $stmt->execute();
         if ($updateUser) {
-          header('Location: ' . $url_staff_index . '?user=edited');
+          header('Location: ' . $url['staff_index'] . '?user=edited');
           exit();
         }
       }
@@ -144,7 +144,7 @@ if (isset($_POST['deleteUserBtn'])) {
         $user_del = $_SESSION['edit_user_id'];
         $stmt = $pdo->prepare( "DELETE FROM users WHERE user_id ='$user_del'" );
         $deleteUser = $stmt->execute();
-          header('Location: ' . $url_staff_index . '?user=deleted');
+          header('Location: ' . $url['staff_index'] . '?user=deleted');
           exit();
     }
 ?>

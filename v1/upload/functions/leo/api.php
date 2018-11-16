@@ -21,7 +21,7 @@ session_start();
 include '../../includes/isLoggedIn.php';
 
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 
@@ -85,7 +85,7 @@ if ($a === "get911calls") {
     exit();
 } elseif ($a === "get911callsDispatch") {
     if ($_SESSION['is_dispatch'] === "No") {
-        header('Location: ' . $url_index . '?np=dispatch');
+        header('Location: ' . $url['index'] . '?np=dispatch');
         exit();
     }
 
@@ -200,7 +200,7 @@ if ($a === "get911calls") {
     $endShift = $stmt->execute();
     logAction('(LEO) Ended Shift', $user_username . ' / ' . $_SESSION['identifier']);
     if ($endShift) {
-        header('Location: ../../' . $url_index . '');
+        header('Location: ../../' . $url['index'] . '');
         exit();
     }
 } elseif ($a === "getActiveUnits") {
@@ -220,7 +220,7 @@ if ($a === "get911calls") {
     echo "</table>";
 } elseif ($a === "getActiveUnitsDispatch") {
     if ($_SESSION['is_dispatch'] === "No") {
-        header('Location: ' . $url_index . '?np=dispatch');
+        header('Location: ' . $url['index'] . '?np=dispatch');
         exit();
     }
 
@@ -350,7 +350,7 @@ if ($a === "get911calls") {
     }
 } elseif ($a === "getPendingIds") {
     if ($_SESSION['leo_supervisor'] === "No") {
-        header('Location: ' . $url_leo_index . '');
+        header('Location: ' . $url['leo_index'] . '');
         exit();
     }
 
@@ -362,7 +362,7 @@ if ($a === "get911calls") {
 
         logAction('(LEO) Declined New Identity ('. $identity_id .')', $user_username . ' / ' . $_SESSION['identifier']);
 
-        header('Location: ../../' . $url_leo_supervisor_view_pending_identities . '');
+        header('Location: ../../' . $url['leo_supervisor_view_pending_identities'] . '');
     } elseif ($_GET['approve']) {
         $identity_id     = strip_tags($_GET['approve']);
         $approved_status = "Active";
@@ -374,7 +374,7 @@ if ($a === "get911calls") {
 
         logAction('(LEO) Approved New Identity ('. $identity_id .')', $user_username . ' / ' . $_SESSION['identifier']);
 
-        header('Location: ../../' . $url_leo_supervisor_view_pending_identities . '');
+        header('Location: ../../' . $url['leo_supervisor_view_pending_identities'] . '');
     }
 
     $pending_status = "Approval Needed";
@@ -647,7 +647,7 @@ if ($a === "get911calls") {
     exit();
 } elseif ($a === "UpdateUnitStatus") {
     if ($_SESSION['is_dispatch'] === "No") {
-        header('Location: ' . $url_index . '?np=dispatch');
+        header('Location: ' . $url['index'] . '?np=dispatch');
         exit();
     }
 

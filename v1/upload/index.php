@@ -17,14 +17,14 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
 
 if (!panel_access) {
   session_unset();
-  header('Location: ' . $url_login . '?unverified=true');
+  header('Location: ' . $url['login'] . '?unverified=true');
   exit();
 }
 
@@ -36,17 +36,17 @@ if (isset($_POST['createIdentityBtn'])) {
 
     // Check If Identifier Already Taken
     if (dbquery('SELECT COUNT(identifier) as count FROM identities WHERE identifier="' . escapestring($_POST['identifier']) . '"')[0]['count'] > 0) {
-        header('Location: ' . $url_index . '?identifier=taken');
+        header('Location: ' . $url['index'] . '?identifier=taken');
         exit();
     }
 
     //else if everything passes, than continue
     if ($identity_approval_needed === "no") {
       dbquery('INSERT INTO identities (identifier, user, user_name) VALUES ("' . escapestring($_POST['identifier']) . '", "' . escapestring($user_id) . '", "' . escapestring($user_username) . '")', false);
-      header('Location: ' . $url_index . '?identifier=created');
+      header('Location: ' . $url['index'] . '?identifier=created');
     } else {
       dbquery('INSERT INTO identities (identifier, user, status, user_name) VALUES ("' . escapestring($_POST['identifier']) . '", "' . escapestring($user_id) . '", "Approval Needed", "' . escapestring($user_username) . '")', false);
-      header('Location: ' . $url_index . '?identifier=approval');
+      header('Location: ' . $url['index'] . '?identifier=approval');
     }
 
 }
@@ -99,7 +99,7 @@ include('includes/header.php')
 
            <a class="btn btn-primary btn-block btn-sb disabled">Judge</a>
          <?php else: ?>
-           <a href="<?php print $url_civ_index ?>" class="btn btn-primary btn-block btn-sb">Civilian</a>
+           <a href="<?php print $url['civ_index'] ?>" class="btn btn-primary btn-block btn-sb">Civilian</a>
 
            <a data-toggle="modal" href="#soim" class="btn btn-primary btn-block btn-sb">Law Enforcement</a><br-leo>
 
@@ -195,7 +195,7 @@ include('includes/header.php')
                    <option selected="true" disabled="disabled">Select Identifier</option>
                    <?php
                       foreach(dbquery('SELECT * FROM identities WHERE user="' . escapestring($user_id) . '" AND status="Active"') as $unit) {
-                        echo '<option value="'. $url_leo_index .'?setid='. $unit['identity_id'] .'">'. $unit['identifier'] .'</option>';
+                        echo '<option value="'. $url['leo_index'] .'?setid='. $unit['identity_id'] .'">'. $unit['identifier'] .'</option>';
                       }
                     ?>
                  </select>
@@ -219,7 +219,7 @@ include('includes/header.php')
                    <option selected="true" disabled="disabled">Select Identifier</option>
                    <?php
                       foreach(dbquery('SELECT * FROM identities WHERE user="' . escapestring($user_id) . '" AND status="Active"') as $unit) {
-                        echo '<option value="'. $url_dispatch_index .'?setid='. $unit['identity_id'] .'">'. $unit['identifier'] .'</option>';
+                        echo '<option value="'. $url['dispatch_index'] .'?setid='. $unit['identity_id'] .'">'. $unit['identifier'] .'</option>';
                       }
                     ?>
                  </select>
@@ -264,7 +264,7 @@ include('includes/header.php')
                    <option selected="true" disabled="disabled">Select Identifier</option>
                    <?php
                       foreach(dbquery('SELECT * FROM identities WHERE user="' . escapestring($user_id) . '" AND status="Active"') as $unit) {
-                        echo '<option value="'. $url_fire_index .'?setid='. $unit['identity_id'] .'">'. $unit['identifier'] .'</option>';
+                        echo '<option value="'. $url['fire_index'] .'?setid='. $unit['identity_id'] .'">'. $unit['identifier'] .'</option>';
                       }
                     ?>
                  </select>

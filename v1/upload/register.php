@@ -31,13 +31,13 @@ if (isset($_POST['registerbtn'])) {
     $discord            = strip_tags($discord_form);
     //Add any checks (length, etc here....)
     if (strlen($pass) < 6) {
-        header('Location: ' . $url_register . '?password=short');
+        header('Location: ' . $url['register'] . '?password=short');
         exit();
     } elseif (strlen($pass) > 120) {
-        header('Location: ' . $url_register . '?password=long');
+        header('Location: ' . $url['register'] . '?password=long');
         exit();
     } elseif (strlen($username) > 36) {
-        header('Location: ' . $url_register . '?username=long');
+        header('Location: ' . $url['register'] . '?username=long');
         exit();
     }
     //Continue the execution, check if email is taken.
@@ -47,7 +47,7 @@ if (isset($_POST['registerbtn'])) {
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row['num'] > 0) {
-        header('Location: ' . $url_register . '?email=taken');
+        header('Location: ' . $url['register'] . '?email=taken');
         exit();
     }
     //Continue the execution, check if username is taken.
@@ -57,7 +57,7 @@ if (isset($_POST['registerbtn'])) {
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row['num'] > 0) {
-        header('Location: ' . $url_register . '?username=taken');
+        header('Location: ' . $url['register'] . '?username=taken');
         exit();
     }
     if (discordModule_isInstalled) {
@@ -77,7 +77,7 @@ if (isset($_POST['registerbtn'])) {
         $result = $stmt->execute();
         if ($result) {
             //redirect
-            header('Location: ' . $url_welcome . '');
+            header('Location: ' . $url['welcome'] . '');
             exit();
         }
       } else {
@@ -94,7 +94,7 @@ if (isset($_POST['registerbtn'])) {
         $result = $stmt->execute();
         if ($result) {
             //redirect
-            header('Location: ' . $url_welcome . '');
+            header('Location: ' . $url['welcome'] . '');
             exit();
         }
       }
@@ -114,7 +114,7 @@ if (isset($_POST['registerbtn'])) {
         $result = $stmt->execute();
         if ($result) {
             //redirect
-            header('Location: ' . $url_welcome . '');
+            header('Location: ' . $url['welcome'] . '');
             exit();
         }
       } else {
@@ -130,7 +130,7 @@ if (isset($_POST['registerbtn'])) {
         $result = $stmt->execute();
         if ($result) {
             //redirect
-            header('Location: ' . $url_welcome . '');
+            header('Location: ' . $url['welcome'] . '');
             exit();
         }
       }
@@ -188,7 +188,7 @@ include('includes/header.php')
                <div class="form-group">
                   <input class="btn btn-block btn-primary" name="registerbtn" id="registerbtn" type="submit" value="Finish Signup">
                </div>
-               <text>Already have an account? <a href="<?php print($url_login) ?>">Login</a></text>
+               <text>Already have an account? <a href="<?php print($url['login']) ?>">Login</a></text>
                <?php echo $ftter; ?>
             </form>
          </div>

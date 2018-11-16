@@ -35,7 +35,7 @@ include('includes/header.php')
                 It appears that this community does not have validation enabled for new accounts. You are free to login, and start using Hydrid.
               <?php endif; ?>
             </text>
-            <a href="<?php print($url_login) ?>"><button class="btn btn-block btn-primary" style="margin-top: 10px;">Continue to login</button></a>
+            <a href="<?php print($url['login']) ?>"><button class="btn btn-block btn-primary" style="margin-top: 10px;">Continue to login</button></a>
             <?php echo $ftter; ?>
          </div>
       </div>

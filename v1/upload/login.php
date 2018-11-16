@@ -32,7 +32,7 @@ if (isset($_POST['loginbtn'])) {
     $stmt->execute();
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($user === false) {
-        header('Location: ' . $url_login . '?user=notfound');
+        header('Location: ' . $url['login'] . '?user=notfound');
         exit();
     } else {
         $validPassword = password_verify($passwordAttempt, $user['password']);
@@ -49,10 +49,10 @@ if (isset($_POST['loginbtn'])) {
               $stmt->bindValue(':userid', $_SESSION['user_id']);
               $updateUser = $stmt->execute();
             }
-            header('Location: ' . $url_index . '?logged=in');
+            header('Location: ' . $url['index'] . '?logged=in');
             exit();
         } else {
-            header('Location: ' . $url_login . '?password=invalid');
+            header('Location: ' . $url['login'] . '?password=invalid');
             exit();
         }
     }
@@ -95,7 +95,7 @@ include('includes/header.php')
                <div class="form-group">
                   <input class="btn btn-block btn-primary" name="loginbtn" id="loginbtn" type="submit" value="Login">
                </div>
-               <text>Need an account? <a href="<?php print($url_register) ?>">Register</a></text>
+               <text>Need an account? <a href="<?php print($url['register']) ?>">Register</a></text>
                <?php echo $ftter; ?>
             </form>
          </div>

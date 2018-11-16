@@ -87,29 +87,30 @@ $community_url = "$settings_site_url_db";
 //Validation Settings
 $validation_enabled = "$settings_sign_up_verification_db";
 $identity_approval_needed = "$settings_identity_verification_db";
-//Urls
-$url_index = "index.php";
-$url_register = "register.php";
-$url_welcome = "welcome.php";
-$url_login = "login.php";
-$url_civ_index = "civ-index.php";
-$url_civ_view = "civ-view.php";
-$url_civ_driverlicense = "civ-driverlicense.php";
-$url_civ_registernewvehicle = "civ-registernewveh.php";
-$url_civ_viewveh = "civ-viewveh.php";
-$url_civ_firearms = "civ-firearms.php";
-$url_civ_newarrant = "civ-addwarrant.php";
-$url_civ_viewwarratns = "civ-mywarrants.php";
-$url_leo_index = "leo-index.php";
-$url_staff_edit_user = "staff-edituser.php";
-$url_staff_index = "staff.php";
-$url_fire_index = "fire-index.php";
-$url_leo_supervisor_view_pending_identities = "leo-pending-identities.php";
-$url_leo_supervisor_view_all_identities = "leo-all-identities.php";
-$url_dispatch_index = "dispatch-index.php";
-$url_staff_setup = "setup.php";
-$url_settings = "user-settings.php";
-$url_logout = "logout.php";
+
+// Define URLS
+$url['index'] = "index.php";
+$url['register'] = "register.php";
+$url['welcome'] = "welcome.php";
+$url['login'] = "login.php";
+$url['civ_index'] = "civ-index.php";
+$url['civ_view'] = "civ-view.php";
+$url['civ_driverlicense'] = "civ-driverlicense.php";
+$url['civ_registernewvehicle'] = "civ-registernewveh.php";
+$url['civ_viewveh'] = "civ-viewveh.php";
+$url['civ_firearms'] = "civ-firearms.php";
+$url['civ_newwarrant'] = "civ-addwarrant.php";
+$url['civ_viewwarrants'] = "civ-mywarrants.php";
+$url['leo_index'] = "leo-index.php";
+$url['staff_edit_user'] = "staff-edituser.php";
+$url['staff_index'] = "staff.php";
+$url['fire_index'] = "fire-index.php";
+$url['leo_supervisor_view_pending_identities'] = "leo-pending-identities.php";
+$url['leo_supervisor_view_pending_identities'] = "leo-all-identities.php";
+$url['dispatch_index'] = "dispatch-index.php";
+$url['staff_setup'] = "setup.php";
+$url['settings'] = "user-settings.php";
+$url['logout'] = "logout.php";
 
 $message     = '';
 

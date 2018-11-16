@@ -17,13 +17,13 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
 
 if ($_SESSION['fire_supervisor'] === "No") {
-  header('Location: ' . $url_index . '?np=fire');
+  header('Location: ' . $url['index'] . '?np=fire');
   exit();
 }
 
@@ -46,7 +46,7 @@ if (isset($_POST['deleteId'])) {
     $result = $stmt->execute();
     if ($result) {
         //redirect
-        header('Location: ' . $url_leo_supervisor_view_all_identities . '?id=deleted');
+        header('Location: ' . $url['leo_supervisor_view_pending_identities'] . '?id=deleted');
         exit();
     }
 }

@@ -17,13 +17,13 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
 
 if ($_SESSION['leo_supervisor'] === "No") {
-  header('Location: ' . $url_leo_index . '');
+  header('Location: ' . $url['leo_index'] . '');
   exit();
 }
 
@@ -43,7 +43,7 @@ if (isset($_POST['deleteId'])) {
     if ($result) {
         //redirect
         logAction('(LEO) DELETED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
-        header('Location: ' . $url_leo_supervisor_view_all_identities . '?id=deleted');
+        header('Location: ' . $url['leo_supervisor_view_pending_identities'] . '?id=deleted');
         exit();
     }
 }
@@ -68,7 +68,7 @@ if (isset($_POST['editId'])) {
     $updateId = $stmt->execute();
     if ($updateId) {
       logAction('(LEO) EDITED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
-      header('Location: ' . $url_leo_supervisor_view_all_identities . '?id=edited');
+      header('Location: ' . $url['leo_supervisor_view_pending_identities'] . '?id=edited');
       exit();
     }
 }
@@ -110,7 +110,7 @@ include('includes/header.php')
             </div>
           <?php endif; ?>
         </div>
-         <div class="center"><a href="<?php echo $url_leo_index ?>"><img src="assets/imgs/police.png" class="main-logo" draggable="false"/></a></div>
+         <div class="center"><a href="<?php echo $url['leo_index'] ?>"><img src="assets/imgs/police.png" class="main-logo" draggable="false"/></a></div>
          <div class="main-header-leo">
             <div class="float-left">Supervisor: <?php if ($_SESSION['leo_supervisor'] === "Yes") {
               echo 'Yes';
@@ -217,8 +217,8 @@ include('includes/header.php')
              </div>
              <?php if ($_SESSION['leo_supervisor'] === "Yes"): ?>
              <div class="col-sm-2">
-               <a href="<?php echo $url_leo_supervisor_view_all_identities ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
-               <a href="<?php echo $url_leo_supervisor_view_pending_identities ?>" class="btn btn-success btn-block">Pending Identities</a><br-leo>
+               <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
+               <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-success btn-block">Pending Identities</a><br-leo>
              </div>
              <?php endif; ?>
            </div>

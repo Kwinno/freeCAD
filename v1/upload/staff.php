@@ -18,13 +18,13 @@ error_reporting(0);
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
 
 if (!staff_access) {
-  header('Location: ' . $url_index . '');
+  header('Location: ' . $url['index'] . '');
   exit();
 }
 
@@ -35,14 +35,14 @@ if (isset($_POST['discordModule_install'])) {
   $stmt2 = $pdo->prepare( "ALTER TABLE `users` ADD `discord` VARCHAR(60) NULL AFTER `join_ip`" );
   $stmt2->execute();
   logAction('(STAFF) Installed Discord Module', $user_username);
-  header('Location: ' . $url_staff_index . '?module=installed');
+  header('Location: ' . $url['staff_index'] . '?module=installed');
   exit();
 } elseif (isset($_POST['discordModule_uninstall'])) {
   $stmt1 = $pdo->prepare( "ALTER TABLE `settings` DROP `discord_module`" );
   $stmt1->execute();
   sleep(3);
   logAction('(STAFF) Uninstalled Discord Module', $user_username);
-  header('Location: ' . $url_staff_index . '?module=uninstalled');
+  header('Location: ' . $url['staff_index'] . '?module=uninstalled');
   exit();
 }
 
@@ -54,7 +54,7 @@ if (isset($_POST['custom10codesModule_uninstall'])) {
   $stmt2->execute();
   sleep(3);
   logAction('(STAFF) Uninstalled Custom 10 Codes Module', $user_username);
-  header('Location: ' . $url_staff_index . '?module=uninstalled');
+  header('Location: ' . $url['staff_index'] . '?module=uninstalled');
   exit();
 }
 
@@ -66,7 +66,7 @@ if (isset($_POST['mapModule_install'])) {
   $stmt2->execute();
   sleep(3);
   logAction('(STAFF) Installed LiveMap Module', $user_username);
-  header('Location: ' . $url_staff_index . '?module=installed');
+  header('Location: ' . $url['staff_index'] . '?module=installed');
   exit();
 } elseif (isset($_POST['mapModule_uninstall'])) {
   $stmt1 = $pdo->prepare( "ALTER TABLE `settings` DROP `map_module`" );
@@ -76,7 +76,7 @@ if (isset($_POST['mapModule_install'])) {
   $stmt1->execute();
   sleep(3);
   logAction('(STAFF) Uninstalled LiveMap Module', $user_username);
-  header('Location: ' . $url_staff_index . '?module=uninstalled');
+  header('Location: ' . $url['staff_index'] . '?module=uninstalled');
   exit();
 } elseif (isset($_POST['mapModule_updateSettings'])) {
     //Pull the variables from the form
@@ -112,7 +112,7 @@ if (isset($_POST['subdivisionModule_install'])) {
   $sql2->execute();
   sleep(3);
   logAction('(STAFF) Installed Sub Division Module', $user_username);
-  header('Location: ' . $url_staff_index . '?module=installed');
+  header('Location: ' . $url['staff_index'] . '?module=installed');
   exit();
 } elseif (isset($_POST['subdivisionModule_uninstall'])) {
   $stmt1 = $pdo->prepare( "DROP TABLE `sub_divisions`" );
@@ -161,7 +161,7 @@ if (isset($_POST['deleteId'])) {
     logAction('(STAFF) Deleted Identity ('. $identifier_update .')', $user_username);
     if ($result) {
         //redirect
-        header('Location: ' . $url_staff_index . '?id=deleted');
+        header('Location: ' . $url['staff_index'] . '?id=deleted');
         exit();
     }
 }
@@ -195,7 +195,7 @@ if (isset($_POST['editId'])) {
     $updateId = $stmt->execute();
     logAction('(STAFF) Updated Identity ('. $identifier_update .')', $user_username);
     if ($updateId) {
-      header('Location: ' . $url_staff_index . '?id=edited');
+      header('Location: ' . $url['staff_index'] . '?id=edited');
       exit();
     }
 }
@@ -245,7 +245,7 @@ include('includes/header.php')
 <body>
    <div class="container-staff">
       <div class="main-staff">
-         <a href="<?php echo $url_index ?>"><img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/></a>
+         <a href="<?php echo $url['index'] ?>"><img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/></a>
          <div class="main-header-staff">
            <div class="center">
             Hello, <?php echo $user_username ?> <?php if (staff_access) {
@@ -573,7 +573,7 @@ include('includes/header.php')
                            </button>
                         </div>
                         <div class="modal-body">
-                          <form method="post" action="'.$url_staff_index.'">
+                          <form method="post" action="'.$url['staff_index'].'">
                           <input type="hidden" value="'.$row['identity_id'].'" name="identity_id_form">
                           <div class="form-group">
                              <label style="color:black;">Identifier</label>
