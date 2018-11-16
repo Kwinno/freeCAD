@@ -97,10 +97,12 @@ switch(strtolower($_GET['endpoint'])) {
         ));
         break;
     case "settings":
-        echo json_encode(array(
+        $data = array(
             'response' => 200,
             'content' => dbquery('SELECT * FROM settings')
-        ));
+        );
+        $data['content'][0]['serverip'] = $_SERVER['SERVER_NAME'];
+        echo json_encode($data);
         break;
     default:
         echo json_encode(array(
