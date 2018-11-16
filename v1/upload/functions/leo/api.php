@@ -189,7 +189,11 @@ if ($a === "get911calls") {
     }
     exit();
 } elseif ($a === "dynamicTime") {
-    echo $time;
+  
+    $data = array();
+    $data['time'] = $time;
+    echo json_encode($data);
+
 } elseif ($a === "endShift") {
     $i    = $_SESSION['identifier'];
     $sql  = "DELETE FROM `on_duty` WHERE identifier = :i";
@@ -207,13 +211,7 @@ if ($a === "get911calls") {
     $result         = $pdo->prepare($getActiveUnits);
     $result->execute();
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        if ($row['status'] === "10-42") {
-            $displayUnit = "false";
-        } else {
-            $displayUnit = "true";
-        }
-
-        if ($displayUnit === "true") {
+        if ($row['status'] !== "10-42") {
             echo "<tr>";
             echo "<td><center>" . $row['identifier'] . "</center></td>";
             echo "<td><center>" . $row['status'] . "</center></td>";
