@@ -38,6 +38,5 @@ function dbquery($sql, $returnresult = true)
 function logAction($action, $user) {
     global $time;
     global $us_date;
-    dbquery("INSERT INTO logs (action, username, timestamp) VALUES ('" . escapestring($action) . "', '" . escapestring($user) . "', '" . $time . " " . $us_date . "')", false);
+    dbquery('INSERT INTO logs (action, username, timetamp) VALUES ("' . escapestring($action) . '", "' . escapestring($user) . '", "' . $time . ' ' . $us_date . '")', false);
 }
-
