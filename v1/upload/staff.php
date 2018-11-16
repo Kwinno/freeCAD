@@ -341,7 +341,7 @@ include('includes/header.php')
            <div class="row">
              <div class="col">
                <div class="form-group">
-                 <label for="IdentityVerification">Identity Verification</label>
+                 <label for="IdentityVerification">LEO Verification</label>
                  <select class="form-control" id="IdentityVerification" onchange="setIdentityVerification(this.value)">
                    <option selected="true" disabled="disabled"><?php if ($settings_identity_verification_db === "no") {
                      echo 'No';

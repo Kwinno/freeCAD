@@ -22,6 +22,8 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
 }
 include 'includes/isLoggedIn.php';
 
+$_SESSION['is_leo'] = "No";
+
 if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
   $i   = $_GET['setid'];
   $sql  = "SELECT * FROM identities WHERE identity_id = :i";
@@ -39,6 +41,8 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
 
      $sidentity_name    = $identity['identifier'];
      $_SESSION['identifier'] = $sidentity_name;
+
+     $_SESSION['is_leo'] = "Yes";
 
      if ($identity['leo_supervisor'] === "Yes") {
        $_SESSION['leo_supervisor'] = "Yes";
@@ -62,6 +66,12 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
     exit();
   }
 }
+
+if ($_SESSION['is_leo'] === "No") {
+  header('Location: ' . $url_index . '?np=leo');
+  exit();
+}
+
 
 $stmts    = $pdo->prepare("SELECT * FROM settings");
 $stmts->execute();
