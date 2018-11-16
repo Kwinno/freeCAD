@@ -208,21 +208,6 @@ if (isset($_POST['1042btn'])) {
 $page_name = "LEO Home";
 include('includes/header.php')
 ?>
-<head>
-  <script>
-  $(document).ready(function() {
-   $("#openNameSearch").on("click",function(){
-     loadNames();
-   });
-   $("#openWeaponSearch").on("click",function(){
-     loadWpns();
-   });
-   $("#openVehicleSearch").on("click",function(){
-     loadVehs();
-   });
-  });
-  </script>
-</head>
 <body>
    <div class="container-leo">
       <div class="main-leo">
@@ -664,5 +649,18 @@ include('includes/header.php')
    <?php include('includes/js.php'); ?>
    <script src="assets/js/pages/leo.js"></script>
    <!-- end js -->
+   <script type="text/javascript">
+   $(document).ready(function() {
+    $("#openNameSearch").on("click",function(){
+      loadNames();
+    });
+    $("#openWeaponSearch").on("click",function(){
+      loadWpns();
+    });
+    $("#openVehicleSearch").on("click",function(){
+      loadVehs();
+    });
+   });
+   </script>
 </body>
 </html>
