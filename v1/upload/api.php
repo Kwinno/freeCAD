@@ -96,6 +96,12 @@ switch(strtolower($_GET['endpoint'])) {
             'content' => dbquery('SELECT * FROM 911calls')
         ));
         break;
+    case "settings":
+        echo json_encode(array(
+            'response' => 200,
+            'content' => dbquery('SELECT * FROM settings')
+        ));
+        break;
     default:
         echo json_encode(array(
             'response' => 400,
