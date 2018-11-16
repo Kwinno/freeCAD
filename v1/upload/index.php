@@ -219,7 +219,7 @@ include('includes/header.php')
                    <option selected="true" disabled="disabled">Select Identifier</option>
                    <?php
                       foreach(dbquery('SELECT * FROM identities WHERE user="' . escapestring($user_id) . '" AND status="Active"') as $unit) {
-                        echo '<option value="'. $url_leo_index .'?setid='. $unit['identity_id'] .'">'. $unit['identifier'] .'</option>';
+                        echo '<option value="'. $url_dispatch_index .'?setid='. $unit['identity_id'] .'">'. $unit['identifier'] .'</option>';
                       }
                     ?>
                  </select>
@@ -264,7 +264,7 @@ include('includes/header.php')
                    <option selected="true" disabled="disabled">Select Identifier</option>
                    <?php
                       foreach(dbquery('SELECT * FROM identities WHERE user="' . escapestring($user_id) . '" AND status="Active"') as $unit) {
-                        echo '<option value="'. $url_leo_index .'?setid='. $unit['identity_id'] .'">'. $unit['identifier'] .'</option>';
+                        echo '<option value="'. $url_fire_index .'?setid='. $unit['identity_id'] .'">'. $unit['identifier'] .'</option>';
                       }
                     ?>
                  </select>
