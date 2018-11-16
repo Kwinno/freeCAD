@@ -601,6 +601,7 @@ include('includes/header.php')
    <!-- <audio id="panicButton" src="assets/sounds/panic-button.mp3" preload="auto"></audio> -->
    <!-- end sounds -->
    <!-- js -->
+   <?php include('includes/js.php'); ?>
    <script src="assets/js/pages/leo.js"></script>
    <!-- end js -->
 </body>
