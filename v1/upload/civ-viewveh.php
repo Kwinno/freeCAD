@@ -23,7 +23,7 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
 include 'includes/isLoggedIn.php';
 include 'functions/refreshCivVariables.php';
 
-logme('Viewing Character Vehicle', $user_username);
+logAction('Viewing Character Vehicle', $user_username);
 //Alerts
 if (isset($_GET['license']) && strip_tags($_GET['license']) === 'invalid') {
    $message = '<div class="alert alert-danger" role="alert">It Seems Your Drivers License Is Not Valid.</div>';

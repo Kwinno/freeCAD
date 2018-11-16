@@ -31,7 +31,7 @@ include 'functions/refreshCivVariables.php';
    $deleteChar = $stmt->execute();
    //Continue
    if ($deleteChar) {
-      logme('Deleted Character', $user_username);
+      logAction('Deleted Character', $user_username);
       header('Location: ' . $url_civ_index . '?character=deleted');
    }
 }
@@ -47,7 +47,7 @@ if (isset($_POST['updateLicenseStatus'])) {
   $updateLicense = $stmt->execute();
   //Continue
   if ($updateLicense) {
-     logme('Updated Characters Drivers License', $user_username);
+     logAction('Updated Characters Drivers License', $user_username);
      header('Location: ' . $url_civ_driverlicense . '?license=updated');
   }
 }

@@ -42,7 +42,7 @@ if (isset($_POST['deleteId'])) {
     $result = $stmt->execute();
     if ($result) {
         //redirect
-        logme('(LEO) DELETED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) DELETED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
         header('Location: ' . $url_leo_supervisor_view_all_identities . '?id=deleted');
         exit();
     }
@@ -67,7 +67,7 @@ if (isset($_POST['editId'])) {
     $stmt->bindParam(':is_dispatch', $is_dispatch_update);
     $updateId = $stmt->execute();
     if ($updateId) {
-      logme('(LEO) EDITED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
+      logAction('(LEO) EDITED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
       header('Location: ' . $url_leo_supervisor_view_all_identities . '?id=edited');
       exit();
     }

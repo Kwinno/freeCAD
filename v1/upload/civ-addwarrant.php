@@ -37,7 +37,7 @@ if (isset($_POST['addWarrant'])) {
   $stmt->bindValue(':wanted_person', $CHAR_NAME);
   $result = $stmt->execute();
   if ($result) {
-      logme('Added warrant to character', $user_username);
+      logAction('Added warrant to character', $user_username);
       header('Location: ' . $url_civ_newarrant . '?warrant=added');
   }
 }

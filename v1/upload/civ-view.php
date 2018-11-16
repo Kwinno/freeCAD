@@ -76,7 +76,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && filter_var($_GET['id'], FIL
        $_SESSION['character_license_firearm'] = $character_license_firearm;
 
     } if ($character_owner_id !== $user_id) {
-      logme('Attempted To Access Someone Elses Character', $user_username);
+      logAction('Attempted To Access Someone Elses Character', $user_username);
       header('Location: ' . $url_civ_index . '');
       exit();
     }
@@ -91,7 +91,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && filter_var($_GET['id'], FIL
    $deleteChar = $stmt->execute();
    //Continue
    if ($deleteChar) {
-     logme('Deleted Character', $user_username);
+     logAction('Deleted Character', $user_username);
       header('Location: ' . $url_civ_index . '?character=deleted');
    }
 }

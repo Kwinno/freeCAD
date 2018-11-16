@@ -44,7 +44,7 @@ if ($a === "get911calls") {
         $stmt    = $pdo->prepare("DELETE FROM 911calls WHERE call_id =:call_id");
         $stmt->bindParam(':call_id', $call_id);
         $stmt->execute();
-        logme('(LEO) Ended Call #'. $call_id .'', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Ended Call #'. $call_id .'', $user_username . ' / ' . $_SESSION['identifier']);
         header('Location: ../../leo-index.php');
         exit();
     }
@@ -94,7 +94,7 @@ if ($a === "get911calls") {
         $stmt    = $pdo->prepare("DELETE FROM 911calls WHERE call_id =:call_id");
         $stmt->bindParam(':call_id', $call_id);
         $stmt->execute();
-        logme('(DISPATCH) Ended Call #'. $call_id .'', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(DISPATCH) Ended Call #'. $call_id .'', $user_username . ' / ' . $_SESSION['identifier']);
         header('Location: ../../dispatch-index.php');
         exit();
     }
@@ -198,7 +198,7 @@ if ($a === "get911calls") {
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':i', $i);
     $endShift = $stmt->execute();
-    logme('(LEO) Ended Shift', $user_username . ' / ' . $_SESSION['identifier']);
+    logAction('(LEO) Ended Shift', $user_username . ' / ' . $_SESSION['identifier']);
     if ($endShift) {
         header('Location: ../../' . $url_index . '');
         exit();
@@ -268,7 +268,7 @@ if ($a === "get911calls") {
         $stmt->bindParam(':bolo_id', $bolo_id);
         $stmt->execute();
 
-        logme('(LEO) Deleted BOLO #'. $bolo_id .'', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Deleted BOLO #'. $bolo_id .'', $user_username . ' / ' . $_SESSION['identifier']);
 
         header('Location: ../../leo-index.php');
         exit();
@@ -312,7 +312,7 @@ if ($a === "get911calls") {
         $stmt->bindParam(':bolo_id', $bolo_id);
         $stmt->execute();
 
-        logme('(DISPATCH) Deleted BOLO #'. $bolo_id .'', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(DISPATCH) Deleted BOLO #'. $bolo_id .'', $user_username . ' / ' . $_SESSION['identifier']);
         header('Location: ../../dispatch-index.php');
         exit();
     }
@@ -360,7 +360,7 @@ if ($a === "get911calls") {
         $stmt->bindParam(':identity_id', $identity_id);
         $stmt->execute();
 
-        logme('(LEO) Declined New Identity ('. $identity_id .')', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Declined New Identity ('. $identity_id .')', $user_username . ' / ' . $_SESSION['identifier']);
 
         header('Location: ../../' . $url_leo_supervisor_view_pending_identities . '');
     } elseif ($_GET['approve']) {
@@ -372,7 +372,7 @@ if ($a === "get911calls") {
         $stmt2->bindParam(':identity_id', $identity_id);
         $stmt2->execute();
 
-        logme('(LEO) Approved New Identity ('. $identity_id .')', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Approved New Identity ('. $identity_id .')', $user_username . ' / ' . $_SESSION['identifier']);
 
         header('Location: ../../' . $url_leo_supervisor_view_pending_identities . '');
     }
@@ -429,7 +429,7 @@ if ($a === "get911calls") {
     $getChar = "SELECT * FROM characters WHERE character_id='$q'";
     $result  = $pdo->prepare($getChar);
     $result->execute();
-    logme('(LEO) Searched Character ('. $q .')', $user_username . ' / ' . $_SESSION['identifier']);
+    logAction('(LEO) Searched Character ('. $q .')', $user_username . ' / ' . $_SESSION['identifier']);
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $suspect_name = $row['first_name'] . ' ' . $row['last_name'];
         echo '<div class="float-right">';
@@ -529,7 +529,7 @@ if ($a === "get911calls") {
         $stmt->bindValue(':char_id', $char_id);
         $stmt->bindValue(':license_status', $license_status);
         $stmt->execute();
-        logme('(LEO) Suspended License ('. $char_id .')', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Suspended License ('. $char_id .')', $user_username . ' / ' . $_SESSION['identifier']);
         if ($_SESSION['is_dispatch'] === "No") {
           header('Location: ../../leo-index.php?license=suspended');
         } else {
@@ -542,7 +542,7 @@ if ($a === "get911calls") {
         $stmt       = $pdo->prepare("DELETE FROM warrants WHERE warrant_id =:warrant_id");
         $stmt->bindParam(':warrant_id', $warrant_id);
         $stmt->execute();
-        logme('(LEO) Deleted Warrant ('. $warrant_id .')', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Deleted Warrant ('. $warrant_id .')', $user_username . ' / ' . $_SESSION['identifier']);
         header('Location: ../../leo-index.php');
         exit();
     }
@@ -634,7 +634,7 @@ if ($a === "get911calls") {
     $stmt      = $pdo->prepare($sql);
     $stmt->bindValue(':q', $q);
     $updateAOP = $stmt->execute();
-    logme('(LEO) Updated AOP', $user_username . ' / ' . $_SESSION['identifier']);
+    logAction('(LEO) Updated AOP', $user_username . ' / ' . $_SESSION['identifier']);
 } elseif ($a === "setStatus") {
     $q            = strip_tags($_GET['q']);
     $unit         = $_SESSION['identifier'];

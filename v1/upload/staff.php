@@ -34,14 +34,14 @@ if (isset($_POST['discordModule_install'])) {
   sleep(5);
   $stmt2 = $pdo->prepare( "ALTER TABLE `users` ADD `discord` VARCHAR(60) NULL AFTER `join_ip`" );
   $stmt2->execute();
-  logme('(STAFF) Installed Discord Module', $user_username);
+  logAction('(STAFF) Installed Discord Module', $user_username);
   header('Location: ' . $url_staff_index . '?module=installed');
   exit();
 } elseif (isset($_POST['discordModule_uninstall'])) {
   $stmt1 = $pdo->prepare( "ALTER TABLE `settings` DROP `discord_module`" );
   $stmt1->execute();
   sleep(3);
-  logme('(STAFF) Uninstalled Discord Module', $user_username);
+  logAction('(STAFF) Uninstalled Discord Module', $user_username);
   header('Location: ' . $url_staff_index . '?module=uninstalled');
   exit();
 }
@@ -75,7 +75,7 @@ if (isset($_POST['custom10codesModule_install'])) {
   $sql7 = $pdo->prepare( "INSERT INTO `custom10codes` (id, btn_name, btn_value) VALUES ('6', '10_97_btn', '10-97')" );
   $sql7->execute();
   sleep(3);
-  logme('(STAFF) Installed Custom 10 Codes Module', $user_username);
+  logAction('(STAFF) Installed Custom 10 Codes Module', $user_username);
   header('Location: ' . $url_staff_index . '?module=installed');
   exit();
 } elseif (isset($_POST['custom10codesModule_uninstall'])) {
@@ -85,7 +85,7 @@ if (isset($_POST['custom10codesModule_install'])) {
   $stmt2 = $pdo->prepare( "ALTER TABLE `settings` DROP `custom10codes_module`" );
   $stmt2->execute();
   sleep(3);
-  logme('(STAFF) Uninstalled Custom 10 Codes Module', $user_username);
+  logAction('(STAFF) Uninstalled Custom 10 Codes Module', $user_username);
   header('Location: ' . $url_staff_index . '?module=uninstalled');
   exit();
 }
@@ -125,7 +125,7 @@ if (isset($_POST['custom10codesModule_updateSettings'])) {
     $sql7 = $pdo->prepare( "UPDATE `custom10codes` SET btn_value='$update_ten97btn' WHERE btn_name='10_97_btn'" );
     $sql7->execute();
     sleep(2.3);
-    logme('(STAFF) Updated Custom 10 Codes Module', $user_username);
+    logAction('(STAFF) Updated Custom 10 Codes Module', $user_username);
     header('Location: staff.php?module=updated');
     exit();
 
@@ -138,7 +138,7 @@ if (isset($_POST['mapModule_install'])) {
   $stmt2 = $pdo->prepare( "ALTER TABLE `settings` ADD `map_module_link` VARCHAR(36) NOT NULL DEFAULT '#' AFTER `map_module`" );
   $stmt2->execute();
   sleep(3);
-  logme('(STAFF) Installed LiveMap Module', $user_username);
+  logAction('(STAFF) Installed LiveMap Module', $user_username);
   header('Location: ' . $url_staff_index . '?module=installed');
   exit();
 } elseif (isset($_POST['mapModule_uninstall'])) {
@@ -148,7 +148,7 @@ if (isset($_POST['mapModule_install'])) {
   $stmt1 = $pdo->prepare( "ALTER TABLE `settings` DROP `map_module_link`" );
   $stmt1->execute();
   sleep(3);
-  logme('(STAFF) Uninstalled LiveMap Module', $user_username);
+  logAction('(STAFF) Uninstalled LiveMap Module', $user_username);
   header('Location: ' . $url_staff_index . '?module=uninstalled');
   exit();
 } elseif (isset($_POST['mapModule_updateSettings'])) {
@@ -158,7 +158,7 @@ if (isset($_POST['mapModule_install'])) {
     $update_mapModule_link      = strip_tags($mapModule_link_form);
     $sql2 = $pdo->prepare( "UPDATE `settings` SET map_module_link='$update_mapModule_link'" );
     $sql2->execute();
-    logme('(STAFF) Updated LiveMap Module Settings', $user_username);
+    logAction('(STAFF) Updated LiveMap Module Settings', $user_username);
     header('Location: staff.php?module=updated');
     exit();
 }
@@ -184,7 +184,7 @@ if (isset($_POST['subdivisionModule_install'])) {
   $sql2 = $pdo->prepare( "INSERT INTO `sub_divisions` (id, name) VALUES ('1', 'Exmaple Sub Division')" );
   $sql2->execute();
   sleep(3);
-  logme('(STAFF) Installed Sub Division Module', $user_username);
+  logAction('(STAFF) Installed Sub Division Module', $user_username);
   header('Location: ' . $url_staff_index . '?module=installed');
   exit();
 } elseif (isset($_POST['subdivisionModule_uninstall'])) {
@@ -193,7 +193,7 @@ if (isset($_POST['subdivisionModule_install'])) {
   sleep(4);
   $stmt2 = $pdo->prepare( "ALTER TABLE `settings` DROP `subdivision_module`" );
   $stmt2->execute();
-logme('(STAFF) Uninstalled Sub Division Module', $user_username);
+logAction('(STAFF) Uninstalled Sub Division Module', $user_username);
     header('Location: staff.php?module=uninstalled');
     exit();
 } elseif (isset($_POST['subdivisionModule_createNewSD'])) {
@@ -203,7 +203,7 @@ logme('(STAFF) Uninstalled Sub Division Module', $user_username);
   $sql2 = $pdo->prepare( "INSERT INTO `sub_divisions` (name) VALUES ('$update_new_sd')" );
   $sql2->execute();
   sleep(3);
-  logme('(STAFF) Created New Sub Division', $user_username);
+  logAction('(STAFF) Created New Sub Division', $user_username);
   header('Location: staff.php?module=updated');
   exit();
 }
@@ -213,7 +213,7 @@ if ($_GET['deletechar']) {
   $stmt = $pdo->prepare( "DELETE FROM characters WHERE character_id =:char_id" );
   $stmt->bindParam(':char_id', $char_id);
   $stmt->execute();
-  logme('(STAFF) Deleted Character ('. $char_id .')', $user_username);
+  logAction('(STAFF) Deleted Character ('. $char_id .')', $user_username);
   header('Location: staff.php?char=deleted');
   exit();
 }
@@ -231,7 +231,7 @@ if (isset($_POST['deleteId'])) {
     $stmt = $pdo->prepare( "DELETE FROM identities WHERE identity_id =:identity_id" );
     $stmt->bindParam(':identity_id', $identity_id_update);
     $result = $stmt->execute();
-    logme('(STAFF) Deleted Identity ('. $identifier_update .')', $user_username);
+    logAction('(STAFF) Deleted Identity ('. $identifier_update .')', $user_username);
     if ($result) {
         //redirect
         header('Location: ' . $url_staff_index . '?id=deleted');
@@ -266,7 +266,7 @@ if (isset($_POST['editId'])) {
     $stmt->bindParam(':fire_supervisor', $fire_supervisor_update);
     $stmt->bindParam(':status', $status_update);
     $updateId = $stmt->execute();
-    logme('(STAFF) Updated Identity ('. $identifier_update .')', $user_username);
+    logAction('(STAFF) Updated Identity ('. $identifier_update .')', $user_username);
     if ($updateId) {
       header('Location: ' . $url_staff_index . '?id=edited');
       exit();
@@ -284,7 +284,7 @@ if (isset($_POST['UpdateCommunityNameBtn'])) {
     $stmt    = $pdo->prepare($sql);
     $updateSiteName = $stmt->execute();
     if ($updateSiteName) {
-      logme('(STAFF) Updated Community Name', $user_username);
+      logAction('(STAFF) Updated Community Name', $user_username);
       $message='<div class="alert alert-success" id="dismiss">Community Name Updated</div>';
     }
 }

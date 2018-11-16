@@ -84,7 +84,7 @@ if (isset($_GET['identifier']) && strip_tags($_GET['identifier']) === 'created')
 } elseif (isset($_GET['np']) && strip_tags($_GET['np']) === 'fire') {
   $message = '<div class="alert alert-danger" role="alert" id="dismiss">You are not assigned to Fire/EMS.</div>';
 } elseif (isset($_GET['logged']) && strip_tags($_GET['logged']) === 'in') {
-  logme('Logged In', $user_username);
+  logAction('Logged In', $user_username);
 } elseif (isset($_GET['np']) && strip_tags($_GET['np']) === 'leo') {
   $message = '<div class="alert alert-danger" role="alert" id="dismiss">You are not assigned to LEO.</div>';
 }

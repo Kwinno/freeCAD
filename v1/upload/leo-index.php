@@ -102,7 +102,7 @@ if (isset($_POST['createTicketbtn'])) {
         $stmt->bindValue(':location', $location);
         $stmt->bindValue(':postal', $postal);
         $stmt->bindValue(':amount', $amount);
-        logme('(LEO) Created New Ticket', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Created New Ticket', $user_username . ' / ' . $_SESSION['identifier']);
         $result = $stmt->execute();
         if ($result) {
             $message='<div class="alert alert-success" id="dismiss">Ticket Created</div>';
@@ -126,7 +126,7 @@ if (isset($_POST['createArrestReportbtn'])) {
         $stmt->bindValue(':arresting_officer', $arresting_officer);
         $stmt->bindValue(':suspect', $suspect);
         $stmt->bindValue(':summary', $summary);
-        logme('(LEO) Created New Arrest Report', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Created New Arrest Report', $user_username . ' / ' . $_SESSION['identifier']);
         $result = $stmt->execute();
         if ($result) {
             $message='<div class="alert alert-success" id="dismiss">Arrest Report Created</div>';
@@ -156,7 +156,7 @@ if (isset($_POST['addBoloBtn'])) {
     $stmt->bindValue(':bolo_reason', $bolo_reason);
     $stmt->bindValue(':bolo_created_by', $bolo_created_by);
     $stmt->bindValue(':bolo_created_on', $date . ' ' . $time);
-    logme('(LEO) Added BOLO', $user_username . ' / ' . $_SESSION['identifier']);
+    logAction('(LEO) Added BOLO', $user_username . ' / ' . $_SESSION['identifier']);
     $result = $stmt->execute();
     if ($result) {
         //redirect
@@ -185,7 +185,7 @@ if (isset($_POST['1041btn'])) {
   $stmt->bindValue(':type', $duty_type);
   $result = $stmt->execute();
   $_SESSION['on_duty'] = "Yes";
-  logme('(LEO) Went On Duty', $user_username . ' / ' . $_SESSION['identifier']);
+  logAction('(LEO) Went On Duty', $user_username . ' / ' . $_SESSION['identifier']);
   header('Location: ' . $url_leo_index . '');
   exit();
 }

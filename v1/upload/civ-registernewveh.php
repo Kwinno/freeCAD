@@ -57,7 +57,7 @@ if (isset($_POST['registervehbtn'])) {
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row['num'] > 0) {
-      logme('Tried To Register A Vehicle With A Taken Plate', $user_username);
+      logAction('Tried To Register A Vehicle With A Taken Plate', $user_username);
         header('Location: ' . $url_civ_registernewvehicle . '?plate=taken');
         exit();
     }
@@ -79,7 +79,7 @@ if (isset($_POST['registervehbtn'])) {
     $result = $stmt->execute();
     if ($result) {
         //redirect
-        logme('Registered New Vehicle', $user_username);
+        logAction('Registered New Vehicle', $user_username);
         header('Location: ' . $url_civ_view . '?id='. $_SESSION['character_id'] .'&vehicle=registered');
     }
 }

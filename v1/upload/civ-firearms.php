@@ -36,7 +36,7 @@ if (isset($_POST['updateCCWStatusBtn'])) {
   $updateLicense = $stmt->execute();
   //Continue
   if ($updateLicense) {
-    logme('Updated Characters CCW License', $user_username);
+    logAction('Updated Characters CCW License', $user_username);
      header('Location: ' . $url_civ_firearms . '?license=updated');
   }
 }
@@ -74,7 +74,7 @@ if (isset($_POST['registerFirearmbtn'])) {
     $result = $stmt->execute();
     if ($result) {
         //redirect
-        logme('Registered Firearm For Character', $user_username);
+        logAction('Registered Firearm For Character', $user_username);
         header('Location: ' . $url_civ_firearms . '?id='. $_SESSION['character_id'] .'&firearm=registered');
     }
 }

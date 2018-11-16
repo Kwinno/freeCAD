@@ -62,7 +62,7 @@ if (isset($_POST['createcharbtn'])) {
     $stmt2->execute();
     $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
     if ($row1['num'] > 0 AND $row2['num'] > 0) {
-        logme('Tried To Register A Taken Character', $user_username);
+        logAction('Tried To Register A Taken Character', $user_username);
         header('Location: ' . $url_civ_index . '?character=taken');
         exit();
     }
@@ -86,7 +86,7 @@ if (isset($_POST['createcharbtn'])) {
     $result = $stmt->execute();
     if ($result) {
         //redirect
-        logme('Registered New Character', $user_username);
+        logAction('Registered New Character', $user_username);
         header('Location: ' . $url_civ_index . '?character=created');
     }
 }
