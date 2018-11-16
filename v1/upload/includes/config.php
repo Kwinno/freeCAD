@@ -26,8 +26,10 @@ error_reporting(0);
 $update_in_progress = "No";
 define("isDonator", false);
 
+
 // Get Global Functions
 require_once("functions.php");
+
 
 // Get Site Config
 $settingsRow = dbquery('SELECT * FROM settings')[0];
