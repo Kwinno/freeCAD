@@ -31,7 +31,7 @@ or any credits.
 
 # Installation
 - Download the latest version from GitHub.
-- Upload the *hydrid.sql* file to your database. (We recommend using a seperate user besides Root for security reasons)
+- Navigate to **sql/new users/**, and import that SQL file on your database.
 - Move the contents from the *Upload* folder, into your website directory.
 - Navigate to **includes/connect.php**, and open it with a text-editor.
 - Change the database information to yours.
