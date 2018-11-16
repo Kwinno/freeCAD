@@ -34,41 +34,19 @@ if (isset($_POST['createIdentityBtn'])) {
     //Sanitize the variables, prevents xss, etc.
     $identifier        = strip_tags($identifier_form);
 
-    //check if the Identifier already exists
-    $sql  = "SELECT COUNT(identifier) AS num FROM identities WHERE identifier = :identifier";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':identifier', $identifier);
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row['num'] > 0) {
+    // Check If Identifier Already Taken
+    if (dbquery('SELECT COUNT(identifier) as count FROM identities WHERE identifier="' . escapestring($_POST['identifier']) . '"')[0]['count'] > 0) {
         header('Location: ' . $url_index . '?identifier=taken');
         exit();
     }
+    
     //else if everything passes, than continue
     if ($identity_approval_needed === "no") {
-      $sql          = "INSERT INTO identities (identifier, user, user_name) VALUES (:identifier, :user, :user_name)";
-      $stmt         = $pdo->prepare($sql);
-      $stmt->bindValue(':identifier', $identifier);
-      $stmt->bindValue(':user', $user_id);
-      $stmt->bindValue(':user_name', $user_username);
-      $result = $stmt->execute();
-      if ($result) {
-          //redirect
-          header('Location: ' . $url_index . '?identifier=created');
-      }
+      dbquery('INSERT INTO identities (identifier, user, user_name) VALUES ("' . escapestring($_POST['identifier']) . '", "' . escapestring($user_id) . '", "' . escapestring($user_username) . '")', false);
+      header('Location: ' . $url_index . '?identifier=created');
     } else {
-      $sql          = "INSERT INTO identities (identifier, user, status, user_name) VALUES (:identifier, :user, :status, :user_name)";
-      $status = "Approval Needed";
-      $stmt         = $pdo->prepare($sql);
-      $stmt->bindValue(':identifier', $identifier);
-      $stmt->bindValue(':user', $user_id);
-      $stmt->bindValue(':status', $status);
-      $stmt->bindValue(':user_name', $user_username);
-      $result = $stmt->execute();
-      if ($result) {
-          //redirect
-          header('Location: ' . $url_index . '?identifier=approval');
-      }
+      dbquery('INSERT INTO identities (identifier, user, status, user_name) VALUES ("' . escapestring($_POST['identifier']) . '", "' . escapestring($user_id) . '", "Approval Needed", "' . escapestring($user_username) . '")', false);
+      header('Location: ' . $url_index . '?identifier=approval');
     }
 
 }
@@ -216,13 +194,9 @@ include('includes/header.php')
                  <select class="form-control" name="character_list" onchange="location = this.value;">
                    <option selected="true" disabled="disabled">Select Identifier</option>
                    <?php
-                   $status = 'Active';
-                   $getIdentities = "SELECT * FROM identities WHERE user='$user_id' AND status='$status'";
-                   $result = $pdo->prepare($getIdentities);
-                   $result->execute();
-                   while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                     echo '<option value="'. $url_leo_index .'?setid='. $row['identity_id'] .'">'. $row['identifier'] .'</option>';
-                   }
+                      foreach(dbquery('SELECT * FROM identities WHERE user="' . escapestring($user_id) . '" AND status="Active"') as $unit) {
+                        echo '<option value="'. $url_leo_index .'?setid='. $unit['identity_id'] .'">'. $unit['identifier'] .'</option>';
+                      }
                     ?>
                  </select>
                </div>
@@ -244,13 +218,9 @@ include('includes/header.php')
                  <select class="form-control" name="character_list" onchange="location = this.value;">
                    <option selected="true" disabled="disabled">Select Identifier</option>
                    <?php
-                   $status = 'Active';
-                   $getIdentities = "SELECT * FROM identities WHERE user='$user_id' AND status='$status'";
-                   $result = $pdo->prepare($getIdentities);
-                   $result->execute();
-                   while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                     echo '<option value="'. $url_dispatch_index .'?setid='. $row['identity_id'] .'">'. $row['identifier'] .'</option>';
-                   }
+                      foreach(dbquery('SELECT * FROM identities WHERE user="' . escapestring($user_id) . '" AND status="Active"') as $unit) {
+                        echo '<option value="'. $url_leo_index .'?setid='. $unit['identity_id'] .'">'. $unit['identifier'] .'</option>';
+                      }
                     ?>
                  </select>
                </div>
@@ -293,13 +263,9 @@ include('includes/header.php')
                  <select class="form-control" name="character_list" onchange="location = this.value;">
                    <option selected="true" disabled="disabled">Select Identifier</option>
                    <?php
-                   $status = 'Active';
-                   $getIdentities = "SELECT * FROM identities WHERE user='$user_id' AND status='$status'";
-                   $result = $pdo->prepare($getIdentities);
-                   $result->execute();
-                   while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                     echo '<option value="'. $url_fire_index .'?setid='. $row['identity_id'] .'">'. $row['identifier'] .'</option>';
-                   }
+                      foreach(dbquery('SELECT * FROM identities WHERE user="' . escapestring($user_id) . '" AND status="Active"') as $unit) {
+                        echo '<option value="'. $url_leo_index .'?setid='. $unit['identity_id'] .'">'. $unit['identifier'] .'</option>';
+                      }
                     ?>
                  </select>
                </div>
