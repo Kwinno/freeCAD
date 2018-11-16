@@ -320,13 +320,6 @@ include('includes/header.php')
       <div class="main-staff">
          <a href="<?php echo $url_index ?>"><img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/></a>
          <div class="main-header-staff">
-           <div class="float-left">
-             <?php if (isDonator): ?>
-               Donator: Yes
-             <?php else: ?>
-               Donator: No
-             <?php endif; ?>
-           </div>
            <div class="center">
             Hello, <?php echo $user_username ?> <?php if (staff_access) {
               echo '<a href="staff.php"><i class="fas fa-cog"></i></a>';
