@@ -432,6 +432,7 @@ if ($a === "get911calls") {
     logme('(LEO) Searched Character ('. $q .')', $user_username . ' / ' . $_SESSION['identifier']);
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $suspect_name = $row['first_name'] . ' ' . $row['last_name'];
+		$charid = $row['character_id']
         echo '<div class="float-right">';
         echo '<div style="border: 1px solid black; overflow-y: scroll; width:500px; height:150px;">';
         echo "<center>PREVIOUS TICKETS</center>";
@@ -442,7 +443,7 @@ if ($a === "get911calls") {
       <th><center>Postal</center></th>
       <th><center>Timestamp</center></th>
       </tr>";
-        $getPreviousTickets = "SELECT * FROM tickets WHERE suspect = '$suspect_name'";
+        $getPreviousTickets = "SELECT * FROM tickets WHERE suspect = '$charid'";
         $result             = $pdo->prepare($getPreviousTickets);
         $result->execute();
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -465,7 +466,7 @@ if ($a === "get911calls") {
       <th><center>Arresting Officer</center></th>
       <th><center>Timestamp</center></th>
       </tr>";
-        $getPreviousTickets = "SELECT * FROM arrest_reports WHERE suspect = '$suspect_name'";
+        $getPreviousTickets = "SELECT * FROM arrest_reports WHERE suspect = '$charid'";
         $result             = $pdo->prepare($getPreviousTickets);
         $result->execute();
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -579,7 +580,7 @@ if ($a === "get911calls") {
         echo "<h6>Plate: " . $row['vehicle_plate'] . "</h6><br-leo-name-search>";
         echo "<h6>Color: " . $row['vehicle_color'] . "</h6><br-leo-name-search>";
         echo "<h6>Model: " . $row['vehicle_model'] . "</h6><br-leo-name-search>";
-        echo "<h6>Insurnace Status: " . $row['vehicle_is'] . "</h6><br-leo-name-search>";
+        echo "<h6>Insurance Status: " . $row['vehicle_is'] . "</h6><br-leo-name-search>";
         echo "<h6>Registration Status: " . $row['vehicle_rs'] . "</h6><br-leo-name-search>";
         echo "<h6>VIN: " . $row['vehicle_vin'] . "</h6><br-leo-name-search>";
         echo "<h6>Owner: " . $row['vehicle_ownername'] . "</h6><br-leo-name-search>";

@@ -181,7 +181,7 @@ if (isset($_POST['subdivisionModule_install'])) {
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;" );
   $stmt12->execute();
   sleep(2.3);
-  $sql2 = $pdo->prepare( "INSERT INTO `sub_divisions` (id, name) VALUES ('1', 'Exmaple Sub Division')" );
+  $sql2 = $pdo->prepare( "INSERT INTO `sub_divisions` (id, name) VALUES ('1', 'Example Sub Division')" );
   $sql2->execute();
   sleep(3);
   logme('(STAFF) Installed Sub Division Module', $user_username);
