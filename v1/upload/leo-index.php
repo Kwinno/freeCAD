@@ -22,8 +22,6 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
 }
 include 'includes/isLoggedIn.php';
 
-$_SESSION['is_leo'] = "No";
-
 if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
   $i   = $_GET['setid'];
   $sql  = "SELECT * FROM identities WHERE identity_id = :i";
@@ -32,6 +30,7 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
   $stmt->execute();
   $identity = $stmt->fetch(PDO::FETCH_ASSOC);
   if ($identity === false) {
+     $_SESSION['is_leo'] = "No";
      header('Location: ' . $url_index . '');
      exit();
   } else {
