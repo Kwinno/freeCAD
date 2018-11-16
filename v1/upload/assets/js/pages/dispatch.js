@@ -233,8 +233,17 @@ function get911callsDispatch(){
       $('#get911calls').html(data);
     },
     complete: function() {
-      // Schedule the next request when the current one's complete
+      $( document ).ajaxComplete(function() {
+        $('.select-units').focus(function() {
+            isFocused = true;
+        });
+        $('.select-units').blur(function() {
+            isFocused = false;
+        });
+      });
+      if (!isFocused) {
       setTimeout(worker, 1000);
+    }
     }
   });
 })();
