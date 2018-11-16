@@ -156,9 +156,9 @@ if (isset($_POST['addBoloBtn'])) {
     $stmt->bindValue(':bolo_reason', $bolo_reason);
     $stmt->bindValue(':bolo_created_by', $bolo_created_by);
     $stmt->bindValue(':bolo_created_on', $date . ' ' . $time);
-    logAction('(LEO) Added BOLO', $user_username . ' / ' . $_SESSION['identifier']);
     $result = $stmt->execute();
     if ($result) {
+        logAction('(LEO) Added BOLO', $user_username . ' / ' . $_SESSION['identifier']);
         //redirect
         $message='<div class="alert alert-success" id="dismiss">Bolo Added</div>';
     }
@@ -382,7 +382,18 @@ include('includes/header.php')
             </div>
             <div class="modal-body">
               <form>
-                <select class="js-example-basic-single" name="weaponSearch" id="weaponSearch" onchange="showWpn(this.value)"></select>
+                <select class="js-example-basic-single" name="weaponSearch" onchange="showWpn(this.value)">
+                  <option selected="true" disabled="disabled">Search Serial, or Owner Name</option>
+                  <?php
+                  $status = 'Enabled';
+                  $getWpn = "SELECT * FROM weapons WHERE wpn_status='$status'";
+                  $result = $pdo->prepare($getWpn);
+                  $result->execute();
+                  while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option value="'. $row['wpn_id'] .'">'. $row['wpn_type'] .' - '. $row['wpn_serial'] .' - '. $row['wpn_ownername'] .'</option>';
+                  }
+                   ?>
+                </select>
               </form>
 
               <div id="showWpn"></div>
@@ -403,7 +414,18 @@ include('includes/header.php')
             </div>
             <div class="modal-body">
               <form>
-                <select class="js-example-basic-single" name="vehicleSearch" id="vehicleSearch" onchange="showVeh(this.value)"></select>
+                <select class="js-example-basic-single" name="plateSearch" onchange="showVeh(this.value)">
+                  <option selected="true" disabled="disabled">Search VIN, Plate, Or Model</option>
+                  <?php
+                  $status = 'Enabled';
+                  $getVeh = "SELECT * FROM vehicles WHERE vehicle_status='$status'";
+                  $result = $pdo->prepare($getVeh);
+                  $result->execute();
+                  while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option value="'. $row['vehicle_id'] .'">'. $row['vehicle_vin'] .' - '. $row['vehicle_plate'] .' - '. $row['vehicle_model'] .'</option>';
+                  }
+                   ?>
+                </select>
               </form><br>
               <div id="showVehInfo"></div>
             </div>
@@ -411,6 +433,7 @@ include('includes/header.php')
       </div>
    </div>
    <!-- // -->
+   <!-- search name modal -->
    <!-- search name modal -->
    <div class="modal fade" id="searchNameDB" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -423,7 +446,18 @@ include('includes/header.php')
             </div>
             <div class="modal-body">
               <form>
-                <select class="js-example-basic-single" name="nameSearch" id="nameSearch" onchange="showName(this.value)"></select>
+                <select class="js-example-basic-single" name="weaponSearch" onchange="showName(this.value)">
+                  <option selected="true" disabled="disabled">Search Name, Or DOB</option>
+                  <?php
+                  $status = 'Enabled';
+                  $getChars = "SELECT * FROM characters WHERE status='$status'";
+                  $result = $pdo->prepare($getChars);
+                  $result->execute();
+                  while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option value="'. $row['character_id'] .'">'. $row['first_name'] .' '. $row['last_name'] .' // '. $row['date_of_birth'] .'</option>';
+                  }
+                   ?>
+                </select>
               </form><br>
               <div id="showPersonInfo"></div>
             </div>
@@ -447,7 +481,17 @@ include('includes/header.php')
                    <input type="text" name="bolo_created_by" class="form-control" maxlength="126" readonly="true" value="<?php echo $_SESSION['identifier'] ?>" data-lpignore="true" />
                 </div>
                 <div class="form-group">
-                  <select class="js-example-basic-single" name="vehicle_plate" id="vehicle_plate">
+                  <select class="js-example-basic-single" name="vehicle_plate">
+                    <option selected="true" disabled="disabled">Search For Plate</option>
+                    <?php
+                    $status = 'Enabled';
+                    $getChars = "SELECT * FROM vehicles WHERE vehicle_status='$status'";
+                    $result = $pdo->prepare($getChars);
+                    $result->execute();
+                    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                      echo '<option value="'. $row['vehicle_plate'] .'">'. $row['vehicle_plate'] .'</option>';
+                    }
+                     ?>
                   </select>
                 </div>
                 <div class="form-group">
@@ -486,8 +530,20 @@ include('includes/header.php')
                    <input type="text" name="ticketing_officer" class="form-control" maxlength="126" placeholder="Ticketing Officer" readonly="true" value="<?php echo $_SESSION['identifier'] ?>" data-lpignore="true" required />
                 </div>
                 <div class="form-group">
-                  <select class="js-example-basic-single" name="suspect" id="suspect">
-                  </select>
+                  <form>
+                <select class="js-example-basic-single" name="suspect" id="suspect">
+                  <option selected="true" disabled="disabled">Search Name, Or DOB</option>
+                  <?php
+                  $status = 'Enabled';
+                  $getChars = "SELECT * FROM characters WHERE status='$status'";
+                  $result = $pdo->prepare($getChars);
+                  $result->execute();
+                  while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option value="'. $row['character_id'] .'">'. $row['first_name'] .' '. $row['last_name'] .' // '. $row['date_of_birth'] .'</option>';
+                  }
+                   ?>
+                </select>
+              </form>
                 </div>
                 <div class="row">
                   <div class="col">
@@ -558,13 +614,25 @@ include('includes/header.php')
                </button>
             </div>
             <div class="modal-body">
-              <form method="post" action="leo-index.php">
+              <form method="post" action="dispatch-.php">
                 <div class="form-group">
                    <input type="text" name="arresting_officer" class="form-control" maxlength="126" placeholder="Arresting Officer" readonly="true" value="<?php echo $_SESSION['identifier'] ?>" data-lpignore="true" required />
                 </div>
                 <div class="form-group">
-                  <select class="js-example-basic-single" name="suspect" id="suspect_arr">
-                  </select>
+                <form>
+                <select class="js-example-basic-single" name="suspect" id="suspect_arr">
+                  <option selected="true" disabled="disabled">Search Name, Or DOB</option>
+                  <?php
+                  $status = 'Enabled';
+                  $getChars = "SELECT * FROM characters WHERE status='$status'";
+                  $result = $pdo->prepare($getChars);
+                  $result->execute();
+                  while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option value="'. $row['character_id'] .'">'. $row['first_name'] .' '. $row['last_name'] .' // '. $row['date_of_birth'] .'</option>';
+                  }
+                   ?>
+                </select>
+              </form>
                 </div>
                 <div class="form-group">
                   <input type="text" name="summary" class="form-control" maxlength="255" placeholder="Charges" data-lpignore="true" required />
