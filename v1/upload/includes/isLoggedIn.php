@@ -35,52 +35,61 @@ if (discordModule_isInstalled) {
 }
 
 // Default Values
-define("banned", false);
-define("panel_access", false);
-define("staff_approveUsers", false);
-define("staff_access", false);
-define("staff_viewUsers", false);
-define("staff_editUsers", false);
-define("staff_siteSettings", false);
+$perms['banned'] = false;
+$perms['panel_access'] = false;
+$perms['staff_approveUsers'] = false;
+$perms['staff_access'] = false;
+$perms['staff_viewUsers'] = false;
+$perms['staff_editUsers'] = false;
+$perms['staff_siteSettings'] = false;
 
 // Define User Permissions
 switch($user_usergroup) {
-  case("Banned"):
-    define("banned", true);
+  case "Banned":
+    $perms['banned'] = true;
     break;
-  case("User"):
-    define("panel_access", true);
+  case "User":
+    $perms['panel_access'] = true;
     break;
-  case("Moderator"):
-    define("panel_access", true);
-    define("staff_approveUsers", true);
-    define("staff_access", true);
-    define("staff_viewUsers", true);
+  case "Moderator":
+    $perms['panel_access'] = true;
+    $perms['staff_approveUsers'] = true;
+    $perms['staff_access'] = true;
+    $perms['staff_viewUsers'] = true;
     break;
-  case("Admin"):
-    define("panel_access", true);
-    define("staff_approveUsers", true);
-    define("staff_access", true);
-    define("staff_viewUsers", true);
-    define("staff_editUsers", true);
+  case "Admin":
+    $perms['panel_access'] = true;
+    $perms['staff_approveUsers'] = true;
+    $perms['staff_access'] = true;
+    $perms['staff_viewUsers'] = true;
+    $perms['staff_editUsers'] = true;
     break;
-  case("Management"):
-    define("panel_access", true);
-    define("staff_approveUsers", true);
-    define("staff_access", true);
-    define("staff_viewUsers", true);
-    define("staff_editUsers", true);
-    define("staff_siteSettings", true);
+  case "Management":
+    $perms['panel_access'] = true;
+    $perms['staff_approveUsers'] = true;
+    $perms['staff_access'] = true;
+    $perms['staff_viewUsers'] = true;
+    $perms['staff_editUsers'] = true;
+    $perms['staff_siteSettings'] = true;
     break;
-  case("Developer"):
-    define("panel_access", true);
-    define("staff_approveUsers", true);
-    define("staff_access", true);
-    define("staff_viewUsers", true);
-    define("staff_editUsers", true);
-    define("staff_siteSettings", true);
+  case "Developer":
+    $perms['panel_access'] = true;
+    $perms['staff_approveUsers'] = true;
+    $perms['staff_access'] = true;
+    $perms['staff_viewUsers'] = true;
+    $perms['staff_editUsers'] = true;
+    $perms['staff_siteSettings'] = true;
     break;
 }
+
+// Define Values
+define("banned", $perms['banned']);
+define("panel_access", $perms['panel_access']);
+define("staff_approveUsers", $perms['staff_approveUsers']);
+define("staff_access", $perms['staff_access']);
+define("staff_viewUsers", $perms['staff_viewUsers']);
+define("staff_editUsers", $perms['staff_editUsers']);
+define("staff_siteSettings", $perms['staff_siteSettings']);
 
 // Check If Banned
 if (banned) {
