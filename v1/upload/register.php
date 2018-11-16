@@ -61,7 +61,7 @@ if (isset($_POST['registerbtn'])) {
         exit();
     }
     if (discordModule_isInstalled) {
-      if ($settings_sign_up_verification_db === "yes") {
+      if ($siteSettings['join_validation'] === "yes") {
         //if everything passes, than continue
         $uvusergroup = "Unverified";
         $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
@@ -99,7 +99,7 @@ if (isset($_POST['registerbtn'])) {
         }
       }
     } else {
-      if ($settings_sign_up_verification_db === "yes") {
+      if ($siteSettings['join_validation'] === "yes") {
         //if everything passes, than continue
         $uvusergroup = "Unverified";
         $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));

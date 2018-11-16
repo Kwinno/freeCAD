@@ -1,8 +1,34 @@
+-- phpMyAdmin SQL Dump
+-- version 4.8.2
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Generation Time: Nov 16, 2018 at 10:35 PM
+-- Server version: 10.1.34-MariaDB
+-- PHP Version: 7.2.7
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `hydrid_v1`
+--
+CREATE DATABASE IF NOT EXISTS `hydrid_v1` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `hydrid_v1`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `911calls`
+--
 
 CREATE TABLE `911calls` (
   `call_id` int(11) NOT NULL,
@@ -15,6 +41,11 @@ CREATE TABLE `911calls` (
   `call_timestamp` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `arrest_reports`
+--
 
 CREATE TABLE `arrest_reports` (
   `arrest_id` int(11) NOT NULL,
@@ -23,6 +54,12 @@ CREATE TABLE `arrest_reports` (
   `suspect` varchar(126) NOT NULL,
   `summary` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bolos`
+--
 
 CREATE TABLE `bolos` (
   `bolo_id` int(11) NOT NULL,
@@ -33,6 +70,12 @@ CREATE TABLE `bolos` (
   `bolo_reason` varchar(255) NOT NULL,
   `bolo_created_by` varchar(126) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `characters`
+--
 
 CREATE TABLE `characters` (
   `character_id` int(11) NOT NULL,
@@ -54,13 +97,11 @@ CREATE TABLE `characters` (
   `license_firearm` varchar(36) NOT NULL DEFAULT 'None'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
 
-CREATE TABLE `departments` (
-  `department_id` int(11) NOT NULL,
-  `department_name` varchar(128) NOT NULL,
-  `department_logo` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
+--
+-- Table structure for table `identities`
+--
 
 CREATE TABLE `identities` (
   `identity_id` int(11) NOT NULL,
@@ -75,6 +116,11 @@ CREATE TABLE `identities` (
   `status` varchar(32) NOT NULL DEFAULT 'Active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `logs`
+--
 
 CREATE TABLE `logs` (
   `log_id` int(11) NOT NULL,
@@ -83,6 +129,11 @@ CREATE TABLE `logs` (
   `timestamp` varchar(364) NOT NULL DEFAULT 'NaN'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `on_duty`
+--
 
 CREATE TABLE `on_duty` (
   `id` int(11) NOT NULL,
@@ -91,25 +142,36 @@ CREATE TABLE `on_duty` (
   `type` varchar(36) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `settings`
+--
 
 CREATE TABLE `settings` (
   `setting_id` int(11) NOT NULL,
   `site_name` varchar(255) NOT NULL,
-  `site_url` varchar(255) NOT NULL,
   `theme` varchar(255) NOT NULL,
-  `button_theme` varchar(255) NOT NULL,
   `validation_enabled` varchar(36) NOT NULL DEFAULT 'no',
   `identity_approval_needed` varchar(36) NOT NULL DEFAULT 'no',
   `timezone` varchar(128) NOT NULL DEFAULT 'America/Los_Angeles',
   `aop` varchar(36) NOT NULL DEFAULT 'CHANGE',
   `background_color` varchar(36) NOT NULL DEFAULT 'default',
-  `panel_suspended` varchar(36) NOT NULL DEFAULT 'No',
   `donator` varchar(36) NOT NULL DEFAULT 'No'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `settings` (`setting_id`, `site_name`, `site_url`, `theme`, `button_theme`, `validation_enabled`, `identity_approval_needed`, `timezone`, `aop`, `background_color`, `panel_suspended`, `donator`) VALUES
-(1, 'Hydrid CAD/MDT', '#', 'lux', 'theme', 'no', 'no', 'America/New_York', 'CHANGE ME', 'default', 'No', 'No');
+--
+-- Dumping data for table `settings`
+--
 
+INSERT INTO `settings` (`setting_id`, `site_name`, `theme`, `validation_enabled`, `identity_approval_needed`, `timezone`, `aop`, `background_color`, `donator`) VALUES
+(1, 'Hydrid CAD/MDT', 'lux', 'no', 'no', 'America/New_York', 'CHANGE ME', 'default', 'No');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tickets`
+--
 
 CREATE TABLE `tickets` (
   `ticket_id` int(11) NOT NULL,
@@ -122,6 +184,11 @@ CREATE TABLE `tickets` (
   `amount` varchar(24) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
 
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
@@ -129,12 +196,16 @@ CREATE TABLE `users` (
   `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `usergroup` varchar(64) NOT NULL DEFAULT 'User',
-  `departments` text,
   `join_date` varchar(126) NOT NULL,
   `join_ip` varchar(126) NOT NULL,
   `discord` varchar(60) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `vehicles`
+--
 
 CREATE TABLE `vehicles` (
   `vehicle_id` int(11) NOT NULL,
@@ -149,6 +220,11 @@ CREATE TABLE `vehicles` (
   `vehicle_status` varchar(36) NOT NULL DEFAULT 'Enabled'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `warrants`
+--
 
 CREATE TABLE `warrants` (
   `warrant_id` int(11) NOT NULL,
@@ -159,7 +235,11 @@ CREATE TABLE `warrants` (
   `wanted_status` varchar(36) NOT NULL DEFAULT 'WANTED'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+-- --------------------------------------------------------
 
+--
+-- Table structure for table `weapons`
+--
 
 CREATE TABLE `weapons` (
   `wpn_id` int(11) NOT NULL,
@@ -171,87 +251,171 @@ CREATE TABLE `weapons` (
   `wpn_status` varchar(36) NOT NULL DEFAULT 'Enabled'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `911calls`
+--
 ALTER TABLE `911calls`
   ADD PRIMARY KEY (`call_id`);
 
+--
+-- Indexes for table `arrest_reports`
+--
 ALTER TABLE `arrest_reports`
   ADD PRIMARY KEY (`arrest_id`);
 
+--
+-- Indexes for table `bolos`
+--
 ALTER TABLE `bolos`
   ADD PRIMARY KEY (`bolo_id`);
 
+--
+-- Indexes for table `characters`
+--
 ALTER TABLE `characters`
   ADD PRIMARY KEY (`character_id`);
 
-ALTER TABLE `departments`
-  ADD PRIMARY KEY (`department_id`);
-
+--
+-- Indexes for table `identities`
+--
 ALTER TABLE `identities`
   ADD PRIMARY KEY (`identity_id`);
 
+--
+-- Indexes for table `logs`
+--
 ALTER TABLE `logs`
   ADD PRIMARY KEY (`log_id`);
 
+--
+-- Indexes for table `on_duty`
+--
 ALTER TABLE `on_duty`
   ADD PRIMARY KEY (`id`);
 
+--
+-- Indexes for table `settings`
+--
 ALTER TABLE `settings`
   ADD PRIMARY KEY (`setting_id`);
 
+--
+-- Indexes for table `tickets`
+--
 ALTER TABLE `tickets`
   ADD PRIMARY KEY (`ticket_id`);
 
+--
+-- Indexes for table `users`
+--
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`);
 
+--
+-- Indexes for table `vehicles`
+--
 ALTER TABLE `vehicles`
   ADD PRIMARY KEY (`vehicle_id`);
 
+--
+-- Indexes for table `warrants`
+--
 ALTER TABLE `warrants`
   ADD PRIMARY KEY (`warrant_id`);
 
+--
+-- Indexes for table `weapons`
+--
 ALTER TABLE `weapons`
   ADD PRIMARY KEY (`wpn_id`);
 
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `911calls`
+--
 ALTER TABLE `911calls`
   MODIFY `call_id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `arrest_reports`
+--
 ALTER TABLE `arrest_reports`
-  MODIFY `arrest_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `arrest_id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `bolos`
+--
 ALTER TABLE `bolos`
-  MODIFY `bolo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `bolo_id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `characters`
+--
 ALTER TABLE `characters`
-  MODIFY `character_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `character_id` int(11) NOT NULL AUTO_INCREMENT;
 
-ALTER TABLE `departments`
-  MODIFY `department_id` int(11) NOT NULL AUTO_INCREMENT;
-
+--
+-- AUTO_INCREMENT for table `identities`
+--
 ALTER TABLE `identities`
-  MODIFY `identity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `identity_id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `logs`
+--
 ALTER TABLE `logs`
-  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=141;
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `on_duty`
+--
 ALTER TABLE `on_duty`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `settings`
+--
 ALTER TABLE `settings`
   MODIFY `setting_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
+--
+-- AUTO_INCREMENT for table `tickets`
+--
 ALTER TABLE `tickets`
-  MODIFY `ticket_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `ticket_id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `users`
+--
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `vehicles`
+--
 ALTER TABLE `vehicles`
-  MODIFY `vehicle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `vehicle_id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `warrants`
+--
 ALTER TABLE `warrants`
-  MODIFY `warrant_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `warrant_id` int(11) NOT NULL AUTO_INCREMENT;
 
+--
+-- AUTO_INCREMENT for table `weapons`
+--
 ALTER TABLE `weapons`
-  MODIFY `wpn_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `wpn_id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

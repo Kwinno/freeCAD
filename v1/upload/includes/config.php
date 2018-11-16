@@ -35,16 +35,12 @@ require_once("functions.php");
 $settingsRow = dbquery('SELECT * FROM settings')[0];
 
 //Define variables
-$settings_background_db = $settingsRow['background_color'];
-$settings_panel_suspended = $settingsRow['panel_suspended'];
-$settings_donator = $settingsRow['donator'];
-$settings_site_name_db = $settingsRow['site_name'];
-$settings_site_url_db  = $settingsRow['site_url'];
-$settings_theme_db      = $settingsRow['theme'];
-$settings_btntheme_db  = $settingsRow['button_theme'];
-$settings_sign_up_verification_db  = $settingsRow['validation_enabled'];
-$settings_identity_verification_db  = $settingsRow['identity_approval_needed'];
-$settings_timezone_db  = $settingsRow['timezone'];
+$siteSettings['background'] = $settingsRow['background_color'];
+$siteSettings['name'] = $settingsRow['site_name'];
+$siteSettings['theme'] = $settingsRow['theme'];
+$siteSettings['join_validation'] = $settingsRow['validation_enabled'];
+$siteSettings['leo_validation'] =  $settingsRow['identity_approval_needed'];
+$siteSettings['timezone'] = $settingsRow['timezone'];
 
 //Module checks
 
@@ -82,13 +78,12 @@ if (isset($settingsRow['subdivision_module'])) {
 
 //Important Settings
 $background_color = ""; //light_blue, blue, red, gold
-$bootstrap_theme = "$settings_theme_db";
-$button_style = "$settings_btntheme_db";
-$community_name = "$settings_site_name_db";
-$community_url = "$settings_site_url_db";
+$bootstrap_theme = $siteSettings['theme'];
+$community_name = $siteSettings['name'];
+$community_url = $siteSettings['theme'];
 //Validation Settings
-$validation_enabled = "$settings_sign_up_verification_db";
-$identity_approval_needed = "$settings_identity_verification_db";
+$validation_enabled = $siteSettings['join_validation'];
+$identity_approval_needed = $siteSettings['leo_validation'];
 
 // Define URLS
 $url['index'] = "index.php";
@@ -117,7 +112,7 @@ $url['logout'] = "logout.php";
 $message     = '';
 
 $ip = $_SERVER['REMOTE_ADDR'];
-date_default_timezone_set($settings_timezone_db);
+date_default_timezone_set($siteSettings['timezone']);
 $date   = date('Y-m-d');
 $us_date = date_format(date_create_from_format('Y-m-d', $date), 'm/d/Y');
 $time = date('h:i:s A', time());

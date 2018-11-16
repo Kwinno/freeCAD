@@ -263,7 +263,7 @@ include('includes/header.php')
                <div class="form-group">
                  <label for="IdentityVerification">LEO Verification</label>
                  <select class="form-control" id="IdentityVerification" onchange="setIdentityVerification(this.value)">
-                   <option selected="true" disabled="disabled"><?php if ($settings_identity_verification_db === "no") {
+                   <option selected="true" disabled="disabled"><?php if ($siteSettings['leo_validation'] === "no") {
                      echo 'No';
                    } else {
                      echo 'Yes';
@@ -277,7 +277,7 @@ include('includes/header.php')
                <div class="form-group">
                  <label for="SignUpVerification">Sign Up Verification</label>
                  <select class="form-control" id="SignUpVerification" onchange="setSignUpVerification(this.value)">
-                   <option selected="true" disabled="disabled"><?php if ($settings_sign_up_verification_db === "no") {
+                   <option selected="true" disabled="disabled"><?php if ($siteSettings['join_validation'] === "no") {
                      echo 'No';
                    } else {
                      echo 'Yes';
@@ -291,10 +291,10 @@ include('includes/header.php')
                <div class="form-group">
                  <label for="theme">Theme</label>
                  <select class="form-control" id="theme" onchange="setTheme(this.value)">
-                   <option selected="true" disabled="disabled"><?php if ($settings_theme_db === "lux") {
+                   <option selected="true" disabled="disabled"><?php if ($siteSettings['theme'] === "lux") {
                      echo 'default';
                    } else {
-                     echo $settings_theme_db;
+                     echo $siteSettings['theme'];
                    }?></option>
                    <option value="cerulean">cerulean</option>
                    <option value="cosmo">cosmo</option>
@@ -316,7 +316,7 @@ include('includes/header.php')
                <div class="form-group">
                  <label for="background_color">Background Color</label>
                  <select class="form-control" id="background_color" onchange="setBackground(this.value)">
-                   <option selected="true" disabled="disabled"><?php echo $settings_background_db; ?></option>
+                   <option selected="true" disabled="disabled"><?php echo $siteSettings['background']; ?></option>
                    <option value="default">Default</option>
                    <option value="darkred">Dark Red</option>
                    <option value="red">Red</option>
@@ -334,7 +334,7 @@ include('includes/header.php')
                <div class="form-group">
                  <label for="timezone">TimeZone</label>
                  <select class="form-control" id="timezone" onchange="setTimezone(this.value)">
-                   <option selected="true" disabled="disabled"><?php echo $settings_timezone_db; ?></option>
+                   <option selected="true" disabled="disabled"><?php echo $siteSettings['timezone']; ?></option>
                    <option value="Pacific/Midway">(GMT-11:00) Midway Island, Samoa</option>
                    <option value="America/Adak">(GMT-10:00) Hawaii-Aleutian</option>
                    <option value="Etc/GMT+10">(GMT-10:00) Hawaii</option>
@@ -443,7 +443,7 @@ include('includes/header.php')
                  <form method="post" action="staff.php">
                  <label for="theme">Community Name</label>
                  <div class="input-group mb-3">
-                   <input type="text" class="form-control" name="updateCommunityName" placeholder="<?php echo $settings_site_name_db ?>" aria-label="Community Name" aria-describedby="basic-addon2" required>
+                   <input type="text" class="form-control" name="updateCommunityName" placeholder="<?php echo $siteSettings['name'] ?>" aria-label="Community Name" aria-describedby="basic-addon2" required>
                    <div class="input-group-append">
                      <button class="btn btn-success" name="UpdateCommunityNameBtn" id="UpdateCommunityNameBtn" type="submit" type="button">Update</button>
                    </div>

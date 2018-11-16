@@ -173,11 +173,11 @@ include('includes/header.php')
             <div class="modal-body">
               <form method="post" action="leo-index.php">
                 <div class="form-group">
-                  <?php if ($settings_theme_db === "lumen"): ?>
+                  <?php if ($siteSettings['theme'] === "lumen"): ?>
                     <textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="89"><?php echo $_SESSION['notepad']; ?></textarea>
-                  <?php elseif ($settings_theme_db === "pulse" OR $settings_theme_db === "pulsev2"): ?>
+                  <?php elseif ($siteSettings['theme'] === "pulse" OR $siteSettings['theme'] === "pulsev2"): ?>
                     <textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="89"><?php echo $_SESSION['notepad']; ?></textarea>
-                  <?php elseif ($settings_theme_db === "simplex"): ?>
+                  <?php elseif ($siteSettings['theme'] === "simplex"): ?>
                     <textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="89"><?php echo $_SESSION['notepad']; ?></textarea>
                   <?php else: ?>
                     <textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="74"><?php echo $_SESSION['notepad']; ?></textarea>
