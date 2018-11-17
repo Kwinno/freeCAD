@@ -213,6 +213,7 @@ if ($a === "get911calls") {
             echo "<tr>";
             echo "<td><center>" . $row['identifier'] . "</center></td>";
             echo "<td><center>" . $row['status'] . "</center></td>";
+            echo "<td><center>" . $row['type'] . "</center></td>";
             echo "</tr>";
         }
     }
@@ -227,14 +228,16 @@ if ($a === "get911calls") {
     echo "
   <tr>
   <th><center>Identifier</center></th>
+  <th><center>Type</center></th>
   <th><center>Status</center></th>
   </tr>";
-    $getActiveUnits = "SELECT * FROM on_duty";
+    $getActiveUnits = "SELECT * FROM on_duty where `type` = 'LEO' or `type` = 'FIRE/EMS'";
     $result         = $pdo->prepare($getActiveUnits);
     $result->execute();
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         echo "<tr>";
         echo "<td><center>" . $row['identifier'] . "</center></td>";
+        echo "<td><center>" . $row['type'] . "</center></td>";
         echo "<td><center><select style='width:150px;' name='updateUnitStatus' id='" . $row['id'] . "' class='select-units' onChange='updateUnitStatus(this)'>
                   <option selected='true' disabled='disabled'>" . $row['status'] . "</option>";
                   if ($row['type'] === "FIRE/EMS") {
