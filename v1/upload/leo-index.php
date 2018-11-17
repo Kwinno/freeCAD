@@ -587,7 +587,7 @@ include('includes/header.php')
                </button>
             </div>
             <div class="modal-body">
-              <form method="post" action="dispatch-.php">
+              <form method="post" action="leo-index.php">
                 <div class="form-group">
                    <input type="text" name="arresting_officer" class="form-control" maxlength="126" placeholder="Arresting Officer" readonly="true" value="<?php echo $_SESSION['identifier'] ?>" data-lpignore="true" required />
                 </div>
