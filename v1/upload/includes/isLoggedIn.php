@@ -13,13 +13,9 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 **/
-//Pull variables
-$user_id = $_SESSION['user_id'];
-$stmt    = $pdo->prepare("SELECT * FROM users WHERE user_id=:user_id");
-$stmt->execute(array(
-    ":user_id" => $user_id
-));
-$userRow = $stmt->fetch(PDO::FETCH_ASSOC);
+
+// Get User Data
+$userRow = dbquery('SELECT * FROM users WHERE user_id=' . escapestring($_SESSION['user_id']))[0];
 
 //Define variables
 $user_username = $userRow['username'];
