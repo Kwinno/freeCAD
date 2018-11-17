@@ -505,7 +505,6 @@ include('includes/header.php')
                    <input type="text" name="ticketing_officer" class="form-control" maxlength="126" placeholder="Ticketing Officer" readonly="true" value="<?php echo $_SESSION['identifier'] ?>" data-lpignore="true" required />
                 </div>
                 <div class="form-group">
-                  <form>
                 <select class="js-example-basic-single" name="suspect" id="suspect">
                   <option selected="true" disabled="disabled">Search Name, Or DOB</option>
                   <?php
@@ -518,7 +517,6 @@ include('includes/header.php')
                   }
                    ?>
                 </select>
-              </form>
                 </div>
                 <div class="row">
                   <div class="col">
@@ -594,7 +592,6 @@ include('includes/header.php')
                    <input type="text" name="arresting_officer" class="form-control" maxlength="126" placeholder="Arresting Officer" readonly="true" value="<?php echo $_SESSION['identifier'] ?>" data-lpignore="true" required />
                 </div>
                 <div class="form-group">
-                <form>
                 <select class="js-example-basic-single" name="suspect" id="suspect_arr">
                   <option selected="true" disabled="disabled">Search Name, Or DOB</option>
                   <?php
@@ -607,7 +604,6 @@ include('includes/header.php')
                   }
                    ?>
                 </select>
-              </form>
                 </div>
                 <div class="form-group">
                   <input type="text" name="summary" class="form-control" maxlength="255" placeholder="Charges" data-lpignore="true" required />
