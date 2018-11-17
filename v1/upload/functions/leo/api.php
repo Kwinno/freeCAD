@@ -540,11 +540,12 @@ if ($a === "get911calls") {
         $stmt->bindValue(':char_id', $char_id);
         $stmt->bindValue(':license_status', $license_status);
         $stmt->execute();
-        logAction('(LEO) Suspended License ('. $char_id .')', $user_username . ' / ' . $_SESSION['identifier']);
         if ($_SESSION['is_dispatch'] === "No") {
           header('Location: ../../leo-index.php?license=suspended');
+		  logAction('(LEO) Suspended License ('. $char_id .')', $user_username . ' / ' . $_SESSION['identifier']);
         } else {
           header('Location: ../../dispatch-index.php?license=suspended');
+		  logAction('(DISPATCH) Suspended License ('. $char_id .')', $user_username . ' / ' . $_SESSION['identifier']);
         }
         exit();
     }

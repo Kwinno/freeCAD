@@ -42,6 +42,7 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
      $_SESSION['identifier'] = $sidentity_name;
 
      $_SESSION['is_leo'] = "Yes";
+	 $_SESSION['is_dispatch'] = "No";
 
      if ($identity['leo_supervisor'] === "Yes") {
        $_SESSION['leo_supervisor'] = "Yes";
@@ -199,6 +200,11 @@ if (isset($_POST['1042btn'])) {
 
   header('Location: ' . $url['leo_index'] . '');
   exit();
+}
+
+//Alerts
+if (isset($_GET['license']) && strip_tags($_GET['license']) === 'suspended') {
+  $message = '<div class="alert alert-success" role="alert" id="dismiss">License Suspended!</div>';
 }
 
 ?>
