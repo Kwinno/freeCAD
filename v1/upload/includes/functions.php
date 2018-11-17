@@ -46,20 +46,18 @@ function userLogin($username, $passwordAttempt) {
     global $pdo;
     global $url;
 
-    $sql             = "SELECT user_id, username, password FROM users WHERE username = :username";
-    $stmt            = $pdo->prepare($sql);
-    $stmt->bindValue(':username', $username);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($user === false) {
+    $users = dbquery('SELECT * FROM users WHERE username="' . escapestring($username) . '"');
+    if (empty($users)) {
         header('Location: ' . $url['login'] . '?user=notfound');
         exit();
     } else {
-        $validPassword = password_verify($passwordAttempt, $user['password']);
-        if ($validPassword) {
+        $user = $users[0];
+        if (password_verify($passwordAttempt, $user['password'])) {
+            // Set Session Variables
             $_SESSION['user_id']   = $user['user_id'];
             $_SESSION['logged_in'] = time();
-            //Do some actions if it is the users first login
+            
+            // Check If First Signin 
             $settingsRow = dbquery('SELECT * FROM settings')[0];
                 if ($settingsRow['validation_enabled'] == "yes" || "Yes") {
                     if ($user['first_login'] === 0) {
@@ -81,13 +79,13 @@ function userLogin($username, $passwordAttempt) {
 
 
 // Register Function
-function userRegister($username, $email, $pass, $discord) {
+function userRegister($username, $email, $pass, $discord = NULL) {
     global $pdo;
     global $us_date;
     global $ip;
     global $url;
 
-    //Add any checks (length, etc here....)
+    // Length Checks
     if (strlen($pass) < 6) {
         header('Location: ' . $url['register'] . '?password=short');
         exit();
@@ -98,58 +96,42 @@ function userRegister($username, $email, $pass, $discord) {
         header('Location: ' . $url['register'] . '?username=long');
         exit();
     }
-    //Continue the execution, check if email is taken.
-    $sql  = "SELECT COUNT(email) AS num FROM users WHERE email = :email";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':email', $email);
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row['num'] > 0) {
+    
+    // Check Email Status
+    if (dbquery('SELECT COUNT(email) as count FROM users WHERE email="' . escapestring($email) . '"')[0]['count'] > 0) {
         header('Location: ' . $url['register'] . '?email=taken');
         exit();
     }
-    //Continue the execution, check if username is taken.
-    $sql  = "SELECT COUNT(username) AS num FROM users WHERE username = :username";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':username', $username);
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row['num'] > 0) {
+    
+    // Check Username Status
+    if (dbquery('SELECT COUNT(username) as count FROM users WHERE username="' . escapestring($username) . '"')[0]['count'] > 0) {
         header('Location: ' . $url['register'] . '?username=taken');
         exit();
     }
+
     if (discordModule_isInstalled) {
-        $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
-        $sql          = "INSERT INTO users (username, email, password, join_date, join_ip, discord) VALUES (:username, :email, :password, :join_date, :join_ip, :discord)";
-        $stmt         = $pdo->prepare($sql);
-        $stmt->bindValue(':username', $username);
-        $stmt->bindValue(':email', $email);
-        $stmt->bindValue(':password', $passwordHash);
-        $stmt->bindValue(':join_date', $us_date);
-        $stmt->bindValue(':join_ip', $ip);
-        $stmt->bindValue(':discord', $discord);
-        $result = $stmt->execute();
-        if ($result) {
-            //redirect
-            header('Location: ' . $url['welcome'] . '');
-            exit();
-        }
+        $password = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
+        dbquery('INSERT INTO users (username, email, password, join_date, join_ip, discord) VALUES (
+            "' . escapestring($username) . '",
+            "' . escapestring($email) . '",
+            "' . $password . '",
+            "' . escapestring($us_date) . '",
+            "' . escapestring($ip) . '",
+            "' . escapestring($discord) . '"
+        )', false);
+        header('Location: ' . $url['welcome'] . '');
+        exit();
     } else {
-      //if everything passes, than continue
-      $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
-      $sql          = "INSERT INTO users (username, email, password, join_date, join_ip) VALUES (:username, :email, :password, :join_date, :join_ip)";
-      $stmt         = $pdo->prepare($sql);
-      $stmt->bindValue(':username', $username);
-      $stmt->bindValue(':email', $email);
-      $stmt->bindValue(':password', $passwordHash);
-      $stmt->bindValue(':join_date', $us_date);
-      $stmt->bindValue(':join_ip', $ip);
-      $result = $stmt->execute();
-      if ($result) {
-          //redirect
-          header('Location: ' . $url['welcome'] . '');
-          exit();
-      }
+        $password = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
+        dbquery('INSERT INTO users (username, email, password, join_date, join_ip) VALUES (
+            "' . escapestring($username) . '",
+            "' . escapestring($email) . '",
+            "' . $password . '",
+            "' . escapestring($us_date) . '",
+            "' . escapestring($ip) . '"
+        )', false);
+        header('Location: ' . $url['welcome'] . '');
+        exit();
     }
 }
 
@@ -166,7 +148,6 @@ function createIdentity($identifier) {
         exit();
     }
 
-    //else
     if ($identity_approval_needed === "no") {
       dbquery('INSERT INTO identities (identifier, user, user_name) VALUES ("' . escapestring($_POST['identifier']) . '", "' . escapestring($user_id) . '", "' . escapestring($user_username) . '")', false);
       header('Location: ' . $url['index'] . '?identifier=created');
@@ -180,8 +161,7 @@ function deleteIdentityLEO($identity_id_update, $identifier_update, $leo_supervi
     global $url;
     global $user_username;
 
-    dbquery('DELETE FROM identities WHERE identity_id = '. $identity_id_update)[0];
-    header('Location: ' . $url['index'] . '?identifier=created');
+    dbquery('DELETE FROM identities WHERE identity_id = "' . $identity_id_update . '"', false);
     logAction('(LEO) DELETED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
     header('Location: ' . $url['leo_supervisor_view_pending_identities'] . '?id=deleted');
     exit();
@@ -191,7 +171,7 @@ function editIdentityLEO($identity_id_update, $identifier_update, $leo_superviso
     global $url;
     global $user_username;
 
-    dbquery('UPDATE identities SET `identifier`="' . escapestring($identifier_update) . '", `leo_supervisor`="' . escapestring($leo_supervisor_update) . '", `is_dispatch`="' . escapestring($is_dispatch_update) . '" WHERE identity_id='.$identity_id_update)[0];
+    dbquery('UPDATE identities SET `identifier`="' . escapestring($identifier_update) . '", `leo_supervisor`="' . escapestring($leo_supervisor_update) . '", `is_dispatch`="' . escapestring($is_dispatch_update) . '" WHERE identity_id="' . $identity_id_update . '"', false);
     logAction('(LEO) EDITED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
     header('Location: ' . $url['leo_supervisor_view_pending_identities'] . '?id=edited');
     exit();
