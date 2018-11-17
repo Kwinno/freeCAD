@@ -29,48 +29,29 @@ if ($_SESSION['leo_supervisor'] === "No") {
 
 if (isset($_POST['deleteId'])) {
     //Pull the variables from the form
-    $identity_id_form = !empty($_POST['identity_id_form']) ? trim($_POST['identity_id_form']) : null;
-    $identifier_form = !empty($_POST['identifier_form']) ? trim($_POST['identifier_form']) : null;
-    $leo_supervisor_form = !empty($_POST['leo_supervisor_form']) ? trim($_POST['leo_supervisor_form']) : null;
+    $identity_id = !empty($_POST['identity_id_form']) ? trim($_POST['identity_id_form']) : null;
+    $identifier = !empty($_POST['identifier_form']) ? trim($_POST['identifier_form']) : null;
+    $leo_supervisor = !empty($_POST['leo_supervisor_form']) ? trim($_POST['leo_supervisor_form']) : null;
     //Sanitize the variables, prevents xss, etc.
-    $identity_id_update        = strip_tags($identity_id_form);
-    $identifier_update        = strip_tags($identifier_form);
-    $leo_supervisor_update        = strip_tags($leo_supervisor_form);
-    //if everything passes, than continue
-    $stmt = $pdo->prepare( "DELETE FROM identities WHERE identity_id =:identity_id" );
-    $stmt->bindParam(':identity_id', $identity_id_update);
-    $result = $stmt->execute();
-    if ($result) {
-        //redirect
-        logAction('(LEO) DELETED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
-        header('Location: ' . $url['leo_supervisor_view_pending_identities'] . '?id=deleted');
-        exit();
-    }
+    $identity_id_update        = strip_tags($identity_id);
+    $identifier_update        = strip_tags($identifier);
+    $leo_supervisor_update        = strip_tags($leo_supervisor);
+    
+    deleteIdentityLEO($identity_id_update, $identifier_update, $leo_supervisor_update);
 }
 if (isset($_POST['editId'])) {
     //Pull the variables from the form
-    $identity_id_form = !empty($_POST['identity_id_form']) ? trim($_POST['identity_id_form']) : null;
-    $identifier_form = !empty($_POST['identifier_form']) ? trim($_POST['identifier_form']) : null;
-    $leo_supervisor_form = !empty($_POST['leo_supervisor_form']) ? trim($_POST['leo_supervisor_form']) : null;
-    $is_dispatch_form = !empty($_POST['is_dispatch_form']) ? trim($_POST['is_dispatch_form']) : null;
+    $identity_id = !empty($_POST['identity_id_form']) ? trim($_POST['identity_id_form']) : null;
+    $identifier = !empty($_POST['identifier_form']) ? trim($_POST['identifier_form']) : null;
+    $leo_supervisor = !empty($_POST['leo_supervisor_form']) ? trim($_POST['leo_supervisor_form']) : null;
+    $is_dispatch = !empty($_POST['is_dispatch_form']) ? trim($_POST['is_dispatch_form']) : null;
     //Sanitize the variables, prevents xss, etc.
-    $identity_id_update        = strip_tags($identity_id_form);
-    $identifier_update        = strip_tags($identifier_form);
-    $leo_supervisor_update        = strip_tags($leo_supervisor_form);
-    $is_dispatch_update        = strip_tags($is_dispatch_form);
-    //if everything passes, than continue
-    $sql     = "UPDATE `identities` SET `identifier`=:identifier, `leo_supervisor`=:leo_supervisor, `is_dispatch`=:is_dispatch WHERE identity_id=:identity_id";
-    $stmt    = $pdo->prepare($sql);
-    $stmt->bindParam(':identity_id', $identity_id_update);
-    $stmt->bindParam(':leo_supervisor', $leo_supervisor_update);
-    $stmt->bindParam(':identifier', $identifier_update);
-    $stmt->bindParam(':is_dispatch', $is_dispatch_update);
-    $updateId = $stmt->execute();
-    if ($updateId) {
-      logAction('(LEO) EDITED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
-      header('Location: ' . $url['leo_supervisor_view_pending_identities'] . '?id=edited');
-      exit();
-    }
+    $identity_id_update        = strip_tags($identity_id);
+    $identifier_update        = strip_tags($identifier);
+    $leo_supervisor_update        = strip_tags($leo_supervisor);
+    $is_dispatch_update        = strip_tags($is_dispatch);
+    
+    editIdentityLEO($identity_id_update, $identifier_update, $leo_supervisor_update, $is_dispatch_update);
 }
 
 if (isset($_GET['id']) && strip_tags($_GET['id']) === 'edited') {

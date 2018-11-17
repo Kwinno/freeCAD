@@ -152,3 +152,47 @@ function userRegister($username, $email, $pass, $discord) {
       }
     }
 }
+
+// Create Identity Function
+function createIdentity($identifier) {
+    global $url;
+    global $identity_approval_needed;
+    global $user_id;
+    global $user_username;
+
+    // Check If Identifier Already Taken
+    if (dbquery('SELECT COUNT(identifier) as count FROM identities WHERE identifier="' . escapestring($_POST['identifier']) . '"')[0]['count'] > 0) {
+        header('Location: ' . $url['index'] . '?identifier=taken');
+        exit();
+    }
+
+    //else
+    if ($identity_approval_needed === "no") {
+      dbquery('INSERT INTO identities (identifier, user, user_name) VALUES ("' . escapestring($_POST['identifier']) . '", "' . escapestring($user_id) . '", "' . escapestring($user_username) . '")', false);
+      header('Location: ' . $url['index'] . '?identifier=created');
+    } else {
+      dbquery('INSERT INTO identities (identifier, user, status, user_name) VALUES ("c", "' . escapestring($user_id) . '", "Approval Needed", "' . escapestring($user_username) . '")', false);
+      header('Location: ' . $url['index'] . '?identifier=approval');
+    }
+}
+
+function deleteIdentityLEO($identity_id_update, $identifier_update, $leo_supervisor_update){
+    global $url;
+    global $user_username;
+
+    dbquery('DELETE FROM identities WHERE identity_id = '. $identity_id_update)[0];
+    header('Location: ' . $url['index'] . '?identifier=created');
+    logAction('(LEO) DELETED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
+    header('Location: ' . $url['leo_supervisor_view_pending_identities'] . '?id=deleted');
+    exit();
+}
+
+function editIdentityLEO($identity_id_update, $identifier_update, $leo_supervisor_update, $is_dispatch_update) {
+    global $url;
+    global $user_username;
+
+    dbquery('UPDATE identities SET `identifier`="' . escapestring($identifier_update) . '", `leo_supervisor`="' . escapestring($leo_supervisor_update) . '", `is_dispatch`="' . escapestring($is_dispatch_update) . '" WHERE identity_id='.$identity_id_update)[0];
+    logAction('(LEO) EDITED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
+    header('Location: ' . $url['leo_supervisor_view_pending_identities'] . '?id=edited');
+    exit();
+}

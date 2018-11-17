@@ -30,25 +30,11 @@ if (!$perms['panel_access']) {
 
 if (isset($_POST['createIdentityBtn'])) {
     //Pull the variables from the form
-    $identifier_form = !empty($_POST['identifier']) ? trim($_POST['identifier']) : null;
+    $identifier = !empty($_POST['identifier']) ? trim($_POST['identifier']) : null;
     //Sanitize the variables, prevents xss, etc.
-    $identifier        = strip_tags($identifier_form);
+    $identifier        = strip_tags($identifier);
 
-    // Check If Identifier Already Taken
-    if (dbquery('SELECT COUNT(identifier) as count FROM identities WHERE identifier="' . escapestring($_POST['identifier']) . '"')[0]['count'] > 0) {
-        header('Location: ' . $url['index'] . '?identifier=taken');
-        exit();
-    }
-
-    //else if everything passes, than continue
-    if ($identity_approval_needed === "no") {
-      dbquery('INSERT INTO identities (identifier, user, user_name) VALUES ("' . escapestring($_POST['identifier']) . '", "' . escapestring($user_id) . '", "' . escapestring($user_username) . '")', false);
-      header('Location: ' . $url['index'] . '?identifier=created');
-    } else {
-      dbquery('INSERT INTO identities (identifier, user, status, user_name) VALUES ("' . escapestring($_POST['identifier']) . '", "' . escapestring($user_id) . '", "Approval Needed", "' . escapestring($user_username) . '")', false);
-      header('Location: ' . $url['index'] . '?identifier=approval');
-    }
-
+    createIdentity($identifier);
 }
 
 if (isset($_GET['identifier']) && strip_tags($_GET['identifier']) === 'created') {
