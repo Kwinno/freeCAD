@@ -225,7 +225,13 @@ if ($a === "get911calls") {
         exit();
     }
 
-    echo "
+    $stmt = $pdo->prepare("SELECT * FROM on_duty where `type` = 'LEO' or `type` = 'FIRE/EMS'");
+    $stmt->execute();
+    $activeUnitsRow = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (empty($activeUnitsRow['id'])) {
+        echo "<h5 style='margin-top:20px; color:white;'>NO ACTIVE UNITS</h5>";
+    } else {
+        echo "
   <tr>
   <th><center>Identifier</center></th>
   <th><center>Type</center></th>
@@ -256,6 +262,7 @@ if ($a === "get911calls") {
 
               "</select></center></td>";
         echo "</tr>";
+    }
     }
 } elseif ($a === "getAOP") {
     $stmt = $pdo->prepare("SELECT * FROM settings");
