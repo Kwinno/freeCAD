@@ -53,7 +53,7 @@ include('includes/header.php')
          <div class="main">
             <img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/>
             <div class="main-header">
-               Hydrid Login
+               <?php echo $siteSettings['name']; ?> Login
             </div>
             <?php print($message); ?>
             <form method="post" action="login.php">
