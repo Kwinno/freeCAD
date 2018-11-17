@@ -20,42 +20,13 @@ require 'classes/lib/password.php';
 
 if (isset($_POST['loginbtn'])) {
     //Pull from form
-    $username_form        = !empty($_POST['username']) ? trim($_POST['username']) : null;
-    $passwordAttempt_form = !empty($_POST['password']) ? trim($_POST['password']) : null;
+    $username        = !empty($_POST['username']) ? trim($_POST['username']) : null;
+    $passwordAttempt = !empty($_POST['password']) ? trim($_POST['password']) : null;
     //Sanitize
-    $username      = strip_tags($username_form);
-    $passwordAttempt      = strip_tags($passwordAttempt_form);
+    $username      = strip_tags($username);
+    $passwordAttempt      = strip_tags($passwordAttempt);
     //Execute
-    $sql             = "SELECT user_id, username, password FROM users WHERE username = :username";
-    $stmt            = $pdo->prepare($sql);
-    $stmt->bindValue(':username', $username);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($user === false) {
-        header('Location: ' . $url['login'] . '?user=notfound');
-        exit();
-    } else {
-        $validPassword = password_verify($passwordAttempt, $user['password']);
-        if ($validPassword) {
-            $_SESSION['user_id']   = $user['user_id'];
-            $_SESSION['logged_in'] = time();
-
-            //if user id is 1, set as admin by default
-            if ($_SESSION['user_id'] === 1) {
-              $sql     = "UPDATE `users` SET `usergroup`=:ug WHERE user_id=:userid";
-              $stmt    = $pdo->prepare($sql);
-              $newUserGroup = "Management";
-              $stmt->bindValue(':ug', $newUserGroup);
-              $stmt->bindValue(':userid', $_SESSION['user_id']);
-              $updateUser = $stmt->execute();
-            }
-            header('Location: ' . $url['index'] . '?logged=in');
-            exit();
-        } else {
-            header('Location: ' . $url['login'] . '?password=invalid');
-            exit();
-        }
-    }
+    userLogin($username, $passwordAttempt);
 }
 //Error Msgs
 if (isset($_GET['user']) && strip_tags($_GET['user']) === 'notfound') {

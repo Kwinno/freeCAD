@@ -22,7 +22,7 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
 }
 include 'includes/isLoggedIn.php';
 
-if (!panel_access) {
+if (!$perms['panel_access']) {
   session_unset();
   header('Location: ' . $url['login'] . '?unverified=true');
   exit();
