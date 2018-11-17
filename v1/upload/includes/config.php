@@ -139,6 +139,6 @@ if (!class_exists('PDO')) {
 }
 
 //php version check
-if (floatval(phpversion()) < 5.4) {
+if (floatval(phpversion()) < 5.6) {
   die("Your PHP Version is not supported. Please update to continue using Hydrid.");
 }
