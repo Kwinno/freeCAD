@@ -9,7 +9,7 @@ https://discord.gg/NeRrWZC
 - Linux
 - Windows
 + PHP Version
-+ Minimum: 5.4.0
++ Minimum: 5.6
 + Recommended: 7.0 (Or Greater)
 - Database
 - MySQL
