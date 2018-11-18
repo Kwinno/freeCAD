@@ -241,7 +241,7 @@ include('includes/header.php')
             } ?>
           </div>
           <?php if ($data_hac !== "") {
-            echo $data_hac;
+            echo '<div class="alert alert-info" role="alert" id="dismiss">Alert From Hydrid Staff: '. $data_hac .'</div>';
           } ?>
           <?php if (isOutdated): ?>
             <div class="alert alert-danger">Hydrid is Outdated! The latest version is <strong><?php echo $data_vc; ?></strong>. You are currently on <strong><?php echo $version; ?></strong>. You can download the latest version from <a href="https://github.com/HydridSystems/Hydrid-CAD-MDT">GitHub</a></div>

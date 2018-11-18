@@ -134,8 +134,7 @@ $time = date('h:i:s A', time());
 //________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 // Version Check/Control
-//$data_vc = file_get_contents("http://hydrid.us/version.html"); // SUPER BROKEN, CAUSES HIGH LOAD TIMES
-$data_vc = 'v1.0.6';
+$data_vc = file_get_contents("http://hydrid.us/version.txt");
 
 if ($data_vc > $version) {
   define('isOutdated', true);
@@ -155,8 +154,7 @@ if (floatval(phpversion()) < 5.6) {
 
 // hydrid announce check
 // Version Check/Control
-//$data_hac = file_get_contents("http://hydrid.us/important.html"); // SUPER BROKEN, CAUSES HIGH LOAD TIMES
-$data_hac = '';
+$data_hac = file_get_contents("http://hydrid.us/important.txt");
 
 //YOU ARE NOT ALLOWED TO REMOVE THIS. REMOVING THIS, REMOVING BACKLINKS, WILL RESULT IN A DMCA TAKEDOWN AS IT IS A BREACH OF OUR LICENSE (AGPL v3)
 if ($data_vc > $version) {
