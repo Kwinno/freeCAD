@@ -50,7 +50,7 @@ if ($a === "get911calls") {
     }
 
     $my_id = $_SESSION['identifier'];
-    $stmt = $pdo->prepare("SELECT * FROM 911calls WHERE call_status LIKE '$my_id%'");
+    $stmt = $pdo->prepare("SELECT * FROM 911calls WHERE call_status LIKE '%$my_id%'");
     $stmt->execute();
     $callRow = $stmt->fetch(PDO::FETCH_ASSOC);
     if (empty($callRow['call_id'])) {
@@ -65,7 +65,7 @@ if ($a === "get911calls") {
     <th><center>Postal</center></th>
     <th><center>ASSIGNED UNITS</center></th>
     </tr>";
-        $get911calls = "SELECT * FROM 911calls";
+        $get911calls = "SELECT * FROM 911calls WHERE call_status LIKE '%$my_id%'";
         $result      = $pdo->prepare($get911calls);
         $result->execute();
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
