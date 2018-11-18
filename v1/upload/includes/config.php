@@ -34,8 +34,8 @@ define("isDonator", false);
 
 
 // Load Plugin Loader
-require_once("classes/lib/plugins.class.php");
-plugins::start('plugins/');
+//require_once("classes/lib/plugins.class.php");
+//plugins::start('plugins/');
 
 // Get Global Functions
 require_once("functions.php");
