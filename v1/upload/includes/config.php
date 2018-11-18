@@ -30,9 +30,12 @@ define("isDonator", false);
 // Get Global Functions
 require_once("functions.php");
 
-
 // Get Site Config
 $settingsRow = dbquery('SELECT * FROM settings')[0];
+
+if (empty($settingsRow)) {
+  die("Database Error (2) - Contact Support");
+}
 
 //Define variables
 $siteSettings['background'] = $settingsRow['background_color'];
