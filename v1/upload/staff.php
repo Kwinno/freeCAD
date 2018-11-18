@@ -722,31 +722,6 @@ include('includes/header.php')
                 </tr>
 
                 <tr>
-                  <td>Custom 10 Codes</td>
-                  <td>Allows you to change the 10 code buttons in LEO Module.</td>
-                  <td><?php if (custom10codesModule_isInstalled): ?>
-                    Installed
-                    <?php else: ?>
-                      Not Installed
-                  <?php endif; ?></td>
-                  <td>
-                    <form method="post" action="staff.php">
-                      <?php if (!custom10codesModule_isInstalled): ?>
-                        <div class="form-group">
-                           <input class="btn btn-success btn-sm" name="custom10codesModule_install" type="submit" value="Install">
-                        </div>
-                      <?php else: ?>
-                          <div class="form-group">
-                             <input class="btn btn-danger btn-sm" name="custom10codesModule_uninstall" type="submit" value="Uninstall">
-                             <a data-toggle="modal" href="#custom10codesModule_settings" data-dismiss="modal" class="btn btn-primary btn-sm">Settings</a>
-                          </div>
-
-                      <?php endif; ?>
-                    </form>
-                  </td>
-                </tr>
-
-                <tr>
                   <td>LiveMap Module</td>
                   <td>Displays a MAP button in LEO Module. (MUST HAVE LiveMap SETUP).</td>
                   <td><?php if (mapModule_isInstalled): ?>
