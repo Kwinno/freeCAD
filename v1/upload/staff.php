@@ -18,13 +18,13 @@ error_reporting(0);
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
 
 if (!staff_access) {
-  header('Location: ' . $url_index . '');
+  header('Location: ' . $url['index'] . '');
   exit();
 }
 
@@ -34,112 +34,27 @@ if (isset($_POST['discordModule_install'])) {
   sleep(5);
   $stmt2 = $pdo->prepare( "ALTER TABLE `users` ADD `discord` VARCHAR(60) NULL AFTER `join_ip`" );
   $stmt2->execute();
-  logme('(STAFF) Installed Discord Module', $user_username);
-  header('Location: ' . $url_staff_index . '?module=installed');
+  logAction('(STAFF) Installed Discord Module', $user_username);
+  header('Location: ' . $url['staff_index'] . '?module=installed');
   exit();
 } elseif (isset($_POST['discordModule_uninstall'])) {
   $stmt1 = $pdo->prepare( "ALTER TABLE `settings` DROP `discord_module`" );
   $stmt1->execute();
   sleep(3);
-  logme('(STAFF) Uninstalled Discord Module', $user_username);
-  header('Location: ' . $url_staff_index . '?module=uninstalled');
+  logAction('(STAFF) Uninstalled Discord Module', $user_username);
+  header('Location: ' . $url['staff_index'] . '?module=uninstalled');
   exit();
-}
-
-if (isset($_POST['custom10codesModule_install'])) {
-  $stmt = $pdo->prepare( "ALTER TABLE `settings` ADD `custom10codes_module` VARCHAR(36) NOT NULL DEFAULT 'Enabled' AFTER `donator`" );
-  $stmt->execute();
-  sleep(2.3);
-  $stmt1 = $pdo->prepare( "CREATE TABLE `custom10codes` (`id` int(11) NOT NULL, `btn_name` varchar(36) NOT NULL DEFAULT 'NaN', `btn_value` varchar(36) NOT NULL DEFAULT 'NaN')" );
-  $stmt1->execute();
-  sleep(2.3);
-  $stmt11 = $pdo->prepare( "ALTER TABLE `custom10codes`
-  ADD PRIMARY KEY (`id`)" );
-  $stmt11->execute();
-  sleep(2.3);
-  $sql2 = $pdo->prepare( "INSERT INTO `custom10codes` (id, btn_name, btn_value) VALUES ('1', '10_6_btn', '10-6')" );
-  $sql2->execute();
-  sleep(2.3);
-  $sql3 = $pdo->prepare( "INSERT INTO `custom10codes` (id, btn_name, btn_value) VALUES ('2', '10_7_btn', '10-7')" );
-  $sql3->execute();
-  sleep(2.3);
-  $sql4 = $pdo->prepare( "INSERT INTO `custom10codes` (id, btn_name, btn_value) VALUES ('3', '10_8_btn', '10-8')" );
-  $sql4->execute();
-  sleep(2.3);
-  $sql5 = $pdo->prepare( "INSERT INTO `custom10codes` (id, btn_name, btn_value) VALUES ('4', '10_15_btn', '10-15')" );
-  $sql5->execute();
-  sleep(2.3);
-  $sql6 = $pdo->prepare( "INSERT INTO `custom10codes` (id, btn_name, btn_value) VALUES ('5', '10_23_btn', '10-23')" );
-  $sql6->execute();
-  sleep(2.3);
-  $sql7 = $pdo->prepare( "INSERT INTO `custom10codes` (id, btn_name, btn_value) VALUES ('6', '10_97_btn', '10-97')" );
-  $sql7->execute();
-  sleep(3);
-  logme('(STAFF) Installed Custom 10 Codes Module', $user_username);
-  header('Location: ' . $url_staff_index . '?module=installed');
-  exit();
-} elseif (isset($_POST['custom10codesModule_uninstall'])) {
-  $stmt1 = $pdo->prepare( "DROP TABLE `custom10codes`" );
-  $stmt1->execute();
-  sleep(4);
-  $stmt2 = $pdo->prepare( "ALTER TABLE `settings` DROP `custom10codes_module`" );
-  $stmt2->execute();
-  sleep(3);
-  logme('(STAFF) Uninstalled Custom 10 Codes Module', $user_username);
-  header('Location: ' . $url_staff_index . '?module=uninstalled');
-  exit();
-}
-
-if (isset($_POST['custom10codesModule_updateSettings'])) {
-    //Pull the variables from the form
-    $ten6btn = $_POST['10_6_btn'] ? trim($_POST['10_6_btn']) : null;
-    $ten7btn = $_POST['10_7_btn'] ? trim($_POST['10_7_btn']) : null;
-    $ten8btn = $_POST['10_8_btn'] ? trim($_POST['10_8_btn']) : null;
-    $ten15btn = $_POST['10_15_btn'] ? trim($_POST['10_15_btn']) : null;
-    $ten23btn = $_POST['10_23_btn'] ? trim($_POST['10_23_btn']) : null;
-    $ten97btn = $_POST['10_97_btn'] ? trim($_POST['10_97_btn']) : null;
-
-    //Sanitize the variables, prevents xss, etc.
-    $update_ten6btn       = strip_tags($ten6btn);
-    $update_ten7btn        = strip_tags($ten7btn);
-    $update_ten8btn        = strip_tags($ten8btn);
-    $update_ten15btn        = strip_tags($ten15btn);
-    $update_ten23btn        = strip_tags($ten23btn);
-    $update_ten97btn        = strip_tags($ten97btn);
-
-    $sql2 = $pdo->prepare( "UPDATE `custom10codes` SET btn_value='$update_ten6btn' WHERE btn_name='10_6_btn'" );
-    $sql2->execute();
-    sleep(2.3);
-    $sql3 = $pdo->prepare( "UPDATE `custom10codes` SET btn_value='$update_ten7btn' WHERE btn_name='10_7_btn'" );
-    $sql3->execute();
-    sleep(2.3);
-    $sql4 = $pdo->prepare( "UPDATE `custom10codes` SET btn_value='$update_ten8btn' WHERE btn_name='10_8_btn'" );
-    $sql4->execute();
-    sleep(2.3);
-    $sql5 = $pdo->prepare( "UPDATE `custom10codes` SET btn_value='$update_ten15btn' WHERE btn_name='10_15_btn'" );
-    $sql5->execute();
-    sleep(2.3);
-    $sql6 = $pdo->prepare( "UPDATE `custom10codes` SET btn_value='$update_ten23btn' WHERE btn_name='10_23_btn'" );
-    $sql6->execute();
-    sleep(2.3);
-    $sql7 = $pdo->prepare( "UPDATE `custom10codes` SET btn_value='$update_ten97btn' WHERE btn_name='10_97_btn'" );
-    $sql7->execute();
-    sleep(2.3);
-    logme('(STAFF) Updated Custom 10 Codes Module', $user_username);
-    header('Location: staff.php?module=updated');
-    exit();
-
 }
 
 if (isset($_POST['mapModule_install'])) {
   $stmt1 = $pdo->prepare( "ALTER TABLE `settings` ADD `map_module` VARCHAR(36) NOT NULL DEFAULT 'Enabled' AFTER `donator`" );
   $stmt1->execute();
   sleep(3);
-  $stmt2 = $pdo->prepare( "ALTER TABLE `settings` ADD `map_module_link` VARCHAR(36) NOT NULL DEFAULT '#' AFTER `map_module`" );
+  $stmt2 = $pdo->prepare( "ALTER TABLE `settings` ADD `map_module_link` VARCHAR(355) NOT NULL DEFAULT '#' AFTER `map_module`" );
   $stmt2->execute();
   sleep(3);
-  logme('(STAFF) Installed LiveMap Module', $user_username);
-  header('Location: ' . $url_staff_index . '?module=installed');
+  logAction('(STAFF) Installed LiveMap Module', $user_username);
+  header('Location: ' . $url['staff_index'] . '?module=installed');
   exit();
 } elseif (isset($_POST['mapModule_uninstall'])) {
   $stmt1 = $pdo->prepare( "ALTER TABLE `settings` DROP `map_module`" );
@@ -148,8 +63,8 @@ if (isset($_POST['mapModule_install'])) {
   $stmt1 = $pdo->prepare( "ALTER TABLE `settings` DROP `map_module_link`" );
   $stmt1->execute();
   sleep(3);
-  logme('(STAFF) Uninstalled LiveMap Module', $user_username);
-  header('Location: ' . $url_staff_index . '?module=uninstalled');
+  logAction('(STAFF) Uninstalled LiveMap Module', $user_username);
+  header('Location: ' . $url['staff_index'] . '?module=uninstalled');
   exit();
 } elseif (isset($_POST['mapModule_updateSettings'])) {
     //Pull the variables from the form
@@ -158,7 +73,7 @@ if (isset($_POST['mapModule_install'])) {
     $update_mapModule_link      = strip_tags($mapModule_link_form);
     $sql2 = $pdo->prepare( "UPDATE `settings` SET map_module_link='$update_mapModule_link'" );
     $sql2->execute();
-    logme('(STAFF) Updated LiveMap Module Settings', $user_username);
+    logAction('(STAFF) Updated LiveMap Module Settings', $user_username);
     header('Location: staff.php?module=updated');
     exit();
 }
@@ -181,11 +96,11 @@ if (isset($_POST['subdivisionModule_install'])) {
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;" );
   $stmt12->execute();
   sleep(2.3);
-  $sql2 = $pdo->prepare( "INSERT INTO `sub_divisions` (id, name) VALUES ('1', 'Exmaple Sub Division')" );
+  $sql2 = $pdo->prepare( "INSERT INTO `sub_divisions` (id, name) VALUES ('1', 'Example Sub Division')" );
   $sql2->execute();
   sleep(3);
-  logme('(STAFF) Installed Sub Division Module', $user_username);
-  header('Location: ' . $url_staff_index . '?module=installed');
+  logAction('(STAFF) Installed Sub Division Module', $user_username);
+  header('Location: ' . $url['staff_index'] . '?module=installed');
   exit();
 } elseif (isset($_POST['subdivisionModule_uninstall'])) {
   $stmt1 = $pdo->prepare( "DROP TABLE `sub_divisions`" );
@@ -193,7 +108,7 @@ if (isset($_POST['subdivisionModule_install'])) {
   sleep(4);
   $stmt2 = $pdo->prepare( "ALTER TABLE `settings` DROP `subdivision_module`" );
   $stmt2->execute();
-logme('(STAFF) Uninstalled Sub Division Module', $user_username);
+logAction('(STAFF) Uninstalled Sub Division Module', $user_username);
     header('Location: staff.php?module=uninstalled');
     exit();
 } elseif (isset($_POST['subdivisionModule_createNewSD'])) {
@@ -203,7 +118,7 @@ logme('(STAFF) Uninstalled Sub Division Module', $user_username);
   $sql2 = $pdo->prepare( "INSERT INTO `sub_divisions` (name) VALUES ('$update_new_sd')" );
   $sql2->execute();
   sleep(3);
-  logme('(STAFF) Created New Sub Division', $user_username);
+  logAction('(STAFF) Created New Sub Division', $user_username);
   header('Location: staff.php?module=updated');
   exit();
 }
@@ -213,7 +128,7 @@ if ($_GET['deletechar']) {
   $stmt = $pdo->prepare( "DELETE FROM characters WHERE character_id =:char_id" );
   $stmt->bindParam(':char_id', $char_id);
   $stmt->execute();
-  logme('(STAFF) Deleted Character ('. $char_id .')', $user_username);
+  logAction('(STAFF) Deleted Character ('. $char_id .')', $user_username);
   header('Location: staff.php?char=deleted');
   exit();
 }
@@ -231,10 +146,10 @@ if (isset($_POST['deleteId'])) {
     $stmt = $pdo->prepare( "DELETE FROM identities WHERE identity_id =:identity_id" );
     $stmt->bindParam(':identity_id', $identity_id_update);
     $result = $stmt->execute();
-    logme('(STAFF) Deleted Identity ('. $identifier_update .')', $user_username);
+    logAction('(STAFF) Deleted Identity ('. $identifier_update .')', $user_username);
     if ($result) {
         //redirect
-        header('Location: ' . $url_staff_index . '?id=deleted');
+        header('Location: ' . $url['staff_index'] . '?id=deleted');
         exit();
     }
 }
@@ -266,9 +181,9 @@ if (isset($_POST['editId'])) {
     $stmt->bindParam(':fire_supervisor', $fire_supervisor_update);
     $stmt->bindParam(':status', $status_update);
     $updateId = $stmt->execute();
-    logme('(STAFF) Updated Identity ('. $identifier_update .')', $user_username);
+    logAction('(STAFF) Updated Identity ('. $identifier_update .')', $user_username);
     if ($updateId) {
-      header('Location: ' . $url_staff_index . '?id=edited');
+      header('Location: ' . $url['staff_index'] . '?id=edited');
       exit();
     }
 }
@@ -284,7 +199,7 @@ if (isset($_POST['UpdateCommunityNameBtn'])) {
     $stmt    = $pdo->prepare($sql);
     $updateSiteName = $stmt->execute();
     if ($updateSiteName) {
-      logme('(STAFF) Updated Community Name', $user_username);
+      logAction('(STAFF) Updated Community Name', $user_username);
       $message='<div class="alert alert-success" id="dismiss">Community Name Updated</div>';
     }
 }
@@ -318,20 +233,16 @@ include('includes/header.php')
 <body>
    <div class="container-staff">
       <div class="main-staff">
-         <a href="<?php echo $url_index ?>"><img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/></a>
+         <a href="<?php echo $url['index'] ?>"><img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/></a>
          <div class="main-header-staff">
-           <div class="float-left">
-             <?php if (isDonator): ?>
-               Donator: Yes
-             <?php else: ?>
-               Donator: No
-             <?php endif; ?>
-           </div>
            <div class="center">
             Hello, <?php echo $user_username ?> <?php if (staff_access) {
               echo '<a href="staff.php"><i class="fas fa-cog"></i></a>';
             } ?>
           </div>
+          <?php if ($data_hac !== "") {
+            echo '<div class="alert alert-info" role="alert" id="dismiss">Alert From Hydrid Staff: '. $data_hac .'</div>';
+          } ?>
           <?php if (isOutdated): ?>
             <div class="alert alert-danger">Hydrid is Outdated! The latest version is <strong><?php echo $data_vc; ?></strong>. You are currently on <strong><?php echo $version; ?></strong>. You can download the latest version from <a href="https://github.com/HydridSystems/Hydrid-CAD-MDT">GitHub</a></div>
           <?php endif; ?>
@@ -341,9 +252,9 @@ include('includes/header.php')
            <div class="row">
              <div class="col">
                <div class="form-group">
-                 <label for="IdentityVerification">Identity Verification</label>
+                 <label for="IdentityVerification">LEO Verification</label>
                  <select class="form-control" id="IdentityVerification" onchange="setIdentityVerification(this.value)">
-                   <option selected="true" disabled="disabled"><?php if ($settings_identity_verification_db === "no") {
+                   <option selected="true" disabled="disabled"><?php if ($siteSettings['leo_validation'] === "no") {
                      echo 'No';
                    } else {
                      echo 'Yes';
@@ -357,7 +268,7 @@ include('includes/header.php')
                <div class="form-group">
                  <label for="SignUpVerification">Sign Up Verification</label>
                  <select class="form-control" id="SignUpVerification" onchange="setSignUpVerification(this.value)">
-                   <option selected="true" disabled="disabled"><?php if ($settings_sign_up_verification_db === "no") {
+                   <option selected="true" disabled="disabled"><?php if ($siteSettings['join_validation'] === "no") {
                      echo 'No';
                    } else {
                      echo 'Yes';
@@ -371,10 +282,10 @@ include('includes/header.php')
                <div class="form-group">
                  <label for="theme">Theme</label>
                  <select class="form-control" id="theme" onchange="setTheme(this.value)">
-                   <option selected="true" disabled="disabled"><?php if ($settings_theme_db === "lux") {
+                   <option selected="true" disabled="disabled"><?php if ($siteSettings['theme'] === "lux") {
                      echo 'default';
                    } else {
-                     echo $settings_theme_db;
+                     echo $siteSettings['theme'];
                    }?></option>
                    <option value="cerulean">cerulean</option>
                    <option value="cosmo">cosmo</option>
@@ -396,7 +307,7 @@ include('includes/header.php')
                <div class="form-group">
                  <label for="background_color">Background Color</label>
                  <select class="form-control" id="background_color" onchange="setBackground(this.value)">
-                   <option selected="true" disabled="disabled"><?php echo $settings_background_db; ?></option>
+                   <option selected="true" disabled="disabled"><?php echo $siteSettings['background']; ?></option>
                    <option value="default">Default</option>
                    <option value="darkred">Dark Red</option>
                    <option value="red">Red</option>
@@ -414,7 +325,7 @@ include('includes/header.php')
                <div class="form-group">
                  <label for="timezone">TimeZone</label>
                  <select class="form-control" id="timezone" onchange="setTimezone(this.value)">
-                   <option selected="true" disabled="disabled"><?php echo $settings_timezone_db; ?></option>
+                   <option selected="true" disabled="disabled"><?php echo $siteSettings['timezone']; ?></option>
                    <option value="Pacific/Midway">(GMT-11:00) Midway Island, Samoa</option>
                    <option value="America/Adak">(GMT-10:00) Hawaii-Aleutian</option>
                    <option value="Etc/GMT+10">(GMT-10:00) Hawaii</option>
@@ -523,7 +434,7 @@ include('includes/header.php')
                  <form method="post" action="staff.php">
                  <label for="theme">Community Name</label>
                  <div class="input-group mb-3">
-                   <input type="text" class="form-control" name="updateCommunityName" placeholder="<?php echo $settings_site_name_db ?>" aria-label="Community Name" aria-describedby="basic-addon2" required>
+                   <input type="text" class="form-control" name="updateCommunityName" placeholder="<?php echo $siteSettings['name'] ?>" aria-label="Community Name" aria-describedby="basic-addon2" required>
                    <div class="input-group-append">
                      <button class="btn btn-success" name="UpdateCommunityNameBtn" id="UpdateCommunityNameBtn" type="submit" type="button">Update</button>
                    </div>
@@ -653,7 +564,7 @@ include('includes/header.php')
                            </button>
                         </div>
                         <div class="modal-body">
-                          <form method="post" action="'.$url_staff_index.'">
+                          <form method="post" action="'.$url['staff_index'].'">
                           <input type="hidden" value="'.$row['identity_id'].'" name="identity_id_form">
                           <div class="form-group">
                              <label style="color:black;">Identifier</label>
@@ -808,31 +719,6 @@ include('includes/header.php')
                           <div class="form-group">
                              <input class="btn btn-danger btn-sm" name="discordModule_uninstall" type="submit" value="Uninstall">
                           </div>
-                      <?php endif; ?>
-                    </form>
-                  </td>
-                </tr>
-
-                <tr>
-                  <td>Custom 10 Codes</td>
-                  <td>Allows you to change the 10 code buttons in LEO Module.</td>
-                  <td><?php if (custom10codesModule_isInstalled): ?>
-                    Installed
-                    <?php else: ?>
-                      Not Installed
-                  <?php endif; ?></td>
-                  <td>
-                    <form method="post" action="staff.php">
-                      <?php if (!custom10codesModule_isInstalled): ?>
-                        <div class="form-group">
-                           <input class="btn btn-success btn-sm" name="custom10codesModule_install" type="submit" value="Install">
-                        </div>
-                      <?php else: ?>
-                          <div class="form-group">
-                             <input class="btn btn-danger btn-sm" name="custom10codesModule_uninstall" type="submit" value="Uninstall">
-                             <a data-toggle="modal" href="#custom10codesModule_settings" data-dismiss="modal" class="btn btn-primary btn-sm">Settings</a>
-                          </div>
-
                       <?php endif; ?>
                     </form>
                   </td>
@@ -1020,6 +906,7 @@ include('includes/header.php')
 </div>
 <?php endif; ?>
    <!-- javascript -->
+   <?php include('includes/js.php'); ?>
    <script src="assets/js/pages/staff.js"></script>
    <!-- end javascript -->
 </body>

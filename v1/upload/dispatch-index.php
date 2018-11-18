@@ -17,7 +17,7 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
@@ -30,7 +30,7 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
   $stmt->execute();
   $identity = $stmt->fetch(PDO::FETCH_ASSOC);
   if ($identity === false) {
-     header('Location: ' . $url_index . '');
+     header('Location: ' . $url['index'] . '');
      exit();
   } else {
     //set the needed session variables
@@ -55,17 +55,17 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
 
      $sidentity_user    = $identity['user'];
      $_SESSION['on_duty'] = "No";
-     header('Location: ' . $url_dispatch_index . '');
+     header('Location: ' . $url['dispatch_index'] . '');
      exit();
 
   } if ($sidentity_user !== $user_id) {
-    header('Location: ' . $url_index . '');
+    header('Location: ' . $url['index'] . '');
     exit();
   }
 }
 
 if ($_SESSION['is_dispatch'] === "No") {
-  header('Location: ' . $url_index . '?np=dispatch');
+  header('Location: ' . $url['index'] . '?np=dispatch');
   exit();
 }
 
@@ -98,7 +98,7 @@ if (isset($_POST['addBoloBtn'])) {
     $stmt->bindValue(':bolo_created_on', $date . ' ' . $time);
     $result = $stmt->execute();
     if ($result) {
-      logme('(DISPATCH) Added Bolo', $user_username);
+      logAction('(DISPATCH) Added Bolo', $user_username);
         //redirect
         $message='<div class="alert alert-success" id="dismiss">Bolo Added</div>';
     }
@@ -125,9 +125,9 @@ if (isset($_POST['1041btn'])) {
   $stmt->bindValue(':type', $duty_type);
   $result = $stmt->execute();
   $_SESSION['on_duty'] = "Yes";
-  logme('(DISPATCH) Went On Duty', $user_username);
+  logAction('(DISPATCH) Went On Duty', $user_username);
 
-  header('Location: ' . $url_dispatch_index . '');
+  header('Location: ' . $url['dispatch_index'] . '');
   exit();
 }
 if (isset($_POST['1042btn'])) {
@@ -137,8 +137,8 @@ if (isset($_POST['1042btn'])) {
   $stmt->bindValue(':i', $i);
   $endShift = $stmt->execute();
   $_SESSION['on_duty'] = "No";
-  logme('(DISPATCH) Went Off Duty', $user_username);
-  header('Location: ' . $url_dispatch_index . '');
+  logAction('(DISPATCH) Went Off Duty', $user_username);
+  header('Location: ' . $url['dispatch_index'] . '');
   exit();
 }
 
@@ -166,9 +166,9 @@ if (isset($_POST['createNewCall'])) {
     $stmt->bindValue(':call_timestamp', $date . ' ' . $time);
     $result = $stmt->execute();
     if ($result) {
-      logme('(DISPATCH) Created New Call', $user_username);
+      logAction('(DISPATCH) Created New Call', $user_username);
         //redirect
-        header('Location: ' . $url_dispatch_index . '?call=created');
+        header('Location: ' . $url['dispatch_index'] . '?call=created');
     }
 }
 
@@ -482,6 +482,7 @@ include('includes/header.php')
   </div>
    <!-- end modals -->
    <!-- js -->
+   <?php include('includes/js.php'); ?>
    <script src="assets/js/pages/dispatch.js"></script>
    <!-- end js -->
 </body>

@@ -21,7 +21,7 @@ session_start();
 include '../../includes/isLoggedIn.php';
 
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 
@@ -44,13 +44,13 @@ if ($a === "get911calls") {
         $stmt    = $pdo->prepare("DELETE FROM 911calls WHERE call_id =:call_id");
         $stmt->bindParam(':call_id', $call_id);
         $stmt->execute();
-        logme('(LEO) Ended Call #'. $call_id .'', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Ended Call #'. $call_id .'', $user_username . ' / ' . $_SESSION['identifier']);
         header('Location: ../../leo-index.php');
         exit();
     }
 
     $my_id = $_SESSION['identifier'];
-    $stmt = $pdo->prepare("SELECT * FROM 911calls WHERE call_status LIKE '$my_id%'");
+    $stmt = $pdo->prepare("SELECT * FROM 911calls WHERE call_status LIKE '%$my_id%'");
     $stmt->execute();
     $callRow = $stmt->fetch(PDO::FETCH_ASSOC);
     if (empty($callRow['call_id'])) {
@@ -65,7 +65,7 @@ if ($a === "get911calls") {
     <th><center>Postal</center></th>
     <th><center>ASSIGNED UNITS</center></th>
     </tr>";
-        $get911calls = "SELECT * FROM 911calls";
+        $get911calls = "SELECT * FROM 911calls WHERE call_status LIKE '%$my_id%'";
         $result      = $pdo->prepare($get911calls);
         $result->execute();
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -85,7 +85,7 @@ if ($a === "get911calls") {
     exit();
 } elseif ($a === "get911callsDispatch") {
     if ($_SESSION['is_dispatch'] === "No") {
-        header('Location: ' . $url_index . '?np=dispatch');
+        header('Location: ' . $url['index'] . '?np=dispatch');
         exit();
     }
 
@@ -94,7 +94,7 @@ if ($a === "get911calls") {
         $stmt    = $pdo->prepare("DELETE FROM 911calls WHERE call_id =:call_id");
         $stmt->bindParam(':call_id', $call_id);
         $stmt->execute();
-        logme('(DISPATCH) Ended Call #'. $call_id .'', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(DISPATCH) Ended Call #'. $call_id .'', $user_username . ' / ' . $_SESSION['identifier']);
         header('Location: ../../dispatch-index.php');
         exit();
     }
@@ -189,16 +189,18 @@ if ($a === "get911calls") {
     }
     exit();
 } elseif ($a === "dynamicTime") {
+
     echo $time;
+
 } elseif ($a === "endShift") {
     $i    = $_SESSION['identifier'];
     $sql  = "DELETE FROM `on_duty` WHERE identifier = :i";
     $stmt = $pdo->prepare($sql);
     $stmt->bindValue(':i', $i);
     $endShift = $stmt->execute();
-    logme('(LEO) Ended Shift', $user_username . ' / ' . $_SESSION['identifier']);
+    logAction('(LEO) Ended Shift', $user_username . ' / ' . $_SESSION['identifier']);
     if ($endShift) {
-        header('Location: ../../' . $url_index . '');
+        header('Location: ../../' . $url['index'] . '');
         exit();
     }
 } elseif ($a === "getActiveUnits") {
@@ -207,16 +209,11 @@ if ($a === "get911calls") {
     $result         = $pdo->prepare($getActiveUnits);
     $result->execute();
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        if ($row['status'] === "10-42") {
-            $displayUnit = "false";
-        } else {
-            $displayUnit = "true";
-        }
-
-        if ($displayUnit === "true") {
+        if ($row['status'] !== "10-42") {
             echo "<tr>";
             echo "<td><center>" . $row['identifier'] . "</center></td>";
             echo "<td><center>" . $row['status'] . "</center></td>";
+            echo "<td><center>" . $row['type'] . "</center></td>";
             echo "</tr>";
         }
     }
@@ -224,21 +221,29 @@ if ($a === "get911calls") {
     echo "</table>";
 } elseif ($a === "getActiveUnitsDispatch") {
     if ($_SESSION['is_dispatch'] === "No") {
-        header('Location: ' . $url_index . '?np=dispatch');
+        header('Location: ' . $url['index'] . '?np=dispatch');
         exit();
     }
 
-    echo "
+    $stmt = $pdo->prepare("SELECT * FROM on_duty where `type` = 'LEO' or `type` = 'FIRE/EMS'");
+    $stmt->execute();
+    $activeUnitsRow = $stmt->fetch(PDO::FETCH_ASSOC);
+    if (empty($activeUnitsRow['id'])) {
+        echo "<h5 style='margin-top:20px; color:white;'>NO ACTIVE UNITS</h5>";
+    } else {
+        echo "
   <tr>
   <th><center>Identifier</center></th>
+  <th><center>Type</center></th>
   <th><center>Status</center></th>
   </tr>";
-    $getActiveUnits = "SELECT * FROM on_duty";
+    $getActiveUnits = "SELECT * FROM on_duty where `type` = 'LEO' or `type` = 'FIRE/EMS'";
     $result         = $pdo->prepare($getActiveUnits);
     $result->execute();
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         echo "<tr>";
         echo "<td><center>" . $row['identifier'] . "</center></td>";
+        echo "<td><center>" . $row['type'] . "</center></td>";
         echo "<td><center><select style='width:150px;' name='updateUnitStatus' id='" . $row['id'] . "' class='select-units' onChange='updateUnitStatus(this)'>
                   <option selected='true' disabled='disabled'>" . $row['status'] . "</option>";
                   if ($row['type'] === "FIRE/EMS") {
@@ -258,6 +263,7 @@ if ($a === "get911calls") {
               "</select></center></td>";
         echo "</tr>";
     }
+    }
 } elseif ($a === "getAOP") {
     $stmt = $pdo->prepare("SELECT * FROM settings");
     $stmt->execute();
@@ -272,7 +278,7 @@ if ($a === "get911calls") {
         $stmt->bindParam(':bolo_id', $bolo_id);
         $stmt->execute();
 
-        logme('(LEO) Deleted BOLO #'. $bolo_id .'', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Deleted BOLO #'. $bolo_id .'', $user_username . ' / ' . $_SESSION['identifier']);
 
         header('Location: ../../leo-index.php');
         exit();
@@ -316,7 +322,7 @@ if ($a === "get911calls") {
         $stmt->bindParam(':bolo_id', $bolo_id);
         $stmt->execute();
 
-        logme('(DISPATCH) Deleted BOLO #'. $bolo_id .'', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(DISPATCH) Deleted BOLO #'. $bolo_id .'', $user_username . ' / ' . $_SESSION['identifier']);
         header('Location: ../../dispatch-index.php');
         exit();
     }
@@ -354,7 +360,7 @@ if ($a === "get911calls") {
     }
 } elseif ($a === "getPendingIds") {
     if ($_SESSION['leo_supervisor'] === "No") {
-        header('Location: ' . $url_leo_index . '');
+        header('Location: ' . $url['leo_index'] . '');
         exit();
     }
 
@@ -364,9 +370,9 @@ if ($a === "get911calls") {
         $stmt->bindParam(':identity_id', $identity_id);
         $stmt->execute();
 
-        logme('(LEO) Declined New Identity ('. $identity_id .')', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Declined New Identity ('. $identity_id .')', $user_username . ' / ' . $_SESSION['identifier']);
 
-        header('Location: ../../' . $url_leo_supervisor_view_pending_identities . '');
+        header('Location: ../../' . $url['leo_supervisor_view_pending_identities'] . '');
     } elseif ($_GET['approve']) {
         $identity_id     = strip_tags($_GET['approve']);
         $approved_status = "Active";
@@ -376,9 +382,9 @@ if ($a === "get911calls") {
         $stmt2->bindParam(':identity_id', $identity_id);
         $stmt2->execute();
 
-        logme('(LEO) Approved New Identity ('. $identity_id .')', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Approved New Identity ('. $identity_id .')', $user_username . ' / ' . $_SESSION['identifier']);
 
-        header('Location: ../../' . $url_leo_supervisor_view_pending_identities . '');
+        header('Location: ../../' . $url['leo_supervisor_view_pending_identities'] . '');
     }
 
     $pending_status = "Approval Needed";
@@ -433,9 +439,10 @@ if ($a === "get911calls") {
     $getChar = "SELECT * FROM characters WHERE character_id='$q'";
     $result  = $pdo->prepare($getChar);
     $result->execute();
-    logme('(LEO) Searched Character ('. $q .')', $user_username . ' / ' . $_SESSION['identifier']);
+    logAction('(LEO) Searched Character ('. $q .')', $user_username . ' / ' . $_SESSION['identifier']);
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $suspect_name = $row['first_name'] . ' ' . $row['last_name'];
+		$charid = $row['character_id'];
         echo '<div class="float-right">';
         echo '<div style="border: 1px solid black; overflow-y: scroll; width:500px; height:150px;">';
         echo "<center>PREVIOUS TICKETS</center>";
@@ -446,7 +453,7 @@ if ($a === "get911calls") {
       <th><center>Postal</center></th>
       <th><center>Timestamp</center></th>
       </tr>";
-        $getPreviousTickets = "SELECT * FROM tickets WHERE suspect = '$suspect_name'";
+        $getPreviousTickets = "SELECT * FROM tickets WHERE suspect = '$charid'";
         $result             = $pdo->prepare($getPreviousTickets);
         $result->execute();
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -469,7 +476,7 @@ if ($a === "get911calls") {
       <th><center>Arresting Officer</center></th>
       <th><center>Timestamp</center></th>
       </tr>";
-        $getPreviousTickets = "SELECT * FROM arrest_reports WHERE suspect = '$suspect_name'";
+        $getPreviousTickets = "SELECT * FROM arrest_reports WHERE suspect = '$charid'";
         $result             = $pdo->prepare($getPreviousTickets);
         $result->execute();
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -533,8 +540,13 @@ if ($a === "get911calls") {
         $stmt->bindValue(':char_id', $char_id);
         $stmt->bindValue(':license_status', $license_status);
         $stmt->execute();
-        logme('(LEO) Suspended License ('. $char_id .')', $user_username . ' / ' . $_SESSION['identifier']);
-        header('Location: ../../dispatch-index.php?license=suspended');
+        if ($_SESSION['is_dispatch'] === "No") {
+          header('Location: ../../leo-index.php?license=suspended');
+		  logAction('(LEO) Suspended License ('. $char_id .')', $user_username . ' / ' . $_SESSION['identifier']);
+        } else {
+          header('Location: ../../dispatch-index.php?license=suspended');
+		  logAction('(DISPATCH) Suspended License ('. $char_id .')', $user_username . ' / ' . $_SESSION['identifier']);
+        }
         exit();
     }
     if ($_GET['deletewarrant']) {
@@ -542,7 +554,7 @@ if ($a === "get911calls") {
         $stmt       = $pdo->prepare("DELETE FROM warrants WHERE warrant_id =:warrant_id");
         $stmt->bindParam(':warrant_id', $warrant_id);
         $stmt->execute();
-        logme('(LEO) Deleted Warrant ('. $warrant_id .')', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Deleted Warrant ('. $warrant_id .')', $user_username . ' / ' . $_SESSION['identifier']);
         header('Location: ../../leo-index.php');
         exit();
     }
@@ -579,7 +591,7 @@ if ($a === "get911calls") {
         echo "<h6>Plate: " . $row['vehicle_plate'] . "</h6><br-leo-name-search>";
         echo "<h6>Color: " . $row['vehicle_color'] . "</h6><br-leo-name-search>";
         echo "<h6>Model: " . $row['vehicle_model'] . "</h6><br-leo-name-search>";
-        echo "<h6>Insurnace Status: " . $row['vehicle_is'] . "</h6><br-leo-name-search>";
+        echo "<h6>Insurance Status: " . $row['vehicle_is'] . "</h6><br-leo-name-search>";
         echo "<h6>Registration Status: " . $row['vehicle_rs'] . "</h6><br-leo-name-search>";
         echo "<h6>VIN: " . $row['vehicle_vin'] . "</h6><br-leo-name-search>";
         echo "<h6>Owner: " . $row['vehicle_ownername'] . "</h6><br-leo-name-search>";
@@ -634,7 +646,7 @@ if ($a === "get911calls") {
     $stmt      = $pdo->prepare($sql);
     $stmt->bindValue(':q', $q);
     $updateAOP = $stmt->execute();
-    logme('(LEO) Updated AOP', $user_username . ' / ' . $_SESSION['identifier']);
+    logAction('(LEO) Updated AOP', $user_username . ' / ' . $_SESSION['identifier']);
 } elseif ($a === "setStatus") {
     $q            = strip_tags($_GET['q']);
     $unit         = $_SESSION['identifier'];
@@ -646,7 +658,7 @@ if ($a === "get911calls") {
     exit();
 } elseif ($a === "UpdateUnitStatus") {
     if ($_SESSION['is_dispatch'] === "No") {
-        header('Location: ' . $url_index . '?np=dispatch');
+        header('Location: ' . $url['index'] . '?np=dispatch');
         exit();
     }
 

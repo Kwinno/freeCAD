@@ -13,26 +13,47 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 **/
-$version = "PR-005";
-error_reporting(0); // Turn off all error reporting
-$update_in_progress = "No";
 
-//grab site variables from here instead of connect file
-$stmt    = $pdo->prepare("SELECT * FROM settings");
-$stmt->execute();
-$settingsRow = $stmt->fetch(PDO::FETCH_ASSOC);
+// Debug Toggle
+$GLOBAL['debug'] = false;
+
+
+// Version Number -- Do Not Change
+$version = "v1.0.6";
+
+
+// Disable Error Reporting
+if(!$GLOBAL['debug']) {
+  error_reporting(0);
+}
+
+
+// Oudated Variables/Constants?
+$update_in_progress = "No";
+define("isDonator", false);
+
+
+// Load Plugin Loader
+//require_once("classes/lib/plugins.class.php");
+//plugins::start('plugins/');
+
+// Get Global Functions
+require_once("functions.php");
+
+// Get Site Config
+$settingsRow = dbquery('SELECT * FROM settings')[0];
+
+if (empty($settingsRow)) {
+  die("Database Error (2) - Contact Support");
+}
 
 //Define variables
-$settings_background_db = $settingsRow['background_color'];
-$settings_panel_suspended = $settingsRow['panel_suspended'];
-$settings_donator = $settingsRow['donator'];
-$settings_site_name_db = $settingsRow['site_name'];
-$settings_site_url_db  = $settingsRow['site_url'];
-$settings_theme_db      = $settingsRow['theme'];
-$settings_btntheme_db  = $settingsRow['button_theme'];
-$settings_sign_up_verification_db  = $settingsRow['validation_enabled'];
-$settings_identity_verification_db  = $settingsRow['identity_approval_needed'];
-$settings_timezone_db  = $settingsRow['timezone'];
+$siteSettings['background'] = $settingsRow['background_color'];
+$siteSettings['name'] = $settingsRow['site_name'];
+$siteSettings['theme'] = $settingsRow['theme'];
+$siteSettings['join_validation'] = $settingsRow['validation_enabled'];
+$siteSettings['leo_validation'] =  $settingsRow['identity_approval_needed'];
+$siteSettings['timezone'] = $settingsRow['timezone'];
 
 //Module checks
 
@@ -43,15 +64,6 @@ if (isset($settingsRow['discord_module'])) {
   }
 } else {
   define("discordModule_isInstalled", false);
-}
-
-//CUSTOM 10 CODE MODULE
-if (isset($settingsRow['custom10codes_module'])) {
-  if ($settingsRow['custom10codes_module'] === "Enabled") {
-    define("custom10codesModule_isInstalled", true);
-  }
-} else {
-  define("custom10codesModule_isInstalled", false);
 }
 
 //MAP MODULE
@@ -77,55 +89,43 @@ if (isset($settingsRow['subdivision_module'])) {
 
 //End Module Checks
 
-if ($settings_donator === "Yes") {
-  define("isDonator", true);
-} else {
-  define("isDonator", false);
-}
-
-if ($settings_site_name_db === "CHANGE IN SETTINGS" || $settings_site_name_db === "CHANGE ME IN SETTINGS") {
-  define("setupComplete", false);
-} else {
-  define("setupComplete", true);
-}
-
 //Important Settings
 $background_color = ""; //light_blue, blue, red, gold
-$bootstrap_theme = "$settings_theme_db";
-$button_style = "$settings_btntheme_db";
-$community_name = "$settings_site_name_db";
-$community_url = "$settings_site_url_db";
+$bootstrap_theme = $siteSettings['theme'];
+$community_name = $siteSettings['name'];
+$community_url = $siteSettings['theme'];
 //Validation Settings
-$validation_enabled = "$settings_sign_up_verification_db";
-$identity_approval_needed = "$settings_identity_verification_db";
-//Urls
-$url_index = "index.php";
-$url_register = "register.php";
-$url_welcome = "welcome.php";
-$url_login = "login.php";
-$url_civ_index = "civ-index.php";
-$url_civ_view = "civ-view.php";
-$url_civ_driverlicense = "civ-driverlicense.php";
-$url_civ_registernewvehicle = "civ-registernewveh.php";
-$url_civ_viewveh = "civ-viewveh.php";
-$url_civ_firearms = "civ-firearms.php";
-$url_civ_newarrant = "civ-addwarrant.php";
-$url_civ_viewwarratns = "civ-mywarrants.php";
-$url_leo_index = "leo-index.php";
-$url_staff_edit_user = "staff-edituser.php";
-$url_staff_index = "staff.php";
-$url_fire_index = "fire-index.php";
-$url_leo_supervisor_view_pending_identities = "leo-pending-identities.php";
-$url_leo_supervisor_view_all_identities = "leo-all-identities.php";
-$url_dispatch_index = "dispatch-index.php";
-$url_staff_setup = "setup.php";
-$url_settings = "user-settings.php";
-$url_logout = "logout.php";
+$validation_enabled = $siteSettings['join_validation'];
+$identity_approval_needed = $siteSettings['leo_validation'];
+
+// Define URLS
+$url['index'] = "index.php";
+$url['register'] = "register.php";
+$url['welcome'] = "welcome.php";
+$url['login'] = "login.php";
+$url['civ_index'] = "civ-index.php";
+$url['civ_view'] = "civ-view.php";
+$url['civ_driverlicense'] = "civ-driverlicense.php";
+$url['civ_registernewvehicle'] = "civ-registernewveh.php";
+$url['civ_viewveh'] = "civ-viewveh.php";
+$url['civ_firearms'] = "civ-firearms.php";
+$url['civ_newwarrant'] = "civ-addwarrant.php";
+$url['civ_viewwarrants'] = "civ-mywarrants.php";
+$url['leo_index'] = "leo-index.php";
+$url['staff_edit_user'] = "staff-edituser.php";
+$url['staff_index'] = "staff.php";
+$url['fire_index'] = "fire-index.php";
+$url['leo_supervisor_view_pending_identities'] = "leo-pending-identities.php";
+$url['leo_supervisor_view_pending_identities'] = "leo-all-identities.php";
+$url['dispatch_index'] = "dispatch-index.php";
+$url['staff_setup'] = "setup.php";
+$url['settings'] = "user-settings.php";
+$url['logout'] = "logout.php";
 
 $message     = '';
 
 $ip = $_SERVER['REMOTE_ADDR'];
-date_default_timezone_set($settings_timezone_db);
+date_default_timezone_set($siteSettings['timezone']);
 $date   = date('Y-m-d');
 $us_date = date_format(date_create_from_format('Y-m-d', $date), 'm/d/Y');
 $time = date('h:i:s A', time());
@@ -133,13 +133,8 @@ $time = date('h:i:s A', time());
 //REMOVING ANYTHING BELOW THIS LINE WILL VOID SUPPORT.
 //________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
-//YOU ARE NOT ALLOWED TO REMOVE THIS. REMOVING THIS, REMOVING BACKLINKS, WILL RESULT IN A DMCA TAKEDOWN AS IT IS A BREACH OF OUR LICENSE (AGPL v3)
-$ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC">Powered by Hydrid</a></strong></small><br />
-<small>Version: '.$version;
-
-//version check
-$url_vc = "https://pastebin.com/raw/d63r81DF";
-$data_vc = file_get_contents($url_vc);
+// Version Check/Control
+$data_vc = file_get_contents("http://hydrid.us/version.txt");
 
 if ($data_vc > $version) {
   define('isOutdated', true);
@@ -153,6 +148,19 @@ if (!class_exists('PDO')) {
 }
 
 //php version check
-if (floatval(phpversion()) < 5.4) {
+if (floatval(phpversion()) < 5.6) {
   die("Your PHP Version is not supported. Please update to continue using Hydrid.");
+}
+
+// hydrid announce check
+// Version Check/Control
+$data_hac = file_get_contents("http://hydrid.us/important.txt");
+
+//YOU ARE NOT ALLOWED TO REMOVE THIS. REMOVING THIS, REMOVING BACKLINKS, WILL RESULT IN A DMCA TAKEDOWN AS IT IS A BREACH OF OUR LICENSE (AGPL v3)
+if ($data_vc > $version) {
+  $ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLANK">Powered by Hydrid</a></strong></small><br />
+  <small>Version: '.$version.'<br />Latest Version: '.$data_vc.'<br /><small><strong><font color="red">Hydrid is Outdated. Hydrid does not provide support for Outdated versions.</font></strong></small>';
+} else {
+  $ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLANK">Powered by Hydrid</a></strong></small><br />
+  <small>Version: '.$version.'<br />Latest Version: '.$data_vc;
 }

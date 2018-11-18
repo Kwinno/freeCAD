@@ -20,121 +20,15 @@ require 'classes/lib/password.php';
 
 if (isset($_POST['registerbtn'])) {
     //Pull the variables from the form
-    $username_form = !empty($_POST['username']) ? trim($_POST['username']) : null;
-    $email_form      = !empty($_POST['email']) ? trim($_POST['email']) : null;
-    $pass_form       = !empty($_POST['password']) ? trim($_POST['password']) : null;
-    $discord_form       = !empty($_POST['discord']) ? trim($_POST['discord']) : null;
+    $username = !empty($_POST['username']) ? trim($_POST['username']) : null;
+    $pass       = !empty($_POST['password']) ? trim($_POST['password']) : null;
+    $discord       = !empty($_POST['discord']) ? trim($_POST['discord']) : null;
     //Sanitize the variables, prevents xss, etc.
-    $username        = strip_tags($username_form);
-    $email           = strip_tags($email_form);
-    $pass            = strip_tags($pass_form);
-    $discord            = strip_tags($discord_form);
-    //Add any checks (length, etc here....)
-    if (strlen($pass) < 6) {
-        header('Location: ' . $url_register . '?password=short');
-        exit();
-    } elseif (strlen($pass) > 120) {
-        header('Location: ' . $url_register . '?password=long');
-        exit();
-    } elseif (strlen($username) > 36) {
-        header('Location: ' . $url_register . '?username=long');
-        exit();
-    }
-    //Continue the execution, check if email is taken.
-    $sql  = "SELECT COUNT(email) AS num FROM users WHERE email = :email";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':email', $email);
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row['num'] > 0) {
-        header('Location: ' . $url_register . '?email=taken');
-        exit();
-    }
-    //Continue the execution, check if username is taken.
-    $sql  = "SELECT COUNT(username) AS num FROM users WHERE username = :username";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':username', $username);
-    $stmt->execute();
-    $row = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($row['num'] > 0) {
-        header('Location: ' . $url_register . '?username=taken');
-        exit();
-    }
-    if (discordModule_isInstalled) {
-      if ($settings_sign_up_verification_db === "yes") {
-        //if everything passes, than continue
-        $uvusergroup = "Unverified";
-        $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
-        $sql          = "INSERT INTO users (username, email, password, usergroup, join_date, join_ip, discord) VALUES (:username, :email, :password, :usergroup, :join_date, :join_ip, :discord)";
-        $stmt         = $pdo->prepare($sql);
-        $stmt->bindValue(':username', $username);
-        $stmt->bindValue(':email', $email);
-        $stmt->bindValue(':password', $passwordHash);
-        $stmt->bindValue(':usergroup', $uvusergroup);
-        $stmt->bindValue(':join_date', $us_date);
-        $stmt->bindValue(':join_ip', $ip);
-        $stmt->bindValue(':discord', $discord);
-        $result = $stmt->execute();
-        if ($result) {
-            //redirect
-            header('Location: ' . $url_welcome . '');
-            exit();
-        }
-      } else {
-        //if everything passes, than continue
-        $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
-        $sql          = "INSERT INTO users (username, email, password, join_date, join_ip, discord) VALUES (:username, :email, :password, :join_date, :join_ip, :discord)";
-        $stmt         = $pdo->prepare($sql);
-        $stmt->bindValue(':username', $username);
-        $stmt->bindValue(':email', $email);
-        $stmt->bindValue(':password', $passwordHash);
-        $stmt->bindValue(':join_date', $us_date);
-        $stmt->bindValue(':join_ip', $ip);
-        $stmt->bindValue(':discord', $discord);
-        $result = $stmt->execute();
-        if ($result) {
-            //redirect
-            header('Location: ' . $url_welcome . '');
-            exit();
-        }
-      }
-    } else {
-      if ($settings_sign_up_verification_db === "yes") {
-        //if everything passes, than continue
-        $uvusergroup = "Unverified";
-        $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
-        $sql          = "INSERT INTO users (username, email, password, usergroup, join_date, join_ip) VALUES (:username, :email, :password, :usergroup, :join_date, :join_ip)";
-        $stmt         = $pdo->prepare($sql);
-        $stmt->bindValue(':username', $username);
-        $stmt->bindValue(':email', $email);
-        $stmt->bindValue(':password', $passwordHash);
-        $stmt->bindValue(':usergroup', $uvusergroup);
-        $stmt->bindValue(':join_date', $us_date);
-        $stmt->bindValue(':join_ip', $ip);
-        $result = $stmt->execute();
-        if ($result) {
-            //redirect
-            header('Location: ' . $url_welcome . '');
-            exit();
-        }
-      } else {
-        //if everything passes, than continue
-        $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
-        $sql          = "INSERT INTO users (username, email, password, join_date, join_ip) VALUES (:username, :email, :password, :join_date, :join_ip)";
-        $stmt         = $pdo->prepare($sql);
-        $stmt->bindValue(':username', $username);
-        $stmt->bindValue(':email', $email);
-        $stmt->bindValue(':password', $passwordHash);
-        $stmt->bindValue(':join_date', $us_date);
-        $stmt->bindValue(':join_ip', $ip);
-        $result = $stmt->execute();
-        if ($result) {
-            //redirect
-            header('Location: ' . $url_welcome . '');
-            exit();
-        }
-      }
-    }
+    $username        = strip_tags($username);
+    $pass            = strip_tags($pass);
+    $discord            = strip_tags($discord);
+
+    userRegister($username, $pass, $discord);
 }
 
 //Error Messages
@@ -171,11 +65,6 @@ include('includes/header.php')
                         <input type="text" name="username" class="form-control" maxlength="36" placeholder="Username" title="This must be the name you use on discord." data-lpignore="true" required />
                      </div>
                   </div>
-                  <div class="col">
-                     <div class="form-group">
-                        <input type="email" name="email" class="form-control" placeholder="Email" title="This must be a valid email." data-lpignore="true" required />
-                     </div>
-                  </div>
                </div>
                <?php if (discordModule_isInstalled): ?>
                  <div class="form-group">
@@ -188,10 +77,11 @@ include('includes/header.php')
                <div class="form-group">
                   <input class="btn btn-block btn-primary" name="registerbtn" id="registerbtn" type="submit" value="Finish Signup">
                </div>
-               <text>Already have an account? <a href="<?php print($url_login) ?>">Login</a></text>
+               <text>Already have an account? <a href="<?php print($url['login']) ?>">Login</a></text>
                <?php echo $ftter; ?>
             </form>
          </div>
       </div>
+      <?php include('includes/js.php'); ?>
    </body>
 </html>

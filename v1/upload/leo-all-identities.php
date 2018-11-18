@@ -17,60 +17,41 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
 
 if ($_SESSION['leo_supervisor'] === "No") {
-  header('Location: ' . $url_leo_index . '');
+  header('Location: ' . $url['leo_index'] . '');
   exit();
 }
 
 if (isset($_POST['deleteId'])) {
     //Pull the variables from the form
-    $identity_id_form = !empty($_POST['identity_id_form']) ? trim($_POST['identity_id_form']) : null;
-    $identifier_form = !empty($_POST['identifier_form']) ? trim($_POST['identifier_form']) : null;
-    $leo_supervisor_form = !empty($_POST['leo_supervisor_form']) ? trim($_POST['leo_supervisor_form']) : null;
+    $identity_id = !empty($_POST['identity_id_form']) ? trim($_POST['identity_id_form']) : null;
+    $identifier = !empty($_POST['identifier_form']) ? trim($_POST['identifier_form']) : null;
+    $leo_supervisor = !empty($_POST['leo_supervisor_form']) ? trim($_POST['leo_supervisor_form']) : null;
     //Sanitize the variables, prevents xss, etc.
-    $identity_id_update        = strip_tags($identity_id_form);
-    $identifier_update        = strip_tags($identifier_form);
-    $leo_supervisor_update        = strip_tags($leo_supervisor_form);
-    //if everything passes, than continue
-    $stmt = $pdo->prepare( "DELETE FROM identities WHERE identity_id =:identity_id" );
-    $stmt->bindParam(':identity_id', $identity_id_update);
-    $result = $stmt->execute();
-    if ($result) {
-        //redirect
-        logme('(LEO) DELETED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
-        header('Location: ' . $url_leo_supervisor_view_all_identities . '?id=deleted');
-        exit();
-    }
+    $identity_id_update        = strip_tags($identity_id);
+    $identifier_update        = strip_tags($identifier);
+    $leo_supervisor_update        = strip_tags($leo_supervisor);
+    
+    deleteIdentityLEO($identity_id_update, $identifier_update, $leo_supervisor_update);
 }
 if (isset($_POST['editId'])) {
     //Pull the variables from the form
-    $identity_id_form = !empty($_POST['identity_id_form']) ? trim($_POST['identity_id_form']) : null;
-    $identifier_form = !empty($_POST['identifier_form']) ? trim($_POST['identifier_form']) : null;
-    $leo_supervisor_form = !empty($_POST['leo_supervisor_form']) ? trim($_POST['leo_supervisor_form']) : null;
-    $is_dispatch_form = !empty($_POST['is_dispatch_form']) ? trim($_POST['is_dispatch_form']) : null;
+    $identity_id = !empty($_POST['identity_id_form']) ? trim($_POST['identity_id_form']) : null;
+    $identifier = !empty($_POST['identifier_form']) ? trim($_POST['identifier_form']) : null;
+    $leo_supervisor = !empty($_POST['leo_supervisor_form']) ? trim($_POST['leo_supervisor_form']) : null;
+    $is_dispatch = !empty($_POST['is_dispatch_form']) ? trim($_POST['is_dispatch_form']) : null;
     //Sanitize the variables, prevents xss, etc.
-    $identity_id_update        = strip_tags($identity_id_form);
-    $identifier_update        = strip_tags($identifier_form);
-    $leo_supervisor_update        = strip_tags($leo_supervisor_form);
-    $is_dispatch_update        = strip_tags($is_dispatch_form);
-    //if everything passes, than continue
-    $sql     = "UPDATE `identities` SET `identifier`=:identifier, `leo_supervisor`=:leo_supervisor, `is_dispatch`=:is_dispatch WHERE identity_id=:identity_id";
-    $stmt    = $pdo->prepare($sql);
-    $stmt->bindParam(':identity_id', $identity_id_update);
-    $stmt->bindParam(':leo_supervisor', $leo_supervisor_update);
-    $stmt->bindParam(':identifier', $identifier_update);
-    $stmt->bindParam(':is_dispatch', $is_dispatch_update);
-    $updateId = $stmt->execute();
-    if ($updateId) {
-      logme('(LEO) EDITED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
-      header('Location: ' . $url_leo_supervisor_view_all_identities . '?id=edited');
-      exit();
-    }
+    $identity_id_update        = strip_tags($identity_id);
+    $identifier_update        = strip_tags($identifier);
+    $leo_supervisor_update        = strip_tags($leo_supervisor);
+    $is_dispatch_update        = strip_tags($is_dispatch);
+    
+    editIdentityLEO($identity_id_update, $identifier_update, $leo_supervisor_update, $is_dispatch_update);
 }
 
 if (isset($_GET['id']) && strip_tags($_GET['id']) === 'edited') {
@@ -110,7 +91,7 @@ include('includes/header.php')
             </div>
           <?php endif; ?>
         </div>
-         <div class="center"><a href="<?php echo $url_leo_index ?>"><img src="assets/imgs/police.png" class="main-logo" draggable="false"/></a></div>
+         <div class="center"><a href="<?php echo $url['leo_index'] ?>"><img src="assets/imgs/police.png" class="main-logo" draggable="false"/></a></div>
          <div class="main-header-leo">
             <div class="float-left">Supervisor: <?php if ($_SESSION['leo_supervisor'] === "Yes") {
               echo 'Yes';
@@ -217,8 +198,8 @@ include('includes/header.php')
              </div>
              <?php if ($_SESSION['leo_supervisor'] === "Yes"): ?>
              <div class="col-sm-2">
-               <a href="<?php echo $url_leo_supervisor_view_all_identities ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
-               <a href="<?php echo $url_leo_supervisor_view_pending_identities ?>" class="btn btn-success btn-block">Pending Identities</a><br-leo>
+               <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
+               <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-success btn-block">Pending Identities</a><br-leo>
              </div>
              <?php endif; ?>
            </div>
@@ -233,8 +214,8 @@ include('includes/header.php')
    <!-- sounds -->
    <!-- <audio id="panicButton" src="assets/sounds/panic-button.mp3" preload="auto"></audio> -->
    <!-- end sounds -->
-
    <!-- js -->
+   <?php include('includes/js.php'); ?>
    <script type="text/javascript">
     $(document).ready(function() {
       $('.js-example-basic-single').select2({

@@ -14,16 +14,16 @@
     GNU General Public License for more details.
 **/
 require 'includes/connect.php';
-include 'includesincludes/config.php';
+include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
 
 if ($_SESSION['fire_supervisor'] === "No") {
-  header('Location: ' . $url_index . '?np=fire');
+  header('Location: ' . $url['index'] . '?np=fire');
   exit();
 }
 
@@ -46,7 +46,7 @@ if (isset($_POST['deleteId'])) {
     $result = $stmt->execute();
     if ($result) {
         //redirect
-        header('Location: ' . $url_leo_supervisor_view_all_identities . '?id=deleted');
+        header('Location: ' . $url['leo_supervisor_view_pending_identities'] . '?id=deleted');
         exit();
     }
 }
@@ -252,11 +252,11 @@ include('includes/header.php')
             <div class="modal-body">
               <form method="post" action="leo-index.php">
                 <div class="form-group">
-                  <?php if ($settings_theme_db === "lumen"): ?>
+                  <?php if ($siteSettings['theme'] === "lumen"): ?>
                     <textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="89"><?php echo $_SESSION['notepad']; ?></textarea>
-                  <?php elseif ($settings_theme_db === "pulse" OR $settings_theme_db === "pulsev2"): ?>
+                  <?php elseif ($siteSettings['theme'] === "pulse" OR $siteSettings['theme'] === "pulsev2"): ?>
                     <textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="89"><?php echo $_SESSION['notepad']; ?></textarea>
-                  <?php elseif ($settings_theme_db === "simplex"): ?>
+                  <?php elseif ($siteSettings['theme'] === "simplex"): ?>
                     <textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="89"><?php echo $_SESSION['notepad']; ?></textarea>
                   <?php else: ?>
                     <textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="74"><?php echo $_SESSION['notepad']; ?></textarea>
@@ -287,7 +287,8 @@ include('includes/header.php')
    <!-- // -->
    <!-- end modals -->
    <!-- js -->
-   <script src="../main-core/assets/js/pages/fire.js"></script>
+   <?php include('includes/js.php'); ?>
+   <script src="assets/js/pages/fire.js"></script>
    <!-- end js -->
 </body>
 </html>

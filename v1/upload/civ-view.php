@@ -11,20 +11,15 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
 
-if (isset($_GET['id']) && is_numeric($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
-    $id   = $_GET['id'];
-    $sql  = "SELECT * FROM characters WHERE character_id = :id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':id', $id);
-    $stmt->execute();
-    $character = $stmt->fetch(PDO::FETCH_ASSOC);
+if (isset($_GET['id'])) {
+    $character = dbquery('SELECT * FROM characters WHERE character_id="' . escapestring($_GET['id']) . '"')[0];
     if ($character === false) {
-       header('Location: ' . $url_civ_index . '');
+       header('Location: ' . $url['civ_index'] . '');
        exit();
     } else {
        $character_id    = $character['character_id'];
@@ -76,8 +71,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && filter_var($_GET['id'], FIL
        $_SESSION['character_license_firearm'] = $character_license_firearm;
 
     } if ($character_owner_id !== $user_id) {
-      logme('Attempted To Access Someone Elses Character', $user_username);
-      header('Location: ' . $url_civ_index . '');
+      logAction('Attempted To Access Someone Elses Character', $user_username);
+      header('Location: ' . $url['civ_index'] . '');
       exit();
     }
  }
@@ -91,8 +86,8 @@ if (isset($_GET['id']) && is_numeric($_GET['id']) && filter_var($_GET['id'], FIL
    $deleteChar = $stmt->execute();
    //Continue
    if ($deleteChar) {
-     logme('Deleted Character', $user_username);
-      header('Location: ' . $url_civ_index . '?character=deleted');
+     logAction('Deleted Character', $user_username);
+      header('Location: ' . $url['civ_index'] . '?character=deleted');
    }
 }
 
@@ -121,7 +116,7 @@ if (isset($_POST['createNewCall'])) {
     $result = $stmt->execute();
     if ($result) {
         //redirect
-        header('Location: ' . $url_civ_view . '?call=created');
+        header('Location: ' . $url['civ_view'] . '?call=created');
     }
 }
 
@@ -143,7 +138,7 @@ include('includes/header.php')
    <body>
       <div class="container">
          <div class="main">
-            <a href="<?php print $url_index ?>"><img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/></a>
+            <a href="<?php print $url['index'] ?>"><img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/></a>
             <div class="main-header">
                Hello, <?php echo $_SESSION['character_first_name'] ?>
             </div>
@@ -153,7 +148,7 @@ include('includes/header.php')
                   <a data-toggle="modal" href="#dmv1" class="btn btn-primary btn-block btn-sb">DMV</a>
                 </div>
                 <div class="col">
-                  <a href="<?php print $url_civ_firearms ?>" class="btn btn-primary btn-block btn-sb">Firearms</a>
+                  <a href="<?php print $url['civ_firearms'] ?>" class="btn btn-primary btn-block btn-sb">Firearms</a>
                 </div>
               </div>
 
@@ -184,11 +179,11 @@ include('includes/header.php')
                   </div>
                   <div class="modal-body">
 
-                      <a href="<?php print $url_civ_driverlicense ?>" class="btn btn-primary btn-block btn-sb">Drivers License</a>
+                      <a href="<?php print $url['civ_driverlicense'] ?>" class="btn btn-primary btn-block btn-sb">Drivers License</a>
 
-                      <a href="<?php print $url_civ_registernewvehicle ?>" class="btn btn-primary btn-block btn-sb">Register New Vehicle</a>
+                      <a href="<?php print $url['civ_registernewvehicle'] ?>" class="btn btn-primary btn-block btn-sb">Register New Vehicle</a>
 
-                      <a href="<?php print $url_civ_viewveh ?>" class="btn btn-primary btn-block btn-sb">My Vehicles</a>
+                      <a href="<?php print $url['civ_viewveh'] ?>" class="btn btn-primary btn-block btn-sb">My Vehicles</a>
 
                   </div>
                   <div class="modal-footer">
@@ -209,9 +204,9 @@ include('includes/header.php')
                   </div>
                   <div class="modal-body">
 
-                      <a href="<?php print $url_civ_newarrant ?>" class="btn btn-primary btn-block btn-sb">Add New Warrant</a>
+                      <a href="<?php print $url['civ_newwarrant'] ?>" class="btn btn-primary btn-block btn-sb">Add New Warrant</a>
 
-                      <a href="<?php print $url_civ_viewwarratns ?>" class="btn btn-primary btn-block btn-sb">My Warrants</a>
+                      <a href="<?php print $url['civ_viewwarrants'] ?>" class="btn btn-primary btn-block btn-sb">My Warrants</a>
 
                   </div>
                   <div class="modal-footer">
@@ -289,5 +284,6 @@ include('includes/header.php')
             <?php echo $ftter; ?>
          </div>
       </div>
+      <?php include('includes/js.php'); ?>
    </body>
 </html>
