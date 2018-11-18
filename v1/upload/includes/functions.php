@@ -39,6 +39,7 @@ function logAction($action, $user) {
     global $time;
     global $us_date;
     dbquery('INSERT INTO logs (action, username, timestamp) VALUES ("' . escapestring($action) . '", "' . escapestring($user) . '", "' . $time . ' ' . $us_date . '")', false);
+    plugins::call('logAction', array("action" => $action, "user" => $user));
 }
 
 // Login Function
@@ -67,6 +68,7 @@ function userLogin($username, $passwordAttempt) {
                     header('Location: ' . $url['index'] . '?logged=in');
                     exit();
                 } else {
+                plugins::call('userLoggedin', array("user" => $user));
                 header('Location: ' . $url['index'] . '?logged=in');
                 exit();
             }
@@ -112,6 +114,7 @@ function userRegister($username, $pass, $discord = NULL) {
             "' . escapestring($ip) . '",
             "' . escapestring($discord) . '"
         )', false);
+        plugins::call('userRegistered', array("user" => $username, "discord" => $discord));
         header('Location: ' . $url['welcome'] . '');
         exit();
     } else {
@@ -122,6 +125,7 @@ function userRegister($username, $pass, $discord = NULL) {
             "' . escapestring($us_date) . '",
             "' . escapestring($ip) . '"
         )', false);
+        plugins::call('userRegistered', array("user" => $username));
         header('Location: ' . $url['welcome'] . '');
         exit();
     }

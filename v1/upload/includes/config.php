@@ -14,18 +14,28 @@
     GNU General Public License for more details.
 **/
 
+// Debug Toggle
+$GLOBAL['debug'] = true;
+
+
 // Version Number -- Do Not Change
 $version = "v1.0.6";
 
 
 // Disable Error Reporting
-error_reporting(0);
+if(!$GLOBAL['debug']) {
+  error_reporting(0);
+}
 
 
 // Oudated Variables/Constants?
 $update_in_progress = "No";
 define("isDonator", false);
 
+
+// Load Plugin Loader
+require_once("classes/lib/plugins.class.php");
+plugins::start('plugins/');
 
 // Get Global Functions
 require_once("functions.php");
