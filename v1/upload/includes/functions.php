@@ -56,8 +56,8 @@ function userLogin($username, $passwordAttempt) {
             // Set Session Variables
             $_SESSION['user_id']   = $user['user_id'];
             $_SESSION['logged_in'] = time();
-            
-            // Check If First Signin 
+
+            // Check If First Signin
             $settingsRow = dbquery('SELECT * FROM settings')[0];
                 if ($settingsRow['validation_enabled'] == "yes" || "Yes") {
                     if ($user['first_login'] === 0) {
@@ -79,7 +79,7 @@ function userLogin($username, $passwordAttempt) {
 
 
 // Register Function
-function userRegister($username, $email, $pass, $discord = NULL) {
+function userRegister($username, $pass, $discord = NULL) {
     global $pdo;
     global $us_date;
     global $ip;
@@ -96,13 +96,7 @@ function userRegister($username, $email, $pass, $discord = NULL) {
         header('Location: ' . $url['register'] . '?username=long');
         exit();
     }
-    
-    // Check Email Status
-    if (dbquery('SELECT COUNT(email) as count FROM users WHERE email="' . escapestring($email) . '"')[0]['count'] > 0) {
-        header('Location: ' . $url['register'] . '?email=taken');
-        exit();
-    }
-    
+
     // Check Username Status
     if (dbquery('SELECT COUNT(username) as count FROM users WHERE username="' . escapestring($username) . '"')[0]['count'] > 0) {
         header('Location: ' . $url['register'] . '?username=taken');
@@ -111,9 +105,8 @@ function userRegister($username, $email, $pass, $discord = NULL) {
 
     if (discordModule_isInstalled) {
         $password = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
-        dbquery('INSERT INTO users (username, email, password, join_date, join_ip, discord) VALUES (
+        dbquery('INSERT INTO users (username, password, join_date, join_ip, discord) VALUES (
             "' . escapestring($username) . '",
-            "' . escapestring($email) . '",
             "' . $password . '",
             "' . escapestring($us_date) . '",
             "' . escapestring($ip) . '",
@@ -123,9 +116,8 @@ function userRegister($username, $email, $pass, $discord = NULL) {
         exit();
     } else {
         $password = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
-        dbquery('INSERT INTO users (username, email, password, join_date, join_ip) VALUES (
+        dbquery('INSERT INTO users (username, password, join_date, join_ip) VALUES (
             "' . escapestring($username) . '",
-            "' . escapestring($email) . '",
             "' . $password . '",
             "' . escapestring($us_date) . '",
             "' . escapestring($ip) . '"

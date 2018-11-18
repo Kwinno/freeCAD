@@ -21,16 +21,14 @@ require 'classes/lib/password.php';
 if (isset($_POST['registerbtn'])) {
     //Pull the variables from the form
     $username = !empty($_POST['username']) ? trim($_POST['username']) : null;
-    $email      = !empty($_POST['email']) ? trim($_POST['email']) : null;
     $pass       = !empty($_POST['password']) ? trim($_POST['password']) : null;
     $discord       = !empty($_POST['discord']) ? trim($_POST['discord']) : null;
     //Sanitize the variables, prevents xss, etc.
     $username        = strip_tags($username);
-    $email           = strip_tags($email);
     $pass            = strip_tags($pass);
     $discord            = strip_tags($discord);
-    
-    userRegister($username, $email, $pass, $discord);
+
+    userRegister($username, $pass, $discord);
 }
 
 //Error Messages
@@ -65,11 +63,6 @@ include('includes/header.php')
                   <div class="col">
                      <div class="form-group">
                         <input type="text" name="username" class="form-control" maxlength="36" placeholder="Username" title="This must be the name you use on discord." data-lpignore="true" required />
-                     </div>
-                  </div>
-                  <div class="col">
-                     <div class="form-group">
-                        <input type="email" name="email" class="form-control" placeholder="Email" title="This must be a valid email." data-lpignore="true" required />
                      </div>
                   </div>
                </div>
