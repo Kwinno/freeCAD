@@ -147,5 +147,10 @@ if (floatval(phpversion()) < 5.6) {
 $data_hac = file_get_contents("http://hydrid.us/important.html");
 
 //YOU ARE NOT ALLOWED TO REMOVE THIS. REMOVING THIS, REMOVING BACKLINKS, WILL RESULT IN A DMCA TAKEDOWN AS IT IS A BREACH OF OUR LICENSE (AGPL v3)
-$ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLANK">Powered by Hydrid</a></strong></small><br />
-<small>Version: '.$version.'<br />Latest Version: '.$data_vc;
+if ($data_vc > $version) {
+  $ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLANK">Powered by Hydrid</a></strong></small><br />
+  <small>Version: '.$version.'<br />Latest Version: '.$data_vc.'<br /><small><strong><font color="red">Hydrid is Outdated. Hydrid does not provide support for Outdated versions.</font></strong></small>';
+} else {
+  $ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLANK">Powered by Hydrid</a></strong></small><br />
+  <small>Version: '.$version.'<br />Latest Version: '.$data_vc;
+}
