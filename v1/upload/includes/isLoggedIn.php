@@ -15,7 +15,8 @@
 **/
 
 // Get User Data
-$userRow = dbquery('SELECT * FROM users WHERE user_id=' . escapestring($_SESSION['user_id']))[0];
+$user_id = $_SESSION['user_id'];
+$userRow = dbquery('SELECT * FROM users WHERE user_id=' . $user_id)[0];
 
 //Define variables
 $user_username = $userRow['username'];
