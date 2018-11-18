@@ -15,7 +15,7 @@
 **/
 
 // Debug Toggle
-$GLOBAL['debug'] = true;
+$GLOBAL['debug'] = false;
 
 
 // Version Number -- Do Not Change
