@@ -16,13 +16,8 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
 }
 include 'includes/isLoggedIn.php';
 
-if (isset($_GET['id']) && is_numeric($_GET['id']) && filter_var($_GET['id'], FILTER_VALIDATE_INT)) {
-    $id   = $_GET['id'];
-    $sql  = "SELECT * FROM characters WHERE character_id = :id";
-    $stmt = $pdo->prepare($sql);
-    $stmt->bindValue(':id', $id);
-    $stmt->execute();
-    $character = $stmt->fetch(PDO::FETCH_ASSOC);
+if (isset($_GET['id'])) {
+    $character = dbquery('SELECT * FROM characters WHERE character_id="' . escapestring($_GET['id']) . '"')[0];
     if ($character === false) {
        header('Location: ' . $url['civ_index'] . '');
        exit();
