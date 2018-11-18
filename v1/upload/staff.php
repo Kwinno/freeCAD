@@ -46,23 +46,11 @@ if (isset($_POST['discordModule_install'])) {
   exit();
 }
 
-if (isset($_POST['custom10codesModule_uninstall'])) {
-  $stmt1 = $pdo->prepare( "DROP TABLE `custom10codes`" );
-  $stmt1->execute();
-  sleep(4);
-  $stmt2 = $pdo->prepare( "ALTER TABLE `settings` DROP `custom10codes_module`" );
-  $stmt2->execute();
-  sleep(3);
-  logAction('(STAFF) Uninstalled Custom 10 Codes Module', $user_username);
-  header('Location: ' . $url['staff_index'] . '?module=uninstalled');
-  exit();
-}
-
 if (isset($_POST['mapModule_install'])) {
   $stmt1 = $pdo->prepare( "ALTER TABLE `settings` ADD `map_module` VARCHAR(36) NOT NULL DEFAULT 'Enabled' AFTER `donator`" );
   $stmt1->execute();
   sleep(3);
-  $stmt2 = $pdo->prepare( "ALTER TABLE `settings` ADD `map_module_link` VARCHAR(36) NOT NULL DEFAULT '#' AFTER `map_module`" );
+  $stmt2 = $pdo->prepare( "ALTER TABLE `settings` ADD `map_module_link` VARCHAR(355) NOT NULL DEFAULT '#' AFTER `map_module`" );
   $stmt2->execute();
   sleep(3);
   logAction('(STAFF) Installed LiveMap Module', $user_username);
