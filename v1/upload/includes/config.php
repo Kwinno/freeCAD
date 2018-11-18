@@ -120,12 +120,8 @@ $time = date('h:i:s A', time());
 //REMOVING ANYTHING BELOW THIS LINE WILL VOID SUPPORT.
 //________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
-//YOU ARE NOT ALLOWED TO REMOVE THIS. REMOVING THIS, REMOVING BACKLINKS, WILL RESULT IN A DMCA TAKEDOWN AS IT IS A BREACH OF OUR LICENSE (AGPL v3)
-$ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLANK">Powered by Hydrid</a></strong></small><br />
-<small>Version: '.$version;
-
 // Version Check/Control
-$data_vc = file_get_contents("http://hydrid.us/version.txt");
+$data_vc = file_get_contents("http://hydrid.us/version.html");
 
 if ($data_vc > $version) {
   define('isOutdated', true);
@@ -142,3 +138,11 @@ if (!class_exists('PDO')) {
 if (floatval(phpversion()) < 5.6) {
   die("Your PHP Version is not supported. Please update to continue using Hydrid.");
 }
+
+// hydrid announce check
+// Version Check/Control
+$data_hac = file_get_contents("http://hydrid.us/important.html");
+
+//YOU ARE NOT ALLOWED TO REMOVE THIS. REMOVING THIS, REMOVING BACKLINKS, WILL RESULT IN A DMCA TAKEDOWN AS IT IS A BREACH OF OUR LICENSE (AGPL v3)
+$ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLANK">Powered by Hydrid</a></strong></small><br />
+<small>Version: '.$version.'<br />Latest Version: '.$data_vc;

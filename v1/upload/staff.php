@@ -240,6 +240,9 @@ include('includes/header.php')
               echo '<a href="staff.php"><i class="fas fa-cog"></i></a>';
             } ?>
           </div>
+          <?php if ($data_hac !== "") {
+            echo $data_hac;
+          } ?>
           <?php if (isOutdated): ?>
             <div class="alert alert-danger">Hydrid is Outdated! The latest version is <strong><?php echo $data_vc; ?></strong>. You are currently on <strong><?php echo $version; ?></strong>. You can download the latest version from <a href="https://github.com/HydridSystems/Hydrid-CAD-MDT">GitHub</a></div>
           <?php endif; ?>
