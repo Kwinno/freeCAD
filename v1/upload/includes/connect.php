@@ -13,14 +13,9 @@ $pdoOptions = array(
     PDO::ATTR_EMULATE_PREPARES => false
 );
 
-try {
-  $pdo = new PDO(
-      "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
-      DB_USER,
-      DB_PASS,
-      $pdoOptions
-  );
-}
-catch(PDOException $ex){
-    die("Database Error - Contact Support");
-}
+$pdo = new PDO(
+    "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME,
+    DB_USER,
+    DB_PASS,
+    $pdoOptions
+);
