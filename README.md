@@ -41,6 +41,6 @@ or any credits.
 - Done! You now have full access over your CAD/MDT system.
 
 # Contribute!
-If you are a developer and want to Contribute to Hydrid, Contact *Falcon#4552* on Discord.
+If you are a developer and want to Contribute to Hydrid, Contact Staff on Discord.
 (Contributing can be anything from a small bug fix, to something major such as Steam Login as an Option.)
 
