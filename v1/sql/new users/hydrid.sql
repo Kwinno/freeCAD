@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2018 at 10:35 PM
+-- Generation Time: Nov 18, 2018 at 05:50 PM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.7
 
@@ -193,12 +193,12 @@ CREATE TABLE `tickets` (
 CREATE TABLE `users` (
   `user_id` int(11) NOT NULL,
   `username` varchar(36) NOT NULL,
-  `email` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `usergroup` varchar(64) NOT NULL DEFAULT 'User',
   `join_date` varchar(126) NOT NULL,
   `join_ip` varchar(126) NOT NULL,
-  `discord` varchar(60) DEFAULT NULL
+  `discord` varchar(60) DEFAULT NULL,
+  `first_login` int(11) NOT NULL DEFAULT '0' COMMENT '0/Yes - 1/No'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
