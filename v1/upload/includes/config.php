@@ -125,7 +125,7 @@ $ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLA
 <small>Version: '.$version;
 
 // Version Check/Control
-$data_vc = file_get_contents("https://pastebin.com/raw/d63r81DF");
+$data_vc = file_get_contents("http://hydrid.us/version.txt");
 
 if ($data_vc > $version) {
   define('isOutdated', true);
