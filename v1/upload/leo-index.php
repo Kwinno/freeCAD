@@ -17,7 +17,7 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
@@ -30,7 +30,8 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
   $stmt->execute();
   $identity = $stmt->fetch(PDO::FETCH_ASSOC);
   if ($identity === false) {
-     header('Location: ' . $url_index . '');
+     $_SESSION['is_leo'] = "No";
+     header('Location: ' . $url['index'] . '');
      exit();
   } else {
     //set the needed session variables
@@ -39,6 +40,9 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
 
      $sidentity_name    = $identity['identifier'];
      $_SESSION['identifier'] = $sidentity_name;
+
+     $_SESSION['is_leo'] = "Yes";
+	 $_SESSION['is_dispatch'] = "No";
 
      if ($identity['leo_supervisor'] === "Yes") {
        $_SESSION['leo_supervisor'] = "Yes";
@@ -54,14 +58,20 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
 
      $sidentity_user    = $identity['user'];
      $_SESSION['on_duty'] = "No";
-     header('Location: ' . $url_leo_index . '');
+     header('Location: ' . $url['leo_index'] . '');
      exit();
 
   } if ($sidentity_user !== $user_id) {
-    header('Location: ' . $url_index . '');
+    header('Location: ' . $url['index'] . '');
     exit();
   }
 }
+
+if ($_SESSION['is_leo'] === "No") {
+  header('Location: ' . $url['index'] . '?np=leo');
+  exit();
+}
+
 
 $stmts    = $pdo->prepare("SELECT * FROM settings");
 $stmts->execute();
@@ -93,7 +103,7 @@ if (isset($_POST['createTicketbtn'])) {
         $stmt->bindValue(':location', $location);
         $stmt->bindValue(':postal', $postal);
         $stmt->bindValue(':amount', $amount);
-        logme('(LEO) Created New Ticket', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Created New Ticket', $user_username . ' / ' . $_SESSION['identifier']);
         $result = $stmt->execute();
         if ($result) {
             $message='<div class="alert alert-success" id="dismiss">Ticket Created</div>';
@@ -117,7 +127,7 @@ if (isset($_POST['createArrestReportbtn'])) {
         $stmt->bindValue(':arresting_officer', $arresting_officer);
         $stmt->bindValue(':suspect', $suspect);
         $stmt->bindValue(':summary', $summary);
-        logme('(LEO) Created New Arrest Report', $user_username . ' / ' . $_SESSION['identifier']);
+        logAction('(LEO) Created New Arrest Report', $user_username . ' / ' . $_SESSION['identifier']);
         $result = $stmt->execute();
         if ($result) {
             $message='<div class="alert alert-success" id="dismiss">Arrest Report Created</div>';
@@ -147,9 +157,9 @@ if (isset($_POST['addBoloBtn'])) {
     $stmt->bindValue(':bolo_reason', $bolo_reason);
     $stmt->bindValue(':bolo_created_by', $bolo_created_by);
     $stmt->bindValue(':bolo_created_on', $date . ' ' . $time);
-    logme('(LEO) Added BOLO', $user_username . ' / ' . $_SESSION['identifier']);
     $result = $stmt->execute();
     if ($result) {
+        logAction('(LEO) Added BOLO', $user_username . ' / ' . $_SESSION['identifier']);
         //redirect
         $message='<div class="alert alert-success" id="dismiss">Bolo Added</div>';
     }
@@ -176,8 +186,8 @@ if (isset($_POST['1041btn'])) {
   $stmt->bindValue(':type', $duty_type);
   $result = $stmt->execute();
   $_SESSION['on_duty'] = "Yes";
-  logme('(LEO) Went On Duty', $user_username . ' / ' . $_SESSION['identifier']);
-  header('Location: ' . $url_leo_index . '');
+  logAction('(LEO) Went On Duty', $user_username . ' / ' . $_SESSION['identifier']);
+  header('Location: ' . $url['leo_index'] . '');
   exit();
 }
 if (isset($_POST['1042btn'])) {
@@ -188,8 +198,13 @@ if (isset($_POST['1042btn'])) {
   $endShift = $stmt->execute();
   $_SESSION['on_duty'] = "No";
 
-  header('Location: ' . $url_leo_index . '');
+  header('Location: ' . $url['leo_index'] . '');
   exit();
+}
+
+//Alerts
+if (isset($_GET['license']) && strip_tags($_GET['license']) === 'suspended') {
+  $message = '<div class="alert alert-success" role="alert" id="dismiss">License Suspended!</div>';
 }
 
 ?>
@@ -199,21 +214,6 @@ if (isset($_POST['1042btn'])) {
 $page_name = "LEO Home";
 include('includes/header.php')
 ?>
-<head>
-  <script>
-  $(document).ready(function() {
-   $("#openNameSearch").on("click",function(){
-     loadNames();
-   });
-   $("#openWeaponSearch").on("click",function(){
-     loadWpns();
-   });
-   $("#openVehicleSearch").on("click",function(){
-     loadVehs();
-   });
-  });
-  </script>
-</head>
 <body>
    <div class="container-leo">
       <div class="main-leo">
@@ -265,25 +265,17 @@ include('includes/header.php')
                <?php endif; ?>
              </div>
              <div class="col-sm-8">
-               <?php if (!custom10codesModule_isInstalled): ?>
                  <a id="10-6" class="btn btn-info btn-md <?php if ($_SESSION['on_duty'] === "No") {echo 'disabled';} ?>" style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">10-6</a>
                  <a id="10-7" class="btn btn-info btn-md <?php if ($_SESSION['on_duty'] === "No") {echo 'disabled';} ?>" style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">10-7</a>
                  <a id="10-8" class="btn btn-info btn-md <?php if ($_SESSION['on_duty'] === "No") {echo 'disabled';} ?>" style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">10-8</a>
                  <a id="10-15" class="btn btn-info btn-md <?php if ($_SESSION['on_duty'] === "No") {echo 'disabled';} ?>" style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">10-15</a>
                  <a id="10-23" class="btn btn-info btn-md <?php if ($_SESSION['on_duty'] === "No") {echo 'disabled';} ?>" style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">10-23</a>
+                   <!-- ADD MORE BUTTONS HERE
+                   Replace id="10-XX" with the 10-code - and add the 10-code at the end as well
+                   *IF THIS IS THE LAST BUTTON, MAKE SURE YOU PUT <br /> AT THE END OF IT. IF IT IS NOT THE LAST BUTTON, DON'T PUT <br />*
+                   <a id="10-XX" class="btn btn-info btn-md style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">10-XX</a> -->
                  <a id="10-97" class="btn btn-info btn-md <?php if ($_SESSION['on_duty'] === "No") {echo 'disabled';} ?>" style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">10-97</a><br>
-               <?php else: ?>
-                 <?php
-                 $getBolos = "SELECT * FROM custom10codes";
-             	 	$result = $pdo->prepare($getBolos);
-             		$result->execute();
-             		while ($row = $result->fetch(PDO::FETCH_ASSOC))
-             			{
-                    echo '<a id="'. $row['btn_value'] .'" class="btn btn-info btn-md" style="width:140px; margin-bottom: 4px;" onclick="setStatus(this)">'. $row['btn_value'] .'</a>';
-                  }
-                 ?>
-               <?php endif; ?><br>
-                 <form method="post" action="leo-index.php">
+               <form method="post" action="leo-index.php">
                <button class="btn btn-info btn-md" name="1041btn" style="width:140px; margin-bottom: 4px;" type="submit" type="button" <?php if ($_SESSION['on_duty'] === "Yes") {echo 'disabled';} ?>>10-41</button>
                <button class="btn btn-info btn-md" name="1042btn" style="width:140px; margin-bottom: 4px;" type="submit" type="button" <?php if ($_SESSION['on_duty'] === "No") {echo 'disabled';} ?>>10-42</button>
                </form>
@@ -297,8 +289,8 @@ include('includes/header.php')
              </div>
              <?php if ($_SESSION['leo_supervisor'] === "Yes"): ?>
                <div class="col-sm-2">
-                 <a href="<?php echo $url_leo_supervisor_view_all_identities ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
-                 <a href="<?php echo $url_leo_supervisor_view_pending_identities ?>" class="btn btn-warning btn-block">Pending Identities</a><br-leo>
+                 <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
+                 <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-warning btn-block">Pending Identities</a><br-leo>
                  <a data-toggle="modal" href="#aop" class="btn btn-danger btn-block">Change AOP</a><br-leo>
                </div>
              <?php endif; ?>
@@ -371,7 +363,18 @@ include('includes/header.php')
             </div>
             <div class="modal-body">
               <form>
-                <select class="js-example-basic-single" name="weaponSearch" id="weaponSearch" onchange="showWpn(this.value)"></select>
+                <select class="js-example-basic-single" name="weaponSearch" onchange="showWpn(this.value)">
+                  <option selected="true" disabled="disabled">Search Serial, or Owner Name</option>
+                  <?php
+                  $status = 'Enabled';
+                  $getWpn = "SELECT * FROM weapons WHERE wpn_status='$status'";
+                  $result = $pdo->prepare($getWpn);
+                  $result->execute();
+                  while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option value="'. $row['wpn_id'] .'">'. $row['wpn_type'] .' - '. $row['wpn_serial'] .' - '. $row['wpn_ownername'] .'</option>';
+                  }
+                   ?>
+                </select>
               </form>
 
               <div id="showWpn"></div>
@@ -392,7 +395,18 @@ include('includes/header.php')
             </div>
             <div class="modal-body">
               <form>
-                <select class="js-example-basic-single" name="vehicleSearch" id="vehicleSearch" onchange="showVeh(this.value)"></select>
+                <select class="js-example-basic-single" name="plateSearch" onchange="showVeh(this.value)">
+                  <option selected="true" disabled="disabled">Search VIN, Plate, Or Model</option>
+                  <?php
+                  $status = 'Enabled';
+                  $getVeh = "SELECT * FROM vehicles WHERE vehicle_status='$status'";
+                  $result = $pdo->prepare($getVeh);
+                  $result->execute();
+                  while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option value="'. $row['vehicle_id'] .'">'. $row['vehicle_vin'] .' - '. $row['vehicle_plate'] .' - '. $row['vehicle_model'] .'</option>';
+                  }
+                   ?>
+                </select>
               </form><br>
               <div id="showVehInfo"></div>
             </div>
@@ -400,6 +414,7 @@ include('includes/header.php')
       </div>
    </div>
    <!-- // -->
+   <!-- search name modal -->
    <!-- search name modal -->
    <div class="modal fade" id="searchNameDB" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -412,7 +427,18 @@ include('includes/header.php')
             </div>
             <div class="modal-body">
               <form>
-                <select class="js-example-basic-single" name="nameSearch" id="nameSearch" onchange="showName(this.value)"></select>
+                <select class="js-example-basic-single" name="weaponSearch" onchange="showName(this.value)">
+                  <option selected="true" disabled="disabled">Search Name, Or DOB</option>
+                  <?php
+                  $status = 'Enabled';
+                  $getChars = "SELECT * FROM characters WHERE status='$status'";
+                  $result = $pdo->prepare($getChars);
+                  $result->execute();
+                  while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option value="'. $row['character_id'] .'">'. $row['first_name'] .' '. $row['last_name'] .' // '. $row['date_of_birth'] .'</option>';
+                  }
+                   ?>
+                </select>
               </form><br>
               <div id="showPersonInfo"></div>
             </div>
@@ -436,7 +462,17 @@ include('includes/header.php')
                    <input type="text" name="bolo_created_by" class="form-control" maxlength="126" readonly="true" value="<?php echo $_SESSION['identifier'] ?>" data-lpignore="true" />
                 </div>
                 <div class="form-group">
-                  <select class="js-example-basic-single" name="vehicle_plate" id="vehicle_plate">
+                  <select class="js-example-basic-single" name="vehicle_plate">
+                    <option selected="true" disabled="disabled">Search For Plate</option>
+                    <?php
+                    $status = 'Enabled';
+                    $getChars = "SELECT * FROM vehicles WHERE vehicle_status='$status'";
+                    $result = $pdo->prepare($getChars);
+                    $result->execute();
+                    while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                      echo '<option value="'. $row['vehicle_plate'] .'">'. $row['vehicle_plate'] .'</option>';
+                    }
+                     ?>
                   </select>
                 </div>
                 <div class="form-group">
@@ -475,8 +511,18 @@ include('includes/header.php')
                    <input type="text" name="ticketing_officer" class="form-control" maxlength="126" placeholder="Ticketing Officer" readonly="true" value="<?php echo $_SESSION['identifier'] ?>" data-lpignore="true" required />
                 </div>
                 <div class="form-group">
-                  <select class="js-example-basic-single" name="suspect" id="suspect">
-                  </select>
+                <select class="js-example-basic-single" name="suspect" id="suspect">
+                  <option selected="true" disabled="disabled">Search Name, Or DOB</option>
+                  <?php
+                  $status = 'Enabled';
+                  $getChars = "SELECT * FROM characters WHERE status='$status'";
+                  $result = $pdo->prepare($getChars);
+                  $result->execute();
+                  while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option value="'. $row['character_id'] .'">'. $row['first_name'] .' '. $row['last_name'] .' // '. $row['date_of_birth'] .'</option>';
+                  }
+                   ?>
+                </select>
                 </div>
                 <div class="row">
                   <div class="col">
@@ -520,11 +566,11 @@ include('includes/header.php')
             <div class="modal-body">
               <form method="post" action="leo-index.php">
                 <div class="form-group">
-                  <?php if ($settings_theme_db === "lumen"): ?>
+                  <?php if ($siteSettings['theme'] === "lumen"): ?>
                     <textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="89"><?php echo $_SESSION['notepad']; ?></textarea>
-                  <?php elseif ($settings_theme_db === "pulse" OR $settings_theme_db === "pulsev2"): ?>
+                  <?php elseif ($siteSettings['theme'] === "pulse" OR $siteSettings['theme'] === "pulsev2"): ?>
                     <textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="89"><?php echo $_SESSION['notepad']; ?></textarea>
-                  <?php elseif ($settings_theme_db === "simplex"): ?>
+                  <?php elseif ($siteSettings['theme'] === "simplex"): ?>
                     <textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="89"><?php echo $_SESSION['notepad']; ?></textarea>
                   <?php else: ?>
                     <textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="74"><?php echo $_SESSION['notepad']; ?></textarea>
@@ -552,8 +598,18 @@ include('includes/header.php')
                    <input type="text" name="arresting_officer" class="form-control" maxlength="126" placeholder="Arresting Officer" readonly="true" value="<?php echo $_SESSION['identifier'] ?>" data-lpignore="true" required />
                 </div>
                 <div class="form-group">
-                  <select class="js-example-basic-single" name="suspect" id="suspect_arr">
-                  </select>
+                <select class="js-example-basic-single" name="suspect" id="suspect_arr">
+                  <option selected="true" disabled="disabled">Search Name, Or DOB</option>
+                  <?php
+                  $status = 'Enabled';
+                  $getChars = "SELECT * FROM characters WHERE status='$status'";
+                  $result = $pdo->prepare($getChars);
+                  $result->execute();
+                  while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option value="'. $row['character_id'] .'">'. $row['first_name'] .' '. $row['last_name'] .' // '. $row['date_of_birth'] .'</option>';
+                  }
+                   ?>
+                </select>
                 </div>
                 <div class="form-group">
                   <input type="text" name="summary" class="form-control" maxlength="255" placeholder="Charges" data-lpignore="true" required />
@@ -592,7 +648,21 @@ include('includes/header.php')
    <!-- <audio id="panicButton" src="assets/sounds/panic-button.mp3" preload="auto"></audio> -->
    <!-- end sounds -->
    <!-- js -->
+   <?php include('includes/js.php'); ?>
    <script src="assets/js/pages/leo.js"></script>
    <!-- end js -->
+   <script type="text/javascript">
+   $(document).ready(function() {
+    $("#openNameSearch").on("click",function(){
+      loadNames();
+    });
+    $("#openWeaponSearch").on("click",function(){
+      loadWpns();
+    });
+    $("#openVehicleSearch").on("click",function(){
+      loadVehs();
+    });
+   });
+   </script>
 </body>
 </html>

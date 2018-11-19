@@ -17,7 +17,7 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
@@ -62,8 +62,8 @@ if (isset($_POST['createcharbtn'])) {
     $stmt2->execute();
     $row2 = $stmt2->fetch(PDO::FETCH_ASSOC);
     if ($row1['num'] > 0 AND $row2['num'] > 0) {
-        logme('Tried To Register A Taken Character', $user_username);
-        header('Location: ' . $url_civ_index . '?character=taken');
+        logAction('Tried To Register A Taken Character', $user_username);
+        header('Location: ' . $url['civ_index'] . '?character=taken');
         exit();
     }
 
@@ -86,8 +86,8 @@ if (isset($_POST['createcharbtn'])) {
     $result = $stmt->execute();
     if ($result) {
         //redirect
-        logme('Registered New Character', $user_username);
-        header('Location: ' . $url_civ_index . '?character=created');
+        logAction('Registered New Character', $user_username);
+        header('Location: ' . $url['civ_index'] . '?character=created');
     }
 }
 
@@ -109,7 +109,7 @@ if (isset($_GET['character']) && strip_tags($_GET['character']) === 'created') {
    <body>
       <div class="container">
          <div class="main">
-            <a href="<?php print $url_index ?>"><img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/></a>
+            <a href="<?php print $url['index'] ?>"><img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/></a>
             <div class="main-header">
                Hello, <?php echo $user_username ?>
             </div>
@@ -247,7 +247,7 @@ if (isset($_GET['character']) && strip_tags($_GET['character']) === 'created') {
                          $result = $pdo->prepare($getCharacters);
                          $result->execute();
                          while($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                           echo '<option value="'. $url_civ_view .'?id='. $row['character_id'] .'">'. $row['first_name'] .' '. $row['last_name'] .'</option>';
+                           echo '<option value="'. $url['civ_view'] .'?id='. $row['character_id'] .'">'. $row['first_name'] .' '. $row['last_name'] .'</option>';
                          }
                           ?>
                        </select>
@@ -258,5 +258,6 @@ if (isset($_GET['character']) && strip_tags($_GET['character']) === 'created') {
             <?php echo $ftter; ?>
          </div>
       </div>
+      <?php include('includes/js.php'); ?>
    </body>
 </html>

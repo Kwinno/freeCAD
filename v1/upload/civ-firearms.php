@@ -17,7 +17,7 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
@@ -36,8 +36,8 @@ if (isset($_POST['updateCCWStatusBtn'])) {
   $updateLicense = $stmt->execute();
   //Continue
   if ($updateLicense) {
-    logme('Updated Characters CCW License', $user_username);
-     header('Location: ' . $url_civ_firearms . '?license=updated');
+    logAction('Updated Characters CCW License', $user_username);
+     header('Location: ' . $url['civ_firearms'] . '?license=updated');
   }
 }
 
@@ -49,7 +49,7 @@ if (isset($_POST['registerFirearmbtn'])) {
     $rpstatus            = strip_tags($rpstatus_form);
     //check if has valid ccw
     if ($_SESSION['character_license_firearm'] === "Invalid" || $_SESSION['character_license_firearm'] === "Suspended") {
-      header('Location: ' . $url_civ_firearms . '?license=invalid');
+      header('Location: ' . $url['civ_firearms'] . '?license=invalid');
       exit();
     }
     //
@@ -74,8 +74,8 @@ if (isset($_POST['registerFirearmbtn'])) {
     $result = $stmt->execute();
     if ($result) {
         //redirect
-        logme('Registered Firearm For Character', $user_username);
-        header('Location: ' . $url_civ_firearms . '?id='. $_SESSION['character_id'] .'&firearm=registered');
+        logAction('Registered Firearm For Character', $user_username);
+        header('Location: ' . $url['civ_firearms'] . '?id='. $_SESSION['character_id'] .'&firearm=registered');
     }
 }
 
@@ -122,7 +122,7 @@ if (isset($_GET['firearm']) && strip_tags($_GET['firearm']) === 'registered') {
    <body>
       <div class="container">
          <div class="main">
-            <a href="<?php print $url_civ_view ?>?id=<?php echo $_SESSION['character_id'] ?>"><img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/></a>
+            <a href="<?php print $url['civ_view'] ?>?id=<?php echo $_SESSION['character_id'] ?>"><img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/></a>
             <div class="main-header">
                Hello, <?php echo $_SESSION['character_first_name'] ?>
             </div>
@@ -285,5 +285,6 @@ if (isset($_GET['firearm']) && strip_tags($_GET['firearm']) === 'registered') {
             <?php echo $ftter; ?>
          </div>
       </div>
+      <?php include('includes/js.php'); ?>
    </body>
 </html>

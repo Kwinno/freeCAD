@@ -17,7 +17,7 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
@@ -31,8 +31,8 @@ include 'functions/refreshCivVariables.php';
    $deleteChar = $stmt->execute();
    //Continue
    if ($deleteChar) {
-      logme('Deleted Character', $user_username);
-      header('Location: ' . $url_civ_index . '?character=deleted');
+      logAction('Deleted Character', $user_username);
+      header('Location: ' . $url['civ_index'] . '?character=deleted');
    }
 }
 
@@ -47,8 +47,8 @@ if (isset($_POST['updateLicenseStatus'])) {
   $updateLicense = $stmt->execute();
   //Continue
   if ($updateLicense) {
-     logme('Updated Characters Drivers License', $user_username);
-     header('Location: ' . $url_civ_driverlicense . '?license=updated');
+     logAction('Updated Characters Drivers License', $user_username);
+     header('Location: ' . $url['civ_driverlicense'] . '?license=updated');
   }
 }
 
@@ -66,7 +66,7 @@ include('includes/header.php')
    <body>
       <div class="container">
          <div class="main">
-            <a href="<?php print $url_civ_view ?>?id=<?php echo $_SESSION['character_id'] ?>"><img src="assets/imgs/dmv.png" class="main-logo" draggable="false"/></a>
+            <a href="<?php print $url['civ_view'] ?>?id=<?php echo $_SESSION['character_id'] ?>"><img src="assets/imgs/dmv.png" class="main-logo" draggable="false"/></a>
             <div class="main-header">
                Hello, <?php echo $_SESSION['character_first_name'] ?>
             </div>
@@ -102,5 +102,6 @@ include('includes/header.php')
             <?php echo $ftter; ?>
          </div>
       </div>
+      <?php include('includes/js.php'); ?>
    </body>
 </html>

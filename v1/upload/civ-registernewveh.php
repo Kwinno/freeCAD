@@ -17,7 +17,7 @@ require 'includes/connect.php';
 include 'includes/config.php';
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-    header('Location: ' . $url_login . '');
+    header('Location: ' . $url['login'] . '');
     exit();
 }
 include 'includes/isLoggedIn.php';
@@ -38,16 +38,16 @@ if (isset($_POST['registervehbtn'])) {
 
      //check if the person has a valid license
      if ($_SESSION['character_license_driver'] === "Invalid" || $_SESSION['character_license_driver'] === "Expired" || $_SESSION['character_license_driver'] === "Fake" || $_SESSION['character_license_driver'] === "Suspended") {
-       header('Location: ' . $url_civ_registernewvehicle . '?license=invalid');
+       header('Location: ' . $url['civ_registernewvehicle'] . '?license=invalid');
        exit();
      }
 
     //Add any checks (length, etc here....)
     if (strlen($plate) < 2) {
-        header('Location: ' . $url_civ_registernewvehicle . '?plate=short');
+        header('Location: ' . $url['civ_registernewvehicle'] . '?plate=short');
         exit();
     } elseif (strlen($plate) > 8) {
-      header('Location: ' . $url_civ_registernewvehicle . '?plate=long');
+      header('Location: ' . $url['civ_registernewvehicle'] . '?plate=long');
       exit();
     }
     //Continue the execution, check if email is taken.
@@ -57,8 +57,8 @@ if (isset($_POST['registervehbtn'])) {
     $stmt->execute();
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row['num'] > 0) {
-      logme('Tried To Register A Vehicle With A Taken Plate', $user_username);
-        header('Location: ' . $url_civ_registernewvehicle . '?plate=taken');
+      logAction('Tried To Register A Vehicle With A Taken Plate', $user_username);
+        header('Location: ' . $url['civ_registernewvehicle'] . '?plate=taken');
         exit();
     }
     //if everything passes, than continue
@@ -79,8 +79,8 @@ if (isset($_POST['registervehbtn'])) {
     $result = $stmt->execute();
     if ($result) {
         //redirect
-        logme('Registered New Vehicle', $user_username);
-        header('Location: ' . $url_civ_view . '?id='. $_SESSION['character_id'] .'&vehicle=registered');
+        logAction('Registered New Vehicle', $user_username);
+        header('Location: ' . $url['civ_view'] . '?id='. $_SESSION['character_id'] .'&vehicle=registered');
     }
 }
 
@@ -100,7 +100,7 @@ include('includes/header.php')
    <body>
       <div class="container">
          <div class="main">
-            <a href="<?php print $url_civ_view ?>?id=<?php echo $_SESSION['character_id'] ?>"><img src="assets/imgs/dmv.png" class="main-logo" draggable="false"/></a>
+            <a href="<?php print $url['civ_view'] ?>?id=<?php echo $_SESSION['character_id'] ?>"><img src="assets/imgs/dmv.png" class="main-logo" draggable="false"/></a>
             <div class="main-header">
                Hello, <?php echo $_SESSION['character_first_name'] ?>
             </div>
@@ -175,5 +175,6 @@ include('includes/header.php')
             <?php echo $ftter; ?>
          </div>
       </div>
+      <?php include('includes/js.php'); ?>
    </body>
 </html>

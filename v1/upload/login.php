@@ -20,32 +20,13 @@ require 'classes/lib/password.php';
 
 if (isset($_POST['loginbtn'])) {
     //Pull from form
-    $username_form        = !empty($_POST['username']) ? trim($_POST['username']) : null;
-    $passwordAttempt_form = !empty($_POST['password']) ? trim($_POST['password']) : null;
+    $username        = !empty($_POST['username']) ? trim($_POST['username']) : null;
+    $passwordAttempt = !empty($_POST['password']) ? trim($_POST['password']) : null;
     //Sanitize
-    $username      = strip_tags($username_form);
-    $passwordAttempt      = strip_tags($passwordAttempt_form);
+    $username      = strip_tags($username);
+    $passwordAttempt      = strip_tags($passwordAttempt);
     //Execute
-    $sql             = "SELECT user_id, username, password FROM users WHERE username = :username";
-    $stmt            = $pdo->prepare($sql);
-    $stmt->bindValue(':username', $username);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    if ($user === false) {
-        header('Location: ' . $url_login . '?user=notfound');
-        exit();
-    } else {
-        $validPassword = password_verify($passwordAttempt, $user['password']);
-        if ($validPassword) {
-            $_SESSION['user_id']   = $user['user_id'];
-            $_SESSION['logged_in'] = time();
-            header('Location: ' . $url_index . '?logged=in');
-            exit();
-        } else {
-            header('Location: ' . $url_login . '?password=invalid');
-            exit();
-        }
-    }
+    userLogin($username, $passwordAttempt);
 }
 //Error Msgs
 if (isset($_GET['user']) && strip_tags($_GET['user']) === 'notfound') {
@@ -56,8 +37,6 @@ if (isset($_GET['user']) && strip_tags($_GET['user']) === 'notfound') {
   $message = '<div class="alert alert-danger" role="alert">Your account is not verified.</div>';
 } elseif (isset($_GET['account']) && strip_tags($_GET['account']) === 'banned') {
   $message = '<div class="alert alert-danger" role="alert">Your account has been banned. Please contact staff.</div>';
-} elseif (isset($_GET['panel']) && strip_tags($_GET['panel']) === 'banned') {
-  $message = '<div class="alert alert-danger" role="alert"><strong>CRITICAL ERROR - This panel has been suspended for <i>'.$settings_panel_suspended.'</i>. If you believe this was a mistake, contact support on our discord. <i>You have a 48 hour grace period to contact support or your panel will be removed from our system.</i></strong></div>';
 } elseif (isset($_GET['update']) && strip_tags($_GET['update']) === 'ip') {
   $message = '<div class="alert alert-danger" role="alert"><strong>Hydrid is currently being updated. This is a panel wide update, thus please do not message the server owner about this.</i></strong></div>';
 } elseif (isset($_GET['settings']) && strip_tags($_GET['settings']) === 'updated') {
@@ -74,7 +53,7 @@ include('includes/header.php')
          <div class="main">
             <img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/>
             <div class="main-header">
-               Hydrid Login
+               <?php echo $siteSettings['name']; ?> Login
             </div>
             <?php print($message); ?>
             <form method="post" action="login.php">
@@ -87,10 +66,11 @@ include('includes/header.php')
                <div class="form-group">
                   <input class="btn btn-block btn-primary" name="loginbtn" id="loginbtn" type="submit" value="Login">
                </div>
-               <text>Need an account? <a href="<?php print($url_register) ?>">Register</a></text>
+               <text>Need an account? <a href="<?php print($url['register']) ?>">Register</a></text>
                <?php echo $ftter; ?>
             </form>
          </div>
       </div>
+      <?php include('includes/js.php'); ?>
    </body>
 </html>
