@@ -9,7 +9,7 @@ Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
 		CurrentVehicle = GetVehiclePedIsIn(GetPlayerPed(PlayerId()), false)
-		if RadarEnabled and IsPedInAnyVehicle(GetPlayerPed(PlayerId()), false) then
+		if RadarEnabled and DoesEntityExist(CurrentVehicle) and GetVehicleClass(CurrentVehicle) == 18 then
 			local RadarPosition = GetOffsetFromEntityInWorldCoords(GetVehiclePedIsIn(GetPlayerPed(PlayerId()), false), 0.0, radarOffset, 0.0)
 			local TargetPosition = GetOffsetFromEntityInWorldCoords(GetPlayerPed(PlayerId()), 0.0, TargetOffset, 0.0)
 
