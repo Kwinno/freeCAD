@@ -49,7 +49,6 @@ if (isset($_GET['user']) && filter_var($_GET['user'], FILTER_VALIDATE_INT)) {
       } else {
         $_SESSION['edit_user_id'] = $userTable['user_id'];
         $edit_username    = $userTable['username'];
-        $edit_email    = $userTable['email'];
         $edit_usergroup    = $userTable['usergroup'];
         $edit_join_date    = $userTable['join_date'];
         $edit_discord    = $userTable['discord'];
@@ -57,7 +56,6 @@ if (isset($_GET['user']) && filter_var($_GET['user'], FILTER_VALIDATE_INT)) {
     } else {
        $_SESSION['edit_user_id'] = $userTable['user_id'];
        $edit_username    = $userTable['username'];
-       $edit_email    = $userTable['email'];
        $edit_usergroup    = $userTable['usergroup'];
        $edit_join_date    = $userTable['join_date'];
        $edit_discord    = $userTable['discord'];
@@ -67,24 +65,21 @@ if (isset($_GET['user']) && filter_var($_GET['user'], FILTER_VALIDATE_INT)) {
 if (isset($_POST['updateUserBtn'])) {
     //Pull the variables from the form
     $update_username_form = $_POST['update_username'] ? trim($_POST['update_username']) : null;
-    $update_email_form = $_POST['update_email'] ? trim($_POST['update_email']) : null;
     $update_password_form = $_POST['update_password'] ? trim($_POST['update_password']) : null;
     $update_usergroup_form = $_POST['update_usergroup'] ? trim($_POST['update_usergroup']) : null;
     $update_discord_form = $_POST['update_discord'] ? trim($_POST['update_discord']) : null;
 
     //Sanitize the variables, prevents xss, etc.
     $update_username        = strip_tags($update_username_form);
-    $update_email        = strip_tags($update_email_form);
     $update_password        = strip_tags($update_password_form);
     $update_usergroup        = strip_tags($update_usergroup_form);
     $update_discord        = strip_tags($update_discord_form);
 
     if (discordModule_isInstalled) {
       if (empty($update_password)) {
-        $sql     = "UPDATE `users` SET `username`=:username, `email`=:email, `usergroup`=:usergroup, `discord`=:discord WHERE user_id=:userid";
+        $sql     = "UPDATE `users` SET `username`=:username, `usergroup`=:usergroup, `discord`=:discord WHERE user_id=:userid";
         $stmt    = $pdo->prepare($sql);
         $stmt->bindValue(':username', $update_username);
-        $stmt->bindValue(':email', $update_email);
         $stmt->bindValue(':usergroup', $update_usergroup);
         $stmt->bindValue(':userid', $_SESSION['edit_user_id']);
         $stmt->bindValue(':discord', $update_discord);
@@ -95,10 +90,9 @@ if (isset($_POST['updateUserBtn'])) {
         }
       } else {
         $passwordHash = password_hash($update_password, PASSWORD_BCRYPT, array("cost" => 12));
-        $sql     = "UPDATE `users` SET `username`=:username, `email`=:email, `password`=:password, `usergroup`=:usergroup, `discord`=:discord WHERE user_id=:userid";
+        $sql     = "UPDATE `users` SET `username`=:username, `password`=:password, `usergroup`=:usergroup, `discord`=:discord WHERE user_id=:userid";
         $stmt    = $pdo->prepare($sql);
         $stmt->bindValue(':username', $update_username);
-        $stmt->bindValue(':email', $update_email);
         $stmt->bindValue(':password', $passwordHash);
         $stmt->bindValue(':usergroup', $update_usergroup);
         $stmt->bindValue(':userid', $_SESSION['edit_user_id']);
@@ -111,10 +105,9 @@ if (isset($_POST['updateUserBtn'])) {
       }
     } else {
       if (empty($update_password)) {
-        $sql     = "UPDATE `users` SET `username`=:username, `email`=:email, `usergroup`=:usergroup WHERE user_id=:userid";
+        $sql     = "UPDATE `users` SET `username`=:username, `usergroup`=:usergroup WHERE user_id=:userid";
         $stmt    = $pdo->prepare($sql);
         $stmt->bindValue(':username', $update_username);
-        $stmt->bindValue(':email', $update_email);
         $stmt->bindValue(':usergroup', $update_usergroup);
         $stmt->bindValue(':userid', $_SESSION['edit_user_id']);
         $updateUser = $stmt->execute();
@@ -124,10 +117,9 @@ if (isset($_POST['updateUserBtn'])) {
         }
       } else {
         $passwordHash = password_hash($update_password, PASSWORD_BCRYPT, array("cost" => 12));
-        $sql     = "UPDATE `users` SET `username`=:username, `email`=:email, `password`=:password, `usergroup`=:usergroup WHERE user_id=:userid";
+        $sql     = "UPDATE `users` SET `username`=:username, `password`=:password, `usergroup`=:usergroup WHERE user_id=:userid";
         $stmt    = $pdo->prepare($sql);
         $stmt->bindValue(':username', $update_username);
-        $stmt->bindValue(':email', $update_email);
         $stmt->bindValue(':password', $passwordHash);
         $stmt->bindValue(':usergroup', $update_usergroup);
         $stmt->bindValue(':userid', $_SESSION['edit_user_id']);
@@ -169,12 +161,8 @@ include('includes/header.php')
            <input type="text" class="form-control" name="update_username" placeholder="<?php echo $edit_username ?>" value="<?php echo $edit_username ?>" aria-label="Username" aria-describedby="basic-addon2">
          </div>
          <div class="form-group">
-           <label>Email</label>
-           <input type="text" class="form-control" name="update_email" placeholder="<?php echo $edit_email ?>" value="<?php echo $edit_email ?>" aria-label="Email" aria-describedby="basic-addon2">
-         </div>
-         <div class="form-group">
            <label>Password</label>
-           <input type="password" class="form-control" name="update_password" placeholder="New Password...." aria-label="Email" aria-describedby="basic-addon2">
+           <input type="password" class="form-control" name="update_password" placeholder="New Password...." aria-label="Password" aria-describedby="basic-addon2">
          </div>
          <div class="form-group">
            <label>Usergroup</label>
