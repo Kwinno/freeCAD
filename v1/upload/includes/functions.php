@@ -60,11 +60,11 @@ function userLogin($username, $passwordAttempt) {
 
             // Check If First Signin
             $settingsRow = dbquery('SELECT * FROM settings')[0];
-                if ($settingsRow['validation_enabled'] == "yes" || "Yes") {
-                    if ($user['first_login'] === 0) {
-                        dbquery('UPDATE users SET usergroup="Unverified" WHERE user_id='.$user['user_id'])[0];
+                if ($settingsRow['validation_enabled'] == "yes" || $settingsRow['validation_enabled'] == "Yes") {
+                    if ($user['first_login'] == 0) {
+                        dbquery('UPDATE users SET usergroup="Unverified" WHERE user_id='.$user['user_id'], false);
                     }
-                    dbquery('UPDATE users SET first_login="1" WHERE user_id='.$user['user_id'])[0];
+                    dbquery('UPDATE users SET first_login="1" WHERE user_id='.$user['user_id'], false);
                     header('Location: ' . $url['index'] . '?logged=in');
                     exit();
                 } else {
