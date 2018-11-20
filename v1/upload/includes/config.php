@@ -154,7 +154,7 @@ if (floatval(phpversion()) < 5.6) {
 
 // hydrid announce check
 // Version Check/Control
-$data_hac = file_get_contents("http://hydrid.us/important.txt");
+$data_hac = "";
 
 //YOU ARE NOT ALLOWED TO REMOVE THIS. REMOVING THIS, REMOVING BACKLINKS, WILL RESULT IN A DMCA TAKEDOWN AS IT IS A BREACH OF OUR LICENSE (AGPL v3)
 if ($data_vc > $version) {
