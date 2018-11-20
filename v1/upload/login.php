@@ -13,22 +13,18 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 **/
-require 'includes/connect.php';
-session_start();
+
+require('includes/connect.php');
 include('includes/config.php');
-require 'classes/lib/password.php';
+session_start();
+
+require('classes/lib/password.php');
 
 if (isset($_POST['loginbtn'])) {
-    //Pull from form
-    $username        = !empty($_POST['username']) ? trim($_POST['username']) : null;
-    $passwordAttempt = !empty($_POST['password']) ? trim($_POST['password']) : null;
-    //Sanitize
-    $username      = strip_tags($username);
-    $passwordAttempt      = strip_tags($passwordAttempt);
-    //Execute
-    userLogin($username, $passwordAttempt);
+    userLogin($_POST['username'], $_POST['password']);
 }
-//Error Msgs
+
+//Error Handling
 if (isset($_GET['user']) && strip_tags($_GET['user']) === 'notfound') {
    $message = '<div class="alert alert-danger" role="alert">That account was not found in our system.</div>';
 } elseif (isset($_GET['password']) && strip_tags($_GET['password']) === 'invalid') {
@@ -43,12 +39,12 @@ if (isset($_GET['user']) && strip_tags($_GET['user']) === 'notfound') {
    $message = '<div class="alert alert-success" role="alert">Your settings have been updated. Please login again!</div>';
 }
 ?>
-<!DOCTYPE html>
 <html>
-<?php
-$page_name = "Login";
-include('includes/header.php')
-?>
+    <?php
+        $page_name = "Login";
+        include('includes/header.php')
+    ?>
+    <body>
       <div class="container">
          <div class="main">
             <img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/>
