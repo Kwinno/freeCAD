@@ -18,15 +18,13 @@ Citizen.CreateThread(function()
 
 			if RaycastHitSuccessful and DoesEntityExist(RaycastEntityHit) and GetEntityType(RaycastEntityHit) == 2 then
 				local TargetVehicle = RaycastEntityHit
-				local TargetVehicleInfo = { Name = GetDisplayNameFromVehicleModel(GetEntityModel(TargetVehicle)), Plate = GetVehicleNumberPlateText(TargetVehicle), Speed = RoundNumber(GetEntitySpeed(TargetVehicle), 2) }
-				local TargetVehicleInsurance = GetVehicleInsurance(TargetVehicleInfo.Plate)
-				local TargetVehicleRegistration = GetVehicleRegistration(TargetVehicleInfo.Plate)
+				local TargetVehicleInfo = { Name = GetDisplayNameFromVehicleModel(GetEntityModel(TargetVehicle)), Plate = GetVehicleNumberPlateText(TargetVehicle), Speed = RoundNumber(GetEntitySpeed(TargetVehicle), 0), Insurance = GetVehicleInsurance(GetVehicleNumberPlateText(TargetVehicle)), Registration = GetVehicleRegistration(GetVehicleNumberPlateText(TargetVehicle)) }
 				if not OverSpeedLimit then
 					RadarText = '~w~Vehicle: ~p~' .. TargetVehicleInfo.Name .. '~w~ Plate: ~b~' .. TargetVehicleInfo.Plate .. '~w~ Speed: ~g~' .. TargetVehicleInfo.Speed .. '~w~' .. Config['RadarUnit']
-					RadarText2 = '~w~ \nInsurance: ~y~' .. TargetVehicleInsurance .. '~w~ Registration: ~g~' .. TargetVehicleRegistration
+					RadarText2 = '~w~ \nInsurance: ~g~' .. TargetVehicleInfo.Insurance .. '~w~ Registration: ~g~' .. TargetVehicleInfo.Registration
 				else
 					RadarText = '~w~Vehicle: ~p~' .. TargetVehicleInfo.Name .. '~w~ Plate: ~b~' .. TargetVehicleInfo.Plate .. '~w~ Speed: ~r~' .. TargetVehicleInfo.Speed .. '~w~' .. Config['RadarUnit']
-					RadarText2 = '~w~ \nInsurance: ~y~' .. TargetVehicleInsurance .. '~w~ Registration: ~g~' .. TargetVehicleRegistration
+					RadarText2 = '~w~ \nInsurance: ~g~' .. TargetVehicleInfo.Insurance .. '~w~ Registration: ~g~' .. TargetVehicleInfo.Registration
 				end
 			else
 				RadarText = 'No vehicle'
@@ -41,19 +39,21 @@ end)
 function GetVehicleInsurance(plate)
     for i in pairs(VehiclePlates) do
         if VehiclePlates[i].vehicle_plate == plate then
+            if VehiclePlates[i].vehicle_is == 'Expired' or 'Invalid' or 'Fake' then return '~r~' .. VehiclePlates[i].vehicle_is end
             return VehiclePlates[i].vehicle_is
         end
     end
-    return 'Unknown'
+    return 'Valid'
 end
 
 function GetVehicleRegistration(plate)
     for i in pairs(VehiclePlates) do
         if VehiclePlates[i].vehicle_plate == plate then
+            if VehiclePlates[i].vehicle_rs == 'Expired' or 'Invalid' or 'Fake' then return '~r~' .. VehiclePlates[i].vehicle_rs end
             return VehiclePlates[i].vehicle_rs
         end
     end
-    return 'Unknown'
+    return 'Valid'
 end
 
 function RoundNumber(num, numDecimalPlaces)
