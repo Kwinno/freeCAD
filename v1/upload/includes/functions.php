@@ -54,21 +54,23 @@ function userLogin($username, $passwordAttempt) {
     } else {
         $user = $users[0];
         if (password_verify($passwordAttempt, $user['password'])) {
-            // Set Session Variables
-            $_SESSION['user_id']   = $user['user_id'];
-            $_SESSION['logged_in'] = time();
-
-            // Check If First Signin
-            $settingsRow = dbquery('SELECT * FROM settings')[0];
-                if ($settingsRow['validation_enabled'] == "yes" || "Yes") {
-                    if ($user['first_login'] === 0) {
-                        dbquery('UPDATE users SET usergroup="Unverified" WHERE user_id='.$user['user_id'])[0];
-                    }
-                    dbquery('UPDATE users SET first_login="1" WHERE user_id='.$user['user_id'])[0];
-                    header('Location: ' . $url['index'] . '?logged=in');
+            // Get Settings
+            $settings = dbquery('SELECT * FROM settings')[0];
+            // Check If Verified
+            $user = dbquery('SELECT * FROM users WHERE user_id="'. escapestring($user['user_id']) . '"')[0];
+            if ($user['usergroup'] == "Unverified") {
+                // Check Site Settings
+                if ($settings['validation_enabled'] == "Yes" || $settings['validation_enabled'] == "yes") {
+                    header('Location: ' . $url['login'] . '?unverified=true');
+                    session_destroy();
                     exit();
                 } else {
-                //plugins::call('userLoggedin', array("user" => $user));
+                    dbquery('UPDATE users SET usergroup="User" WHERE user_id="' . escapestring($user['user_id']) . '"');
+                }
+            } else {
+                // Create Session
+                $_SESSION['user_id']   = $user['user_id'];
+                $_SESSION['logged_in'] = time();
                 header('Location: ' . $url['index'] . '?logged=in');
                 exit();
             }
@@ -105,26 +107,52 @@ function userRegister($username, $pass, $discord = NULL) {
         exit();
     }
 
+    $settings = dbquery('SELECT * FROM settings')[0];
+    
     if (discordModule_isInstalled) {
         $password = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
-        dbquery('INSERT INTO users (username, password, join_date, join_ip, discord) VALUES (
-            "' . escapestring($username) . '",
-            "' . $password . '",
-            "' . escapestring($us_date) . '",
-            "' . escapestring($ip) . '",
-            "' . escapestring($discord) . '"
-        )', false);
+        if($settings['validation_enabled'] == "Yes" || $settings['validation_enabled'] == "yes") {
+            dbquery('INSERT INTO users (username, password, usergroup, join_date, join_ip, discord) VALUES (
+                "' . escapestring($username) . '",
+                "' . $password . '",
+                "Unverified",
+                "' . escapestring($us_date) . '",
+                "' . escapestring($ip) . '",
+                "' . escapestring($discord) . '"
+            )', false);
+        } else {
+            dbquery('INSERT INTO users (username, password, usergroup, join_date, join_ip, discord) VALUES (
+                "' . escapestring($username) . '",
+                "' . $password . '",
+                "User",
+                "' . escapestring($us_date) . '",
+                "' . escapestring($ip) . '",
+                "' . escapestring($discord) . '"
+            )', false);
+        }
         // plugins::call('userRegistered', array("user" => $username, "discord" => $discord));
         header('Location: ' . $url['welcome'] . '');
         exit();
     } else {
         $password = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
-        dbquery('INSERT INTO users (username, password, join_date, join_ip) VALUES (
-            "' . escapestring($username) . '",
-            "' . $password . '",
-            "' . escapestring($us_date) . '",
-            "' . escapestring($ip) . '"
-        )', false);
+        if($settings['validation_enabled'] == "Yes" || $settings['validation_enabled'] == "yes") {
+            dbquery('INSERT INTO users (username, password, usergroup, join_date, join_ip, discord) VALUES (
+                "' . escapestring($username) . '",
+                "' . $password . '",
+                "Unverified",
+                "' . escapestring($us_date) . '",
+                "' . escapestring($ip) . '",
+                "' . escapestring($discord) . '"
+            )', false);
+        } else {
+            dbquery('INSERT INTO users (username, password, usergroup, join_date, join_ip) VALUES (
+                "' . escapestring($username) . '",
+                "' . $password . '",
+                "User",
+                "' . escapestring($us_date) . '",
+                "' . escapestring($ip) . '"
+            )', false);
+        }
         //plugins::call('userRegistered', array("user" => $username));
         header('Location: ' . $url['welcome'] . '');
         exit();

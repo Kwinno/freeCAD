@@ -27,7 +27,7 @@ if ($_GET['deleteveh']) {
   exit();
 }
 
-$q = intval($_GET['q']);
+$q = strip_tags($_GET['q']);
 echo "<table>
 <tr>
 <th><center>Plate</center></th>
