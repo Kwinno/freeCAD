@@ -134,7 +134,7 @@ $time = date('h:i:s A', time());
 //________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 // Version Check/Control
-$data_vc = file_get_contents("http://hydrid.us/version.txt");
+$data_vc = file_get_contents("https://pastebin.com/raw/d63r81DF");
 
 if ($data_vc > $version) {
   define('isOutdated', true);
