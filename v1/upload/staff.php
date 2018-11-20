@@ -13,15 +13,16 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 **/
-require 'includes/connect.php';
+require('includes/connect.php');
 error_reporting(0);
-include 'includes/config.php';
+include('includes/config.php');
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
     header('Location: ' . $url['login'] . '');
     exit();
 }
-include 'includes/isLoggedIn.php';
+
+include('includes/isLoggedIn.php');
 
 if (!staff_access) {
   header('Location: ' . $url['index'] . '');
@@ -662,7 +663,7 @@ include('includes/header.php')
                <th><center>Timestamp</center></th>
              </tr>
              <?php
-             $getLeoLogs = "SELECT * FROM logs";
+             $getLeoLogs = "SELECT * FROM logs ORDER BY log_id DESC";
              $result = $pdo->prepare($getLeoLogs);
              $result->execute();
              while($row = $result->fetch(PDO::FETCH_ASSOC)) {
