@@ -27,7 +27,7 @@ if ($_GET['deletewpn']) {
   exit();
 }
 
-$q = intval($_GET['q']);
+$q = strip_tags($_GET['q']);
 echo "<table>
 <tr>
 <th><center>Weapon Type</center></th>
