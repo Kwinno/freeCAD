@@ -19,7 +19,7 @@ $GLOBAL['debug'] = false;
 
 
 // Version Number -- Do Not Change
-$version = "v1.0.6";
+$version = "v1.0.7";
 
 
 // Disable Error Reporting
