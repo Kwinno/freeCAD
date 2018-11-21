@@ -195,7 +195,7 @@ include('includes/header.php')
 ?>
 <head>
 <?php include('includes/js.php'); ?>
-<script src="assets/js/pages/leo.js"></script>
+   <script src="assets/js/pages/dispatch.js"></script>
    <script type="text/javascript">
    $(document).ready(function() {
     $("#openNameSearch").on("click",function(){
@@ -213,7 +213,7 @@ include('includes/header.php')
 <body>
    <div class="container-leo">
       <div class="main-leo">
-        <div class="leo-header"><div class="float-right" id="getTime"></div>
+        <div class="leo-header"><font size="5"><div class="float-right" id="getTime"></div></font>
          <div class="center"><a href="functions/leo/api.php?a=endShift"><img src="assets/imgs/dispatch.png" class="main-logo" draggable="false"/></a></div>
          <div class="main-header-leo">
             <div class="float-left">Supervisor: <?php if ($_SESSION['leo_supervisor'] === "Yes") {
@@ -507,7 +507,7 @@ include('includes/header.php')
   </div>
    <!-- end modals -->
    <!-- js -->
-   <script src="assets/js/pages/dispatch.js"></script>
+   
    <!-- end js -->
 </body>
 </html>

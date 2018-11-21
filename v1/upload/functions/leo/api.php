@@ -190,10 +190,6 @@ switch ($a) {
         
         break;
     
-    case 'dynamicTime':
-        echo $time;
-        break;
-    
     case 'endShift':
         $i    = $_SESSION['identifier'];
         $sql  = "DELETE FROM `on_duty` WHERE identifier = :i";
