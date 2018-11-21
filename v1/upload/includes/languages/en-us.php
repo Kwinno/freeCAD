@@ -19,3 +19,9 @@ $LANG['selectid'] = 'Select Identifier';
 $LANG['createid'] = 'Create Identity';
 $LANG['close'] = 'Close';
 $LANG['create'] = 'Create';
+
+// Welcome Page
+$LANG['welcome'] = 'Welcome';
+$LANG['welcomethanks'] = 'Thank you for signing up with Hydrid!';
+$LANG['welcomevalidate'] = 'This community has validation enabled, meaning a staff member will have to validate your account. Please do not pester staff about validation. After your account is validated, you will be able to login and start using Hydrid!';
+$LANG['welcomenonvalidate'] = 'It appears that this community does not have validation enabled for new accounts. You are free to login, and start using Hydrid.';
