@@ -30,6 +30,9 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
   $stmt->execute();
   $identity = $stmt->fetch(PDO::FETCH_ASSOC);
   if ($identity === false) {
+   $_SESSION['is_leo'] = "No";
+   $_SESSION['is_fire'] = "No";
+   $_SESSION['is_dispatch'] = "No";
      header('Location: ' . $url['index'] . '');
      exit();
   } else {
@@ -55,6 +58,11 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
 
      $sidentity_user    = $identity['user'];
      $_SESSION['on_duty'] = "No";
+
+     //Make sure other duty variables are set to no
+     $_SESSION['is_leo'] = "No";
+     $_SESSION['is_fire'] = "No";
+     
      header('Location: ' . $url['dispatch_index'] . '');
      exit();
 

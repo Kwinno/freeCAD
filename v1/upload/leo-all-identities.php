@@ -43,15 +43,17 @@ if (isset($_POST['editId'])) {
     //Pull the variables from the form
     $identity_id = !empty($_POST['identity_id_form']) ? trim($_POST['identity_id_form']) : null;
     $identifier = !empty($_POST['identifier_form']) ? trim($_POST['identifier_form']) : null;
+    $is_leo = !empty($_POST['leo_form']) ? trim($_POST['leo_form']) : null;
     $leo_supervisor = !empty($_POST['leo_supervisor_form']) ? trim($_POST['leo_supervisor_form']) : null;
     $is_dispatch = !empty($_POST['is_dispatch_form']) ? trim($_POST['is_dispatch_form']) : null;
     //Sanitize the variables, prevents xss, etc.
     $identity_id_update        = strip_tags($identity_id);
     $identifier_update        = strip_tags($identifier);
+    $leo_update        = strip_tags($is_leo);
     $leo_supervisor_update        = strip_tags($leo_supervisor);
     $is_dispatch_update        = strip_tags($is_dispatch);
     
-    editIdentityLEO($identity_id_update, $identifier_update, $leo_supervisor_update, $is_dispatch_update);
+    editIdentityLEO($identity_id_update, $identifier_update, $leo_update, $leo_supervisor_update, $is_dispatch_update);
 }
 
 if (isset($_GET['id']) && strip_tags($_GET['id']) === 'edited') {
@@ -128,6 +130,7 @@ include('includes/header.php')
                   echo "<h5 style='margin-top:20px; color:white;'>IDENTIFIERS</h5><table style='border: 1px solid black;'>
                   <tr>
                   <th><center>Identifier</center></th>
+                  <th><center>LEO Approved</center></th>
                   <th><center>Supervisor</center></th>
                   <th><center>Owner</center></th>
                   <th><center>Edit</center></th>
@@ -137,6 +140,7 @@ include('includes/header.php')
                   while($row = $stmt2->fetch(PDO::FETCH_ASSOC)) {
                     echo "<tr>";
                     echo "<td><center>" . $row['identifier'] . "</center></td>";
+                    echo "<td><center>" . $row['is_leo'] . "</center></td>";
                     echo "<td><center>" . $row['leo_supervisor'] . "</center></td>";
                     echo "<td><center>" . $row['user_name'] . "</center></td>";
                     echo '<td><a class="btn btn-info btn-sm" href="" data-toggle="modal" data-target="#editIdentity'.$row['identity_id'].'"><i class="fas fa-pencil-alt"></i></a></td>';
@@ -158,6 +162,14 @@ include('includes/header.php')
                                <div class="form-group">
                                   <label style="color:black;">Identifier</label>
                                   <input type="text" name="identifier_form" class="form-control" placeholder="Identifier" value="'.$row['identifier'].'" data-lpignore="true" required />
+                               </div>
+                               <div class="form-group">
+                               <label style="color:black;">LEO Approved</label>
+                                  <select class="form-control" name="leo_form">
+                                     <option value="'.$row['is_leo'].'" selected>'.$row['is_leo'].'</option>
+                                     <option value="No">No</option>
+                                     <option value="Yes">Yes</option>
+                                  </select>
                                </div>
                                <div class="form-group">
                                <label style="color:black;">LEO Supervisor</label>
@@ -198,7 +210,7 @@ include('includes/header.php')
              </div>
              <?php if ($_SESSION['leo_supervisor'] === "Yes"): ?>
              <div class="col-sm-2">
-               <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
+               <a href="<?php echo $url['leo_supervisor_view_all_identities'] ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
                <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-success btn-block">Pending Identities</a><br-leo>
              </div>
              <?php endif; ?>

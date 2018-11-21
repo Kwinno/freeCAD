@@ -31,6 +31,8 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
   $identity = $stmt->fetch(PDO::FETCH_ASSOC);
   if ($identity === false) {
      $_SESSION['is_leo'] = "No";
+     $_SESSION['is_fire'] = "No";
+     $_SESSION['is_dispatch'] = "No";
      header('Location: ' . $url['index'] . '');
      exit();
   } else {
@@ -41,8 +43,12 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
      $sidentity_name    = $identity['identifier'];
      $_SESSION['identifier'] = $sidentity_name;
 
-     $_SESSION['is_leo'] = "Yes";
-	 $_SESSION['is_dispatch'] = "No";
+     if ($identity['is_leo'] === "Yes") {
+      $_SESSION['is_leo'] = "Yes";
+    } else {
+      header('Location: ' . $url['index'] . '?np=leo');
+     exit();
+    }
 
      if ($identity['leo_supervisor'] === "Yes") {
        $_SESSION['leo_supervisor'] = "Yes";
@@ -58,6 +64,11 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
 
      $sidentity_user    = $identity['user'];
      $_SESSION['on_duty'] = "No";
+
+     //Make sure the other duty variables are set to no
+     $_SESSION['is_fire'] = "No";
+     $_SESSION['is_dispatch'] = "No";
+
      header('Location: ' . $url['leo_index'] . '');
      exit();
 
@@ -65,11 +76,6 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
     header('Location: ' . $url['index'] . '');
     exit();
   }
-}
-
-if ($_SESSION['is_leo'] === "No") {
-  header('Location: ' . $url['index'] . '?np=leo');
-  exit();
 }
 
 
@@ -289,7 +295,7 @@ include('includes/header.php')
              </div>
              <?php if ($_SESSION['leo_supervisor'] === "Yes"): ?>
                <div class="col-sm-2">
-                 <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
+                 <a href="<?php echo $url['leo_supervisor_view_all_identities'] ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
                  <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-warning btn-block">Pending Identities</a><br-leo>
                  <a data-toggle="modal" href="#aop" class="btn btn-danger btn-block">Change AOP</a><br-leo>
                </div>

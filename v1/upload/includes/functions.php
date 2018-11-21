@@ -187,16 +187,16 @@ function deleteIdentityLEO($identity_id_update, $identifier_update, $leo_supervi
 
     dbquery('DELETE FROM identities WHERE identity_id = "' . $identity_id_update . '"', false);
     logAction('(LEO) DELETED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
-    header('Location: ' . $url['leo_supervisor_view_pending_identities'] . '?id=deleted');
+    header('Location: ' . $url['leo_supervisor_view_all_identities'] . '?id=deleted');
     exit();
 }
 
-function editIdentityLEO($identity_id_update, $identifier_update, $leo_supervisor_update, $is_dispatch_update) {
+function editIdentityLEO($identity_id_update, $identifier_update, $leo_update, $leo_supervisor_update, $is_dispatch_update) {
     global $url;
     global $user_username;
 
-    dbquery('UPDATE identities SET `identifier`="' . escapestring($identifier_update) . '", `leo_supervisor`="' . escapestring($leo_supervisor_update) . '", `is_dispatch`="' . escapestring($is_dispatch_update) . '" WHERE identity_id="' . $identity_id_update . '"', false);
+    dbquery('UPDATE identities SET `identifier`="' . escapestring($identifier_update) . '", `is_leo`="' . escapestring($leo_update) . '", `leo_supervisor`="' . escapestring($leo_supervisor_update) . '", `is_dispatch`="' . escapestring($is_dispatch_update) . '" WHERE identity_id="' . $identity_id_update . '"', false);
     logAction('(LEO) EDITED '. $identity_id_update .'', $user_username . ' / ' . $_SESSION['identifier']);
-    header('Location: ' . $url['leo_supervisor_view_pending_identities'] . '?id=edited');
+    header('Location: ' . $url['leo_supervisor_view_all_identities'] . '?id=edited');
     exit();
 }
