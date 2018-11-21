@@ -20,27 +20,27 @@ session_start();
 <!DOCTYPE html>
 <html>
 <?php
-$page_name = $LANG['welcome'];
-include('includes/header.php')
+    $page_name = $LANG['welcome'];
+    include('includes/header.php')
 ?>
-   <body>
-      <div class="container">
-         <div class="main">
-            <img src="assets/imgs/california.png" class="main-logo" draggable="false"/><br />
-            <text>
-              <strong><?php echo $LANG['welcomethanks']; ?></strong><br />
-              <?php 
-                if ($siteSettings['join_validation'] === "yes"){
-                  echo $LANG['welcomevalidate'];
-                } else {
-                  echo $LANG['welcomenonvalidate'];
-                }
-              ?>
-            </text>
-            <a href="<?php print($url['login']) ?>"><button class="btn btn-block btn-primary" style="margin-top: 10px;"><?php echo $LANG['login']; ?></button></a>
-            <?php echo $ftter; ?>
-         </div>
-      </div>
-      <?php include('includes/js.php'); ?>
-   </body>
+    <body>
+        <div class="container">
+            <div class="main">
+                <img src="assets/imgs/california.png" class="main-logo" draggable="false"/><br />
+                <text>
+                    <strong><?php echo $LANG['welcomethanks']; ?></strong><br />
+                    <?php 
+                        if ($siteSettings['join_validation'] === "yes"){
+                            echo $LANG['welcomevalidate'];
+                        } else {
+                            echo $LANG['welcomenonvalidate'];
+                        }
+                    ?>
+                </text>
+                <a href="<?php print($url['login']) ?>"><button class="btn btn-block btn-primary" style="margin-top: 10px;"><?php echo $LANG['login']; ?></button></a>
+                <?php echo $ftter; ?>
+            </div>
+        </div>
+        <?php include('includes/js.php'); ?>
+    </body>
 </html>
