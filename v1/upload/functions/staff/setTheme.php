@@ -16,6 +16,11 @@
 require '../../includes/connect.php';
 include '../../includes/config.php';
 session_start();
+include('../../includes/isLoggedIn.php');
+if (!staff_access) {
+   header('Location: ' . $url['index'] . '');
+   exit();
+}
 $a = strip_tags($_GET['a']);
 
 if ($a === "theme") {
