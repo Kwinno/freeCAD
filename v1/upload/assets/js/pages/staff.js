@@ -60,7 +60,6 @@ function setTheme(str) {
      };
      xmlhttp.open("GET", "functions/staff/setTheme.php?a=theme&q=" + str, true);
      xmlhttp.send();
-     alert("CAD/MDT Theme Updated... Your Page Will Refresh Soon");
      location.reload();
  }
 }
@@ -83,7 +82,6 @@ function setTimezone(str) {
      };
      xmlhttp.open("GET", "functions/staff/setTheme.php?a=timezone&q=" + str, true);
      xmlhttp.send();
-     alert("CAD/MDT TimeZone Updated... Your Page Will Refresh Soon");
      location.reload();
  }
 }
@@ -106,7 +104,6 @@ function setBackground(str) {
      };
      xmlhttp.open("GET", "functions/staff/setBackgroundColor.php?q=" + str, true);
      xmlhttp.send();
-     alert("Background Color Updated... Your Page Will Refresh Soon");
      location.reload();
  }
 }

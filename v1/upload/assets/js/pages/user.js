@@ -16,7 +16,6 @@ function setUserTheme(str) {
      };
      xmlhttp.open("GET", "functions/staff/setTheme.php?a=usertheme&q=" + str, true);
      xmlhttp.send();
-     alert("CAD/MDT Theme Updated... Your Page Will Refresh Soon");
      location.reload();
  }
 }

@@ -27,6 +27,6 @@ body {
     ?>
     background-repeat: no-repeat;
     background-attachment: fixed;
-	  height: 100%;
+	height: 100%;
 }
 </style>
