@@ -15,7 +15,7 @@
 **/
 
 // General Configuration
-$GLOBAL['language'] = "en-us";        // Set Language
+$GLOBAL['language'] = "en-us";        // Set Language (Change this to user db once system is fully completed)
 $GLOBAL['debug'] = false;             // Toggle Debug
 
 
@@ -139,7 +139,7 @@ $time = date('h:i:s A', time());
 //________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 // Version Check/Control
-$data_vc = file_get_contents("https://pastebin.com/raw/d63r81DF");
+$data_vc = file_get_contents("https://hydrid.us/version.txt");
 
 if ($data_vc > $version) {
   define('isOutdated', true);
@@ -157,9 +157,8 @@ if (floatval(phpversion()) < 5.6) {
   die("Your PHP Version is not supported. Please update to continue using Hydrid.");
 }
 
-// hydrid announce check
-// Version Check/Control
-$data_hac = "";
+// Staff Announcement Control
+$data_hac = file_get_contents("https://hydrid.us/important.txt");
 
 //YOU ARE NOT ALLOWED TO REMOVE THIS. REMOVING THIS, REMOVING BACKLINKS, WILL RESULT IN A DMCA TAKEDOWN AS IT IS A BREACH OF OUR LICENSE (AGPL v3)
 if ($data_vc > $version) {
