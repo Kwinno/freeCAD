@@ -150,40 +150,8 @@ if (isset($_POST['1042btn'])) {
   exit();
 }
 
-if (isset($_POST['createNewCall'])) {
-    //Pull the variables from the form
-    $call_description_form = !empty($_POST['call_description']) ? trim($_POST['call_description']) : null;
-    $call_location_form      = !empty($_POST['call_location']) ? trim($_POST['call_location']) : null;
-    $call_crossstreat_form       = !empty($_POST['call_crossstreat']) ? trim($_POST['call_crossstreat']) : null;
-    $call_postal_form       = !empty($_POST['call_postal']) ? trim($_POST['call_postal']) : null;
-
-    //Sanitize the variables, prevents xss, etc.
-    $call_description        = strip_tags($call_description_form);
-    $call_location           = strip_tags($call_location_form);
-    $call_crossstreat            = strip_tags($call_crossstreat_form);
-    $call_postal            = strip_tags($call_postal_form);
-
-    //if everything passes, than continue
-    $sql          = "INSERT INTO 911calls (caller_id, call_description, call_location, call_crossstreat, call_postal, call_timestamp) VALUES (:caller_id, :call_description, :call_location, :call_crossstreat, :call_postal, :call_timestamp)";
-    $stmt         = $pdo->prepare($sql);
-    $stmt->bindValue(':caller_id', $_SESSION['identifier']);
-    $stmt->bindValue(':call_description', $call_description);
-    $stmt->bindValue(':call_location', $call_location);
-    $stmt->bindValue(':call_crossstreat', $call_crossstreat);
-    $stmt->bindValue(':call_postal', $call_postal);
-    $stmt->bindValue(':call_timestamp', $date . ' ' . $time);
-    $result = $stmt->execute();
-    if ($result) {
-      logAction('(DISPATCH) Created New Call', $user_username);
-        //redirect
-        header('Location: ' . $url['dispatch_index'] . '?call=created');
-    }
-}
-
 //Alerts
-if (isset($_GET['call']) && strip_tags($_GET['call']) === 'created') {
-  $message = '<div class="alert alert-success" role="alert" id="dismiss">New Call Created!</div>';
-} elseif (isset($_GET['license']) && strip_tags($_GET['license']) === 'suspended') {
+if (isset($_GET['license']) && strip_tags($_GET['license']) === 'suspended') {
   $message = '<div class="alert alert-success" role="alert" id="dismiss">License Suspended!</div>';
 }
 ?>
@@ -206,6 +174,13 @@ include('includes/header.php')
     });
     $("#openVehicleSearch").on("click",function(){
       loadVehs();
+    });
+
+    $('#new911callDispatch').ajaxForm(function() { 
+      toastr.success('New 911 Call Created, Assign Units.', 'System:', {timeOut: 10000})
+    }); 
+    $('#newBoloDispatch').ajaxForm(function() { 
+      toastr.success('Bolo Added To System.', 'System:', {timeOut: 10000})
     });
    });
    </script>
@@ -280,7 +255,7 @@ include('includes/header.php')
                </button>
             </div>
             <div class="modal-body">
-               <form method="post" action="dispatch-index.php">
+               <form id="new911callDispatch" action="functions/leo/newCallDispatch.php" method="post">
                  <div class="form-group">
                     <input type="text" name="call_description" class="form-control" maxlength="20" placeholder="Call Desc" data-lpignore="true" required />
                  </div>
@@ -304,7 +279,7 @@ include('includes/header.php')
             </div>
             <div class="modal-footer">
             <div class="form-group">
-               <input class="btn btn-primary" name="createNewCall" id="createNewCall" type="submit" value="Create New Call">
+               <input class="btn btn-primary" type="submit" value="Create New Call">
             </div>
             </form>
             </div>
@@ -417,7 +392,7 @@ include('includes/header.php')
                </button>
             </div>
             <div class="modal-body">
-              <form method="post" action="dispatch-index.php">
+            <form id="newBoloDispatch" action="functions/leo/newBoloDispatch.php" method="post">
                 <div class="form-group">
                    <input type="text" name="bolo_created_by" class="form-control" maxlength="126" readonly="true" value="<?php echo $_SESSION['identifier'] ?>" data-lpignore="true" />
                 </div>
@@ -447,7 +422,7 @@ include('includes/header.php')
            </div>
            <div class="modal-footer">
            <div class="form-group">
-              <input class="btn btn-primary" name="addBoloBtn" id="addBoloBtn" type="submit" value="Add Bolo">
+              <input class="btn btn-primary" type="submit" value="Add Bolo">
            </div>
            </form>
             </div>
