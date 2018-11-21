@@ -14,8 +14,9 @@
     GNU General Public License for more details.
 **/
 
-// Debug Toggle
-$GLOBAL['debug'] = false;
+// General Configuration
+$GLOBAL['language'] = "en-us";        // Set Language
+$GLOBAL['debug'] = false;             // Toggle Debug
 
 
 // Version Number -- Do Not Change
@@ -31,6 +32,10 @@ if(!$GLOBAL['debug']) {
 // Oudated Variables/Constants?
 $update_in_progress = "No";
 define("isDonator", false);
+
+
+// Set Language
+require('languages/' . $GLOBAL['language'] . '.php');
 
 
 // Load Plugin Loader
@@ -142,12 +147,12 @@ if ($data_vc > $version) {
   define('isOutdated', false);
 }
 
-//pdo check
+// PDO Install Check
 if (!class_exists('PDO')) {
   die("Sorry, Hydrid can not be used without PDO being enabled. If you're running on a local machine, It should already be enabled. If you are running off a hosting provider, Please contact them for further assistance.");
 }
 
-//php version check
+// PHP Version Check
 if (floatval(phpversion()) < 5.6) {
   die("Your PHP Version is not supported. Please update to continue using Hydrid.");
 }

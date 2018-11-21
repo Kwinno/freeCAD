@@ -49,7 +49,7 @@ if (isset($_GET['user']) && strip_tags($_GET['user']) === 'notfound') {
          <div class="main">
             <img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/>
             <div class="main-header">
-               <?php echo $siteSettings['name']; ?> Login
+               <?php echo $siteSettings['name']; ?> <?php echo $LANG['login']; ?>
             </div>
             <?php print($message); ?>
             <form method="post" action="login.php">
@@ -62,7 +62,7 @@ if (isset($_GET['user']) && strip_tags($_GET['user']) === 'notfound') {
                <div class="form-group">
                   <input class="btn btn-block btn-primary" name="loginbtn" id="loginbtn" type="submit" value="Login">
                </div>
-               <text>Need an account? <a href="<?php print($url['register']) ?>">Register</a></text>
+               <text>><?php echo $LANG['needaccount']; ?> <a href="<?php print($url['register']) ?>"><?php echo $LANG['register']; ?></a></text>
                <?php echo $ftter; ?>
             </form>
          </div>
