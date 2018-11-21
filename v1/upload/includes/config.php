@@ -20,7 +20,7 @@ $GLOBAL['debug'] = false;             // Toggle Debug
 
 
 // Version Number -- Do Not Change
-$version = "v1.0.7";
+$version = "v1.0.8";
 
 
 // Disable Error Reporting
@@ -164,6 +164,9 @@ $data_hac = file_get_contents("https://hydrid.us/important.txt");
 if ($data_vc > $version) {
   $ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLANK">Powered by Hydrid</a></strong></small><br />
   <small>Version: '.$version.'<br />Latest Version: '.$data_vc.'<br /><small><strong><font color="red">Hydrid is Outdated. Hydrid does not provide support for Outdated versions.</font></strong></small>';
+} elseif ($data_vc < $version) {
+  $ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLANK">Powered by Hydrid</a></strong></small><br />
+  <small>Version: '.$version.'<br />Latest Version: '.$data_vc.'<br /><small><strong><font color="darkblue">Warning: This is a development build of Hydrid. Please report any bugs.</font></strong></small>';
 } else {
   $ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLANK">Powered by Hydrid</a></strong></small><br />
   <small>Version: '.$version.'<br />Latest Version: '.$data_vc;
