@@ -6,6 +6,24 @@ AddEventHandler('playerConnecting', function()
 end)
 
 Citizen.CreateThread(function()
+    while true do
+        PerformHttpRequest(Config['Website'] .. '/api.php?endpoint=vehicles', function(statusCode, response, headers)
+            if response then
+                local Information = json.decode(response)
+		if Information.content then
+			Information = Information.content
+			print('[Hydrid CAD System] Recieved license plates, sending to client now...')
+			TriggerClientEvent('RecieveAPIVehicles', -1, Information)
+		else
+			print('[Hydrid CAD System][Error] No license plates found!			
+		end
+            end
+        end)
+        Citizen.Wait(3 * 60000)
+    end
+end)
+
+Citizen.CreateThread(function()
     if Config['AutomaticMessages'] then
         while true do
             PerformHttpRequest(Config['Website'] .. '/api.php?endpoint=identities', function(statusCode, response, headers)

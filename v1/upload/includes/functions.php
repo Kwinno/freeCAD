@@ -173,7 +173,7 @@ function createIdentity($identifier) {
     }
 
     if ($identity_approval_needed === "no") {
-      dbquery('INSERT INTO identities (identifier, user, user_name) VALUES ("' . escapestring($_POST['identifier']) . '", "' . escapestring($user_id) . '", "' . escapestring($user_username) . '")', false);
+      dbquery('INSERT INTO identities (identifier, user, is_leo user_name) VALUES ("' . escapestring($_POST['identifier']) . '", "' . escapestring($user_id) . '", "Yes", ' . escapestring($user_username) . '")', false);
       header('Location: ' . $url['index'] . '?identifier=created');
     } else {
       dbquery('INSERT INTO identities (identifier, user, status, user_name) VALUES ("' . escapestring($_POST['identifier']) . '", "' . escapestring($user_id) . '", "Approval Needed", "' . escapestring($user_username) . '")', false);
