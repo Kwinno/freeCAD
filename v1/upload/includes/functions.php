@@ -42,6 +42,29 @@ function logAction($action, $user) {
     //plugins::call('logAction', array("action" => $action, "user" => $user));
 }
 
+// Throw Visual Error (Only works after Header is loaded)
+function throwError($error, $log = false) {
+    if ($log) {
+        error_log('Error Handler: ' . $error);
+    }
+    // Load Toastr JavaScript and CSS
+    echo '
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script type="text/javascript">
+            if(window.toastr != undefined) { 
+                if (typeof jQuery == "undefined") {
+                    alert("Error Handler: ' . $error . '")                    
+                } else {
+                    toastr.error("' . $error . '", "Error Handler")
+                }
+            } else {
+                alert("Error Handler: ' . $error . '")
+            }
+        </script>
+    ';
+}
+
 // Login Function
 function userLogin($username, $passwordAttempt) {
     global $pdo;
