@@ -80,71 +80,134 @@ $(document).ready(function() {
  })();
  }
  
- function showVeh(str) {
-  if (str == "") {
-   document.getElementById("showVehInfo").innerHTML = "";
-   return;
-  } else {
-   if (window.XMLHttpRequest) {
+ function loadNames() {
+  var returnHtml = "";
+  if (window.XMLHttpRequest) {
     // code for IE7+, Firefox, Chrome, Opera, Safari
     xmlhttp = new XMLHttpRequest();
-   } else {
+  } else {
     // code for IE6, IE5
     xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-   }
-   xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-     document.getElementById("showVehInfo").innerHTML = this.responseText;
-    }
-   };
-   xmlhttp.open("GET", "functions/leo/api.php?a=searchVeh&q=" + str, true);
-   xmlhttp.send();
   }
- }
- 
- function showName(str) {
-  if (str == "") {
-   document.getElementById("showPersonInfo").innerHTML = "";
-   return;
-  } else {
-   if (window.XMLHttpRequest) {
+  returnHtml += '<option selected="true" disabled="disabled">Search Name, Or DOB</option>';
+  xmlhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+    returnHtml += this.responseText;
+    document.getElementById("nameSearch").innerHTML = returnHtml;
+    document.getElementById("suspect").innerHTML = returnHtml;
+    document.getElementById("suspect_arr").innerHTML = returnHtml;
+   }
+  };
+  xmlhttp.open("GET", "functions/leo/api.php?a=searchNameAc", true);
+  xmlhttp.send();
+}
+
+function loadVehs() {
+  var returnHtml = "";
+  if (window.XMLHttpRequest) {
     // code for IE7+, Firefox, Chrome, Opera, Safari
     xmlhttp = new XMLHttpRequest();
-   } else {
+  } else {
     // code for IE6, IE5
     xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-   }
-   xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-     document.getElementById("showPersonInfo").innerHTML = this.responseText;
-    }
-   };
-   xmlhttp.open("GET", "functions/leo/api.php?a=searchName&q=" + str, true);
-   xmlhttp.send();
   }
- }
- 
- function showWpn(str) {
-  if (str == "") {
-   document.getElementById("showWpn").innerHTML = "";
-   return;
-  } else {
-   if (window.XMLHttpRequest) {
+  returnHtml += '<option selected="true" disabled="disabled">Search VIN, Plate, Or Model</option>';
+  xmlhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+    returnHtml += this.responseText;
+    document.getElementById("vehicleSearch").innerHTML = returnHtml;
+    document.getElementById("vehicle_plate").innerHTML = returnHtml;
+   }
+  };
+  xmlhttp.open("GET", "functions/leo/api.php?a=searchVehicleAc", true);
+  xmlhttp.send();
+}
+
+function loadWpns() {
+  var returnHtml = "";
+  if (window.XMLHttpRequest) {
     // code for IE7+, Firefox, Chrome, Opera, Safari
     xmlhttp = new XMLHttpRequest();
-   } else {
+  } else {
     // code for IE6, IE5
     xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-   }
-   xmlhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-     document.getElementById("showWpn").innerHTML = this.responseText;
-    }
-   };
-   xmlhttp.open("GET", "functions/leo/api.php?a=searchWpns&q=" + str, true);
-   xmlhttp.send();
   }
+  returnHtml += '<option selected="true" disabled="disabled">Search Serial, or Owner Name</option>';
+  xmlhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+    returnHtml += this.responseText;
+    document.getElementById("weaponSearch").innerHTML = returnHtml;
+   }
+  };
+  xmlhttp.open("GET", "functions/leo/api.php?a=searchWeaponAc", true);
+  xmlhttp.send();
+}
+
+function showVeh(str) {
+ if (str == "") {
+  document.getElementById("showVehInfo").innerHTML = "";
+  return;
+ } else {
+  if (window.XMLHttpRequest) {
+   // code for IE7+, Firefox, Chrome, Opera, Safari
+   xmlhttp = new XMLHttpRequest();
+  } else {
+   // code for IE6, IE5
+   xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+    document.getElementById("showVehInfo").innerHTML = this.responseText;
+   }
+  };
+  xmlhttp.open("GET", "functions/leo/api.php?a=searchVeh&q=" + str, true);
+  xmlhttp.send();
  }
+}
+
+function showName(str) {
+ if (str == "") {
+  document.getElementById("showPersonInfo").innerHTML = "";
+  return;
+ } else {
+  if (window.XMLHttpRequest) {
+   // code for IE7+, Firefox, Chrome, Opera, Safari
+   xmlhttp = new XMLHttpRequest();
+  } else {
+   // code for IE6, IE5
+   xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+    document.getElementById("showPersonInfo").innerHTML = this.responseText;
+   }
+  };
+  xmlhttp.open("GET", "functions/leo/api.php?a=searchName&q=" + str, true);
+  xmlhttp.send();
+ }
+}
+
+function showWpn(str) {
+ if (str == "") {
+  document.getElementById("showWpn").innerHTML = "";
+  return;
+ } else {
+  if (window.XMLHttpRequest) {
+   // code for IE7+, Firefox, Chrome, Opera, Safari
+   xmlhttp = new XMLHttpRequest();
+  } else {
+   // code for IE6, IE5
+   xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+    document.getElementById("showWpn").innerHTML = this.responseText;
+   }
+  };
+  xmlhttp.open("GET", "functions/leo/api.php?a=searchWpns&q=" + str, true);
+  xmlhttp.send();
+ }
+}
  
  function updateUnitStatus(selectObject) {
   var i = selectObject.id;

@@ -220,6 +220,23 @@ if (isset($_GET['license']) && strip_tags($_GET['license']) === 'suspended') {
 $page_name = "LEO Home";
 include('includes/header.php')
 ?>
+<head>
+<?php include('includes/js.php'); ?>
+<script src="assets/js/pages/leo.js"></script>
+   <script type="text/javascript">
+   $(document).ready(function() {
+    $("#openNameSearch").on("click",function(){
+      loadNames();
+    });
+    $("#openWeaponSearch").on("click",function(){
+      loadWpns();
+    });
+    $("#openVehicleSearch").on("click",function(){
+      loadVehs();
+    });
+   });
+   </script>
+</head>
 <body>
    <div class="container-leo">
       <div class="main-leo">
@@ -654,21 +671,5 @@ include('includes/header.php')
    <!-- <audio id="panicButton" src="assets/sounds/panic-button.mp3" preload="auto"></audio> -->
    <!-- end sounds -->
    <!-- js -->
-   <?php include('includes/js.php'); ?>
-   <script src="assets/js/pages/leo.js"></script>
-   <!-- end js -->
-   <script type="text/javascript">
-   $(document).ready(function() {
-    $("#openNameSearch").on("click",function(){
-      loadNames();
-    });
-    $("#openWeaponSearch").on("click",function(){
-      loadWpns();
-    });
-    $("#openVehicleSearch").on("click",function(){
-      loadVehs();
-    });
-   });
-   </script>
 </body>
 </html>

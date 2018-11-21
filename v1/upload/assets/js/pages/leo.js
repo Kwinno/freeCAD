@@ -10,50 +10,6 @@ $(document).ready(function() {
  });
 });
 
-function showVeh(str) {
- if (str == "") {
-  document.getElementById("showVehInfo").innerHTML = "";
-  return;
- } else {
-  if (window.XMLHttpRequest) {
-   // code for IE7+, Firefox, Chrome, Opera, Safari
-   xmlhttp = new XMLHttpRequest();
-  } else {
-   // code for IE6, IE5
-   xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  xmlhttp.onreadystatechange = function() {
-   if (this.readyState == 4 && this.status == 200) {
-    document.getElementById("showVehInfo").innerHTML = this.responseText;
-   }
-  };
-  xmlhttp.open("GET", "functions/leo/api.php?a=searchVeh&q=" + str, true);
-  xmlhttp.send();
- }
-}
-
-function showName(str) {
- if (str == "") {
-  document.getElementById("showPersonInfo").innerHTML = "";
-  return;
- } else {
-  if (window.XMLHttpRequest) {
-   // code for IE7+, Firefox, Chrome, Opera, Safari
-   xmlhttp = new XMLHttpRequest();
-  } else {
-   // code for IE6, IE5
-   xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  xmlhttp.onreadystatechange = function() {
-   if (this.readyState == 4 && this.status == 200) {
-    document.getElementById("showPersonInfo").innerHTML = this.responseText;
-   }
-  };
-  xmlhttp.open("GET", "functions/leo/api.php?a=searchName&q=" + str, true);
-  xmlhttp.send();
- }
-}
-
 function loadNames() {
   var returnHtml = "";
   if (window.XMLHttpRequest) {
@@ -117,6 +73,50 @@ function loadWpns() {
   xmlhttp.send();
 }
 
+function showVeh(str) {
+ if (str == "") {
+  document.getElementById("showVehInfo").innerHTML = "";
+  return;
+ } else {
+  if (window.XMLHttpRequest) {
+   // code for IE7+, Firefox, Chrome, Opera, Safari
+   xmlhttp = new XMLHttpRequest();
+  } else {
+   // code for IE6, IE5
+   xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+    document.getElementById("showVehInfo").innerHTML = this.responseText;
+   }
+  };
+  xmlhttp.open("GET", "functions/leo/api.php?a=searchVeh&q=" + str, true);
+  xmlhttp.send();
+ }
+}
+
+function showName(str) {
+ if (str == "") {
+  document.getElementById("showPersonInfo").innerHTML = "";
+  return;
+ } else {
+  if (window.XMLHttpRequest) {
+   // code for IE7+, Firefox, Chrome, Opera, Safari
+   xmlhttp = new XMLHttpRequest();
+  } else {
+   // code for IE6, IE5
+   xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  xmlhttp.onreadystatechange = function() {
+   if (this.readyState == 4 && this.status == 200) {
+    document.getElementById("showPersonInfo").innerHTML = this.responseText;
+   }
+  };
+  xmlhttp.open("GET", "functions/leo/api.php?a=searchName&q=" + str, true);
+  xmlhttp.send();
+ }
+}
+
 function showWpn(str) {
  if (str == "") {
   document.getElementById("showWpn").innerHTML = "";
@@ -138,7 +138,6 @@ function showWpn(str) {
   xmlhttp.send();
  }
 }
-
 
  getTime();
  getBolos();

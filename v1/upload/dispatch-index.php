@@ -193,6 +193,23 @@ if (isset($_GET['call']) && strip_tags($_GET['call']) === 'created') {
 $page_name = "Dispatch Home";
 include('includes/header.php')
 ?>
+<head>
+<?php include('includes/js.php'); ?>
+<script src="assets/js/pages/leo.js"></script>
+   <script type="text/javascript">
+   $(document).ready(function() {
+    $("#openNameSearch").on("click",function(){
+      loadNames();
+    });
+    $("#openWeaponSearch").on("click",function(){
+      loadWpns();
+    });
+    $("#openVehicleSearch").on("click",function(){
+      loadVehs();
+    });
+   });
+   </script>
+</head>
 <body>
    <div class="container-leo">
       <div class="main-leo">
@@ -490,7 +507,6 @@ include('includes/header.php')
   </div>
    <!-- end modals -->
    <!-- js -->
-   <?php include('includes/js.php'); ?>
    <script src="assets/js/pages/dispatch.js"></script>
    <!-- end js -->
 </body>
