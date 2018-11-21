@@ -43,7 +43,7 @@ if (isset($_GET['password']) && strip_tags($_GET['password']) === 'short') {
 ?>
 <html>
 	<?php
-		$page_name = "Register";
+		$page_name = $LANG['register'];
 		include('includes/header.php')
 	?>
    <body>
@@ -51,7 +51,7 @@ if (isset($_GET['password']) && strip_tags($_GET['password']) === 'short') {
 			<div class="main">
 				<img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/>
 				<div class="main-header">
-					Account Registration
+					<?php echo $LANG['accountreg']; ?>
 				</div>
 				<?php print($message); ?>
 				<form method="post" action="register.php">
@@ -71,9 +71,9 @@ if (isset($_GET['password']) && strip_tags($_GET['password']) === 'short') {
 						<input type="password" name="password" class="form-control" placeholder="Password" title="Please do not use a common password." data-lpignore="true" required />
 					</div>
 					<div class="form-group">
-						<input class="btn btn-block btn-primary" name="registerbtn" id="registerbtn" type="submit" value="Finish Signup">
+						<input class="btn btn-block btn-primary" name="registerbtn" id="registerbtn" type="submit" value="<?php echo $LANG['register']; ?>">
 					</div>
-					<text>Already have an account? <a href="<?php echo $url['login']; ?>">Login</a></text>
+					<text><?php echo $LANG['alreadyhaveaccount']; ?> <a href="<?php echo $url['login']; ?>"><?php echo $LANG['login']; ?></a></text>
 					<?php echo $ftter; ?>
 				</form>
 			</div>

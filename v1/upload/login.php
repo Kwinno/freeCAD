@@ -41,7 +41,7 @@ if (isset($_GET['user']) && strip_tags($_GET['user']) === 'notfound') {
 ?>
 <html>
     <?php
-        $page_name = "Login";
+        $page_name = $LANG['login'];
         include('includes/header.php')
     ?>
     <body>
@@ -60,9 +60,9 @@ if (isset($_GET['user']) && strip_tags($_GET['user']) === 'notfound') {
                   <input type="password" name="password" class="form-control" placeholder="Password" data-lpignore="true" required />
                </div>
                <div class="form-group">
-                  <input class="btn btn-block btn-primary" name="loginbtn" id="loginbtn" type="submit" value="Login">
+                  <input class="btn btn-block btn-primary" name="loginbtn" id="loginbtn" type="submit" value="<?php echo $LANG['login']; ?>">
                </div>
-               <text>><?php echo $LANG['needaccount']; ?> <a href="<?php print($url['register']) ?>"><?php echo $LANG['register']; ?></a></text>
+               <text><?php echo $LANG['needaccount']; ?> <a href="<?php print($url['register']) ?>"><?php echo $LANG['register']; ?></a></text>
                <?php echo $ftter; ?>
             </form>
          </div>

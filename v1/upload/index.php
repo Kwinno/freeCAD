@@ -41,7 +41,7 @@ if (isset($_GET['identifier']) && strip_tags($_GET['identifier']) === 'created')
 ?>
 <html>
 <?php
-    $page_name = "Home";
+    $page_name = $LANG['home'];
     include('includes/header.php');
 ?>
 <body>
@@ -49,7 +49,7 @@ if (isset($_GET['identifier']) && strip_tags($_GET['identifier']) === 'created')
 			<div class="main">
 				 <img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/>
 				 <div class="main-header">
-                    Hello, 
+                    <?php echo $LANG['hello']; ?>, 
                     <?php echo $user_username;
                         if (staff_access) {
                             echo ' <a href="staff.php"><i class="fas fa-fingerprint"></i></a>';
@@ -60,29 +60,27 @@ if (isset($_GET['identifier']) && strip_tags($_GET['identifier']) === 'created')
 				
                 <?php print($message);?>
 
-                <a href="<?php print $url['civ_index']?>" class="btn btn-primary btn-block btn-sb">Civilian</a>
-                <a data-toggle="modal" href="#soim" class="btn btn-primary btn-block btn-sb">Law Enforcement</a><br-leo>
-                <a data-toggle="modal" href="#soimdispatch" class="btn btn-primary btn-block btn-sb">Dispatch</a><br-leo>
-                <a data-toggle="modal" href="#soimfire" class="btn btn-primary btn-block btn-sb">Fire/EMS</a>
-                <a href="#" onClick="alert('Coming Soon');" class="btn btn-primary btn-block btn-sb">Judge</a>
-
+                <a href="<?php print $url['civ_index']?>" class="btn btn-primary btn-block btn-sb"><?php echo $LANG['civilian'] ?></a>
+                <a data-toggle="modal" href="#soim" class="btn btn-primary btn-block btn-sb"><?php echo $LANG['lawenforcement'] ?></a><br-leo>
+                <a data-toggle="modal" href="#soimdispatch" class="btn btn-primary btn-block btn-sb"><?php echo $LANG['dispatch'] ?></a><br-leo>
+                <a data-toggle="modal" href="#soimfire" class="btn btn-primary btn-block btn-sb"><?php echo $LANG['fireems'] ?></a>
 				 <?php echo $ftter; ?>
 			</div>
 			<div class="modal fade" id="soimdispatch" tabindex="-1" role="dialog" aria-hidden="true">
 				 <div class="modal-dialog modal-dialog-centered" role="document">
 						<div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Identity Options</h5>
+                                <h5 class="modal-title" id="exampleModalLabel"><?php echo $LANG['identityoptions']; ?></h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <a data-toggle="modal" href="#selectIdentifierdispatch" data-dismiss="modal" class="btn btn-primary btn-block btn-sb">Select Identifier</a><br-leo>
-                                <a data-toggle="modal" href="#createIdentityModal" data-dismiss="modal" class="btn btn-primary btn-block btn-sb">Create Identity</a><br-leo>
+                                <a data-toggle="modal" href="#selectIdentifierdispatch" data-dismiss="modal" class="btn btn-primary btn-block btn-sb"><?php echo $LANG['selectid']; ?></a><br-leo>
+                                <a data-toggle="modal" href="#createIdentityModal" data-dismiss="modal" class="btn btn-primary btn-block btn-sb"><?php echo $LANG['createid']; ?></a><br-leo>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $LANG['close']; ?></button>
                             </div>
 						</div>
 				 </div>
@@ -91,17 +89,17 @@ if (isset($_GET['identifier']) && strip_tags($_GET['identifier']) === 'created')
 				 <div class="modal-dialog modal-dialog-centered" role="document">
 						<div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Identity Options</h5>
+                                <h5 class="modal-title" id="exampleModalLabel"><?php echo $LANG['identityoptions']; ?></h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <a data-toggle="modal" href="#selectIdentifier" data-dismiss="modal" class="btn btn-primary btn-block btn-sb">Select Identifier</a><br-leo>
-                                <a data-toggle="modal" href="#createIdentityModal" data-dismiss="modal" class="btn btn-primary btn-block btn-sb">Create Identity</a><br-leo>
+                                <a data-toggle="modal" href="#selectIdentifier" data-dismiss="modal" class="btn btn-primary btn-block btn-sb"><?php echo $LANG['selectid']; ?></a><br-leo>
+                                <a data-toggle="modal" href="#createIdentityModal" data-dismiss="modal" class="btn btn-primary btn-block btn-sb"><?php echo $LANG['createid']; ?></a><br-leo>
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $LANG['close']; ?></button>
                             </div>
 						</div>
 				 </div>
@@ -110,7 +108,7 @@ if (isset($_GET['identifier']) && strip_tags($_GET['identifier']) === 'created')
 				 <div class="modal-dialog modal-dialog-centered" role="document">
 						<div class="modal-content">
 							 <div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLabel">Create New Identity</h5>
+									<h5 class="modal-title" id="exampleModalLabel"><?php echo $LANG['createid']; ?></h5>
 									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 									</button>
@@ -124,7 +122,7 @@ if (isset($_GET['identifier']) && strip_tags($_GET['identifier']) === 'created')
                                     </div>
 							        <div class="modal-footer">
                                         <div class="form-group">
-                                            <input class="btn btn-primary" name="createIdentityBtn" type="submit" value="Create">
+                                            <input class="btn btn-primary" name="createIdentityBtn" type="submit" value="<?php echo $LANG['create']; ?>">
                                         </div>
                                     </div>
 							     </form>
@@ -136,14 +134,14 @@ if (isset($_GET['identifier']) && strip_tags($_GET['identifier']) === 'created')
 				 <div class="modal-dialog modal-dialog-centered" role="document">
 						<div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Select Identifier</h5>
+                                <h5 class="modal-title" id="exampleModalLabel"><?php echo $LANG['selectid']; ?></h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <select class="form-control" name="character_list" onchange="location = this.value;">
-                                    <option selected="true" disabled="disabled">Select Identifier</option>
+                                    <option selected="true" disabled="disabled"><?php echo $LANG['selectid']; ?></option>
                                     <?php
                                         foreach (dbquery('SELECT * FROM identities WHERE user="' . escapestring($user_id) . '" AND status="Active"') as $unit) {
                                             echo '<option value="' . $url['leo_index'] . '?setid=' . $unit['identity_id'] . '">' . $unit['identifier'] . '</option>';
@@ -158,14 +156,14 @@ if (isset($_GET['identifier']) && strip_tags($_GET['identifier']) === 'created')
 				 <div class="modal-dialog modal-dialog-centered" role="document">
 						<div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Select Identifier</h5>
+                                <h5 class="modal-title" id="exampleModalLabel"><?php echo $LANG['selectid']; ?></h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <select class="form-control" name="character_list" onchange="location = this.value;">
-                                <option selected="true" disabled="disabled">Select Identifier</option>
+                                <option selected="true" disabled="disabled"><?php echo $LANG['selectid']; ?></option>
                                 <?php
                                     foreach (dbquery('SELECT * FROM identities WHERE user="' . escapestring($user_id) . '" AND status="Active"') as $unit) {
                                         echo '<option value="' . $url['dispatch_index'] . '?setid=' . $unit['identity_id'] . '">' . $unit['identifier'] . '</option>';
@@ -180,17 +178,17 @@ if (isset($_GET['identifier']) && strip_tags($_GET['identifier']) === 'created')
 				 <div class="modal-dialog modal-dialog-centered" role="document">
 						<div class="modal-content">
 							 <div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLabel">Identity Options</h5>
+									<h5 class="modal-title" id="exampleModalLabel"><?php echo $LANG['identityoptions']; ?></h5>
 									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 									<span aria-hidden="true">&times;</span>
 									</button>
 							 </div>
 							 <div class="modal-body">
-									 <a data-toggle="modal" href="#selectIdentifierfire" data-dismiss="modal" class="btn btn-primary btn-block btn-sb">Select Identifier</a><br-leo>
-									 <a data-toggle="modal" href="#createIdentityModal" data-dismiss="modal" class="btn btn-primary btn-block btn-sb">Create Identity</a><br-leo>
+									 <a data-toggle="modal" href="#selectIdentifierfire" data-dismiss="modal" class="btn btn-primary btn-block btn-sb"><?php echo $LANG['selectid']; ?></a><br-leo>
+									 <a data-toggle="modal" href="#createIdentityModal" data-dismiss="modal" class="btn btn-primary btn-block btn-sb"><?php echo $LANG['createid']; ?></a><br-leo>
 							 </div>
 							 <div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $LANG['close']; ?></button>
 							 </div>
 						</div>
 				 </div>
@@ -199,14 +197,14 @@ if (isset($_GET['identifier']) && strip_tags($_GET['identifier']) === 'created')
 				 <div class="modal-dialog modal-dialog-centered" role="document">
 						<div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Select Identifier</h5>
+                                <h5 class="modal-title" id="exampleModalLabel"><?php echo $LANG['selectid']; ?></h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
                                 <select class="form-control" name="character_list" onchange="location = this.value;">
-                                    <option selected="true" disabled="disabled">Select Identifier</option>
+                                    <option selected="true" disabled="disabled"><?php echo $LANG['selectid']; ?></option>
                                     <?php
                                         foreach (dbquery('SELECT * FROM identities WHERE user="' . escapestring($user_id) . '" AND status="Active"') as $unit) {
                                             echo '<option value="' . $url['fire_index'] . '?setid=' . $unit['identity_id'] . '">' . $unit['identifier'] . '</option>';
