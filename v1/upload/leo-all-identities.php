@@ -72,7 +72,7 @@ include('includes/header.php')
 <body>
    <div class="container-leo">
       <div class="main-leo">
-        <div class="leo-header"><div class="float-right" id="getTime"></div>
+        <div class="leo-header"><div class="float-right" id="getTime"></div></font>
         <div class="float-left">
           <?php if (subdivisionModule_isInstalled): ?>
             <div style="margin-top:50px;">
