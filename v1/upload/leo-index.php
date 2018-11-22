@@ -234,6 +234,10 @@ include('includes/header.php')
     $("#openVehicleSearch").on("click",function(){
       loadVehs();
     });
+
+    $('#newBolo').ajaxForm(function() { 
+      toastr.success('Bolo Added To System.', 'System:', {timeOut: 10000})
+    });
    });
    </script>
 </head>
@@ -480,7 +484,7 @@ include('includes/header.php')
                </button>
             </div>
             <div class="modal-body">
-              <form method="post" action="leo-index.php">
+            <form id="newBolo" action="functions/leo/newBolo.php" method="post">
                 <div class="form-group">
                    <input type="text" name="bolo_created_by" class="form-control" maxlength="126" readonly="true" value="<?php echo $_SESSION['identifier'] ?>" data-lpignore="true" />
                 </div>
@@ -510,7 +514,7 @@ include('includes/header.php')
            </div>
            <div class="modal-footer">
            <div class="form-group">
-              <input class="btn btn-primary" name="addBoloBtn" id="addBoloBtn" type="submit" value="Add Bolo">
+              <input class="btn btn-primary" type="submit" value="Add Bolo">
            </div>
            </form>
             </div>

@@ -19,13 +19,6 @@ include('includes/config.php');
 session_start();
 
 require('classes/lib/password.php');
-
-//Error Handling
-if (isset($_GET['unverified']) && strip_tags($_GET['unverified']) === 'true') {
-  $message = '<div class="alert alert-danger" role="alert">Your account is not verified.</div>';
-} elseif (isset($_GET['account']) && strip_tags($_GET['account']) === 'banned') {
-  $message = '<div class="alert alert-danger" role="alert">Your account has been banned. Please contact staff.</div>';
-}
 ?>
 <html>
     <?php
@@ -48,6 +41,11 @@ if (isset($_GET['unverified']) && strip_tags($_GET['unverified']) === 'true') {
    </script>
     </head>
     <body>
+		<?php 
+        if (isset($_GET['account']) && strip_tags($_GET['account']) === 'banned') {
+            throwError('Your account has been banned from accessing this Panel. If you have any further questions, Please make a ban appeal.');
+        }
+        ?>
         <div class="container">
             <div class="main">
                 <img src="assets/imgs/los_santos.png" class="main-logo" draggable="false"/>

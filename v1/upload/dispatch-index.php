@@ -179,7 +179,7 @@ include('includes/header.php')
     $('#new911callDispatch').ajaxForm(function() { 
       toastr.success('New 911 Call Created, Assign Units.', 'System:', {timeOut: 10000})
     }); 
-    $('#newBoloDispatch').ajaxForm(function() { 
+    $('#newBolo').ajaxForm(function() { 
       toastr.success('Bolo Added To System.', 'System:', {timeOut: 10000})
     });
    });
@@ -392,7 +392,7 @@ include('includes/header.php')
                </button>
             </div>
             <div class="modal-body">
-            <form id="newBoloDispatch" action="functions/leo/newBoloDispatch.php" method="post">
+            <form id="newBolo" action="functions/leo/newBolo.php" method="post">
                 <div class="form-group">
                    <input type="text" name="bolo_created_by" class="form-control" maxlength="126" readonly="true" value="<?php echo $_SESSION['identifier'] ?>" data-lpignore="true" />
                 </div>
