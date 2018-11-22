@@ -65,14 +65,36 @@ function throwError($error, $log = false) {
     ';
 }
 
+// Throw Notification (Only works after Header is loaded)
+function clientNotify($type, $error) {
+    // Load Toastr JavaScript and CSS
+    echo '
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+        <script type="text/javascript">
+            if(window.toastr != undefined) {
+                if (typeof jQuery == "undefined") {
+                    alert("System: ' . $error . '")
+                } else {
+                    toastr.' . $type . '("' . $error . '", "System")
+                }
+            } else {
+                alert("System: ' . $error . '")
+            }
+        </script>
+    ';
+}
+
 // Login Function
 function userLogin($username, $passwordAttempt) {
     global $pdo;
     global $url;
 
+    $error    = array();
     $users = dbquery('SELECT * FROM users WHERE username="' . escapestring($username) . '"');
     if (empty($users)) {
-        header('Location: ' . $url['login'] . '?user=notfound');
+        $error['msg']      = "That account couldn't be found in our Database.";
+        echo json_encode($error);
         exit();
     } else {
         $user = $users[0];
@@ -84,22 +106,26 @@ function userLogin($username, $passwordAttempt) {
             if ($user['usergroup'] == "Unverified") {
                 // Check Site Settings
                 if ($settings['validation_enabled'] == "Yes" || $settings['validation_enabled'] == "yes") {
-                    header('Location: ' . $url['login'] . '?unverified=true');
-                    session_destroy();
+                    $error['msg']  = "Your account is pending Validation from an Admin.";
+                    $error['status']   = true;    
+                    echo json_encode($error);
                     exit();
                 } else {
                     dbquery('UPDATE users SET usergroup="User" WHERE user_id="' . escapestring($user['user_id']) . '"');
                 }
             } else {
                 // Create Session
+                $error['msg']      = "";
+                echo json_encode($error);
                 $_SESSION['user_id']   = $user['user_id'];
                 $_SESSION['logged_in'] = time();
-                header('Location: ' . $url['index'] . '?logged=in');
+                // header('Location: ' . $url['index'] . '?logged=in');
                 exit();
             }
         } else {
-            header('Location: ' . $url['login'] . '?password=invalid');
-            exit();
+            $error['msg']      = "Your password was invalid. Please try again!";
+            echo json_encode($error);
+            exit(); 
         }
     }
 }

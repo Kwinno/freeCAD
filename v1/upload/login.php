@@ -20,23 +20,11 @@ session_start();
 
 require('classes/lib/password.php');
 
-if (isset($_POST['loginbtn'])) {
-    userLogin($_POST['username'], $_POST['password']);
-}
-
 //Error Handling
-if (isset($_GET['user']) && strip_tags($_GET['user']) === 'notfound') {
-   $message = '<div class="alert alert-danger" role="alert">That account was not found in our system.</div>';
-} elseif (isset($_GET['password']) && strip_tags($_GET['password']) === 'invalid') {
-  $message = '<div class="alert alert-danger" role="alert">Your password was wrong.</div>';
-} elseif (isset($_GET['unverified']) && strip_tags($_GET['unverified']) === 'true') {
+if (isset($_GET['unverified']) && strip_tags($_GET['unverified']) === 'true') {
   $message = '<div class="alert alert-danger" role="alert">Your account is not verified.</div>';
 } elseif (isset($_GET['account']) && strip_tags($_GET['account']) === 'banned') {
   $message = '<div class="alert alert-danger" role="alert">Your account has been banned. Please contact staff.</div>';
-} elseif (isset($_GET['update']) && strip_tags($_GET['update']) === 'ip') {
-  $message = '<div class="alert alert-danger" role="alert"><strong>Hydrid is currently being updated. This is a panel wide update, thus please do not message the server owner about this.</i></strong></div>';
-} elseif (isset($_GET['settings']) && strip_tags($_GET['settings']) === 'updated') {
-   $message = '<div class="alert alert-success" role="alert">Your settings have been updated. Please login again!</div>';
 }
 ?>
 <html>
@@ -44,6 +32,21 @@ if (isset($_GET['user']) && strip_tags($_GET['user']) === 'notfound') {
         $page_name = $LANG['login'];
         include('includes/header.php')
     ?>
+    <head>
+    <script type="text/javascript">
+    $(document).ready(function() {
+    $('#userLogin').ajaxForm(function(error) { 
+        error = JSON.parse(error);
+        if (error['msg'] === "") {
+            toastr.success('Logged in... Redirecting', 'System:', {timeOut: 10000})
+            window.location.href = "<?php echo $url['index']; ?>?logged=in"; 
+        } else {
+            toastr.error(error['msg'], 'System:', {timeOut: 10000})
+        }
+    });
+   });
+   </script>
+    </head>
     <body>
         <div class="container">
             <div class="main">
@@ -52,7 +55,7 @@ if (isset($_GET['user']) && strip_tags($_GET['user']) === 'notfound') {
                     <?php echo $siteSettings['name']; ?> <?php echo $LANG['login']; ?>
                 </div>
                 <?php print($message); ?>
-                <form method="post" action="login.php">
+                <form id="userLogin" action="functions/user/auth/userLogin.php" method="post">
                     <div class="form-group">
                         <input type="text" name="username" class="form-control" placeholder="Username" maxlength="36" data-lpignore="true" required />
                     </div>
@@ -60,7 +63,7 @@ if (isset($_GET['user']) && strip_tags($_GET['user']) === 'notfound') {
                         <input type="password" name="password" class="form-control" placeholder="Password" data-lpignore="true" required />
                     </div>
                     <div class="form-group">
-                        <input class="btn btn-block btn-primary" name="loginbtn" id="loginbtn" type="submit" value="<?php echo $LANG['login']; ?>">
+                        <input class="btn btn-block btn-primary" type="submit" value="<?php echo $LANG['login']; ?>">
                     </div>
                     <text><?php echo $LANG['needaccount']; ?> <a href="<?php print($url['register']) ?>"><?php echo $LANG['register']; ?></a></text>
                     <?php echo $ftter; ?>

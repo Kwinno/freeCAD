@@ -21,9 +21,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `hydrid_v1`
 --
-CREATE DATABASE IF NOT EXISTS `hydrid_v1` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `hydrid_v1`;
-
 -- --------------------------------------------------------
 
 --
