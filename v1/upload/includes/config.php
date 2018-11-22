@@ -15,7 +15,7 @@
 **/
 
 // General Configuration
-$GLOBAL['language'] = "en-us";        // Set Language (Change this to user db once system is fully completed)
+$GLOBAL['language'] = "en-us";        // Set Language
 $GLOBAL['debug'] = false;             // Toggle Debug
 
 
@@ -29,27 +29,20 @@ if(!$GLOBAL['debug']) {
 }
 
 
-// Oudated Variables/Constants?
-$update_in_progress = "No";
-define("isDonator", false);
-
-
 // Set Language
 require('languages/' . $GLOBAL['language'] . '.php');
 
 
-// Load Plugin Loader
-//require_once("classes/lib/plugins.class.php");
-//plugins::start('plugins/');
-
 // Get Global Functions
 require_once("functions.php");
+
 
 // Get Site Config
 $settingsRow = dbquery('SELECT * FROM settings')[0];
 
 if (empty($settingsRow)) {
-  die("Database Error (2) - Contact Support");
+    throwError('Settings Table Missing/Broken', true);
+    die("Settings Table Missing/Broken");
 }
 
 //Define variables

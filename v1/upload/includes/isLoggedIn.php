@@ -94,12 +94,3 @@ if (banned) {
   header('Location: ' . $url['login'] . '?account=banned');
   exit();
 }
-
-// Check Update Status
-if ($update_in_progress === "Yes") {
-  if ($user_usergroup !== "Developer") {
-    session_destroy();
-    header('Location: ' . $url['login'] . '?update=ip');
-    exit();
-  }
-}
