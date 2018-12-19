@@ -43,7 +43,7 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
      $sidentity_name    = $identity['identifier'];
      $_SESSION['identifier'] = $sidentity_name;
 
-     if ($identity['is_leo'] === "Yes") {
+     if ($identity['status'] === "Active") {
       $_SESSION['is_leo'] = "Yes";
     } else {
       header('Location: ' . $url['index'] . '?np=leo');
