@@ -1,7 +1,7 @@
-AddEventHandler('playerConnecting', function()
+AddEventHandler('playerConnecting', function(PlayerName, KickReason, Deferrals)
     if not string.find(GetPlayerIdentifiers(source)[1], "steam:") then
-		deferrals.defer()
-		deferrals.done('Steam is required to play on this server, please relaunch your game with steam open.')
+		Deferrals.defer()
+		Deferrals.done('Steam is required to play on this server, please relaunch your game with steam open.')
     end
 end)
 
@@ -15,7 +15,7 @@ Citizen.CreateThread(function()
 			print('[Hydrid CAD System] Recieved license plates, sending to client now...')
 			TriggerClientEvent('RecieveAPIVehicles', -1, Information)
 		else
-			print('[Hydrid CAD System][Error] No license plates found!			
+			print('[Hydrid CAD System][Error] No license plates found!')		
 		end
             end
         end)
