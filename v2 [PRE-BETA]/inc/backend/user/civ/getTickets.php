@@ -41,13 +41,13 @@ else {
               ';
 	foreach($ticketDBcall as $ticket) {
 		echo '
-                      <tr>
-                          <td>' . $ticket['reasons'] . '</td>
-                          <td>' . $ticket['amount'] . '</td>
-                          <td>' . $ticket['timestamp'] . '</td>
-                          <td>' . $ticket['ticketing_officer'] . '</td>
-                      </tr>
-                      ';
+        <tr>
+            <td>' . $ticket['reasons'] . '</td>
+            <td>' . $ticket['amount'] . '</td>
+            <td>' . $ticket['ticket_timestamp'] . '</td>
+            <td>' . $ticket['ticketing_officer'] . '</td>
+        </tr>
+        ';
 	}
 
 	echo '

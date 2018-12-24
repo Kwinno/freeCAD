@@ -31,7 +31,7 @@
                             <th>Timestamp</th>
                             </tr>
                           </thead>";
-            $getPreviousTickets = "SELECT * FROM tickets WHERE suspect = '$charid'";
+            $getPreviousTickets = "SELECT * FROM tickets WHERE suspect_id = '$charid'";
             $result             = $pdo->prepare($getPreviousTickets);
             $result->execute();
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
@@ -39,7 +39,7 @@
                 echo "<td>" . $row['ticket_id'] . "</td>";
                 echo "<td>" . $row['reasons'] . "</td>";
                 echo "<td>" . $row['postal'] . "</td>";
-                echo "<td>" . $row['timestamp'] . "</td>";
+                echo "<td>" . $row['ticket_timestamp'] . "</td>";
                 echo "</tr>";
             }
 
@@ -56,7 +56,7 @@
                             <th>Timestamp</th>
                             </tr>
                           </thead>";
-            $getPreviousTickets = "SELECT * FROM arrest_reports WHERE suspect = '$charid'";
+            $getPreviousTickets = "SELECT * FROM arrest_reports WHERE suspect_id = '$charid'";
             $result             = $pdo->prepare($getPreviousTickets);
             $result->execute();
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
