@@ -36,20 +36,22 @@ else {
                 <th>Model</th>
                 <th>Insurance</th>
                 <th>Registration</th>
+                <th>Actions</th>
             </tr>
           </thead>
             <tbody>
               ';
 	foreach($vehicleDBcall as $vehicle) {
 		echo '
-                      <tr>
-                          <td>' . $vehicle['vehicle_plate'] . '</td>
-                          <td>' . $vehicle['vehicle_color'] . '</td>
-                          <td>' . $vehicle['vehicle_model'] . '</td>
-                          <td>' . $vehicle['vehicle_is'] . '</td>
-                          <td>' . $vehicle['vehicle_rs'] . '</td>
-                      </tr>
-                      ';
+        <tr>
+            <td>' . $vehicle['vehicle_plate'] . '</td>
+            <td>' . $vehicle['vehicle_color'] . '</td>
+            <td>' . $vehicle['vehicle_model'] . '</td>
+            <td>' . $vehicle['vehicle_is'] . '</td>
+            <td>' . $vehicle['vehicle_rs'] . '</td>
+            <td><input type="button" class="btn btn-danger btn-sm" name="deleteVehicle" value="Delete" id='.$vehicle['vehicle_id'].' onclick="deleteVehicle(this)"></td>
+        </tr>
+        ';
 	}
 
 	echo '

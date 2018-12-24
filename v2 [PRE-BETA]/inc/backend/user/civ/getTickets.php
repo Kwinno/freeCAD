@@ -45,7 +45,7 @@ else {
             <td>' . $ticket['reasons'] . '</td>
             <td>' . $ticket['amount'] . '</td>
             <td>' . $ticket['ticket_timestamp'] . '</td>
-            <td>' . $ticket['ticketing_officer'] . '</td>
+            <td>' . $ticket['officer'] . '</td>
         </tr>
         ';
 	}

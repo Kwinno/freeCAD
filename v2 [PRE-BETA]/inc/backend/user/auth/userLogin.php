@@ -25,15 +25,21 @@ if ($user === false) {
 } else {
 	$validPassword = password_verify($passwordAttempt, $user['password']);
 	if ($validPassword) {
-		if ($user['usergroup'] === "Unverified") {
+		if ($user['usergroup'] === "") {
+			$error['msg'] = "An error occured while creating your account. Please contact Staff.";
+			echo json_encode($error);
+			exit();
+		} elseif ($user['usergroup'] === "Unverified") {
 			if ($settings['account_validation'] == "Yes") {
 				$error['msg'] = "Your account is pending Validation from an Admin.";
 				echo json_encode($error);
 				exit();
 			} else {
-				$sql2               = "UPDATE `users` SET `usergroup`='User' WHERE `user_id`=:user_id";
+				$default_usergroup = "User";
+				$sql2               = "UPDATE `users` SET `usergroup`=:usergroup WHERE `user_id`=:user_id";
 				$stmt2              = $pdo->prepare($sql2);
 				$stmt2->bindValue(':user_id', $user['user_id']);
+				$stmt2->bindValue(':usergroup', $default_usergroup);
 				$updateUserGroup = $stmt2->execute();
 			}
 		}

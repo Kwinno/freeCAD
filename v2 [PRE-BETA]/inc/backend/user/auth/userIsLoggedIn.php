@@ -21,6 +21,11 @@ else {
 	$stmt->execute();
 	$userRow = $stmt->fetch(PDO::FETCH_ASSOC);
 
+	if ($userRow === false) {
+		header('Location: logout.php');
+		exit();
+	}
+
 	// Define variables
 
 	$user['username'] = $userRow['username'];

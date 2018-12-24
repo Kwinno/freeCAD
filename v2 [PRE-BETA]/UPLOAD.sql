@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 24, 2018 at 05:51 PM
+-- Generation Time: Dec 24, 2018 at 08:54 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -259,10 +259,9 @@ CREATE TABLE `users` (
   `username` varchar(36) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(164) NOT NULL,
-  `usergroup` enum('Banned','User','Moderator','Admin','Super Admin') NOT NULL DEFAULT 'User',
+  `usergroup` enum('Banned','Unverified','User','Moderator','Admin','Super Admin') NOT NULL DEFAULT 'User',
   `join_date` varchar(126) NOT NULL,
   `join_ip` varchar(126) NOT NULL,
-  `first_login` int(11) NOT NULL DEFAULT '0' COMMENT '0/Yes - 1/No',
   `steam_id` varchar(355) DEFAULT NULL,
   `avatar` varchar(355) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;

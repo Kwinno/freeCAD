@@ -40,12 +40,12 @@ else {
               ';
 	foreach($warrantDBcall as $displayWarrants) {
 		echo '
-                      <tr>
-                          <td>' . $displayWarrants['reason'] . '</td>
-                          <td>' . $displayWarrants['signed_by'] . '</td>
-                          <td>' . $displayWarrants['issued_on'] . '</td>
-                      </tr>
-                      ';
+        <tr>
+            <td>' . $displayWarrants['reason'] . '</td>
+            <td>' . $displayWarrants['signed_by'] . '</td>
+            <td>' . $displayWarrants['issued_on'] . '</td>
+        </tr>
+        ';
 	}
 
 	echo '

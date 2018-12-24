@@ -18,24 +18,24 @@ $error = array();
 
 if (isset($_GET['id']) && strip_tags($_GET['id'])) {
 	$id   = $_GET['id'];
-	$sql  = "SELECT * FROM vehicles WHERE vehicle_id = :vehicle_id";
+	$sql  = "SELECT * FROM weapons WHERE wpn_id = :wpn_id";
 	$stmt = $pdo->prepare($sql);
-	$stmt->bindValue(':vehicle_id', $id);
+	$stmt->bindValue(':wpn_id', $id);
 	$stmt->execute();
-	$vehicleDB = $stmt->fetch(PDO::FETCH_ASSOC);
+	$weaponDB = $stmt->fetch(PDO::FETCH_ASSOC);
 	
-	if ($vehicleDB === false) {
-		$error['msg'] = "Vehicle Not Found";
+	if ($weaponDB === false) {
+		$error['msg'] = "Firearm Not Found";
 		echo json_encode($error);
 		exit();
-	} elseif ($vehicleDB['vehicle_owner'] != $_SESSION['character_id']) {
+	} elseif ($weaponDB['wpn_owner'] != $_SESSION['character_id']) {
 		$error['msg'] = "No Permission";
 		echo json_encode($error);
 		exit();
 	} else {
 		$id = strip_tags($_GET['id']);
-		$stmt2              = $pdo->prepare("DELETE FROM vehicles WHERE vehicle_id =:vehicle_id");
-		$stmt2->bindValue(':vehicle_id', $id);
+		$stmt2              = $pdo->prepare("DELETE FROM weapons WHERE wpn_id =:wpn_id");
+		$stmt2->bindValue(':wpn_id', $id);
 		$result2 = $stmt2->execute();
 		$error['msg'] = "";
 		echo json_encode($error);

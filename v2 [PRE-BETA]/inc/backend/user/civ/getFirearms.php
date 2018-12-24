@@ -34,18 +34,20 @@ else {
                 <th>Type</th>
                 <th>Serial</th>
                 <th>Status</th>
+                <th>Actions</th>
             </tr>
           </thead>
             <tbody>
               ';
 	foreach($firearmDBcall as $firearm) {
 		echo '
-                      <tr>
-                          <td>' . $firearm['wpn_type'] . '</td>
-                          <td>' . $firearm['wpn_serial'] . '</td>
-                          <td>' . $firearm['wpn_rpstatus'] . '</td>
-                      </tr>
-                      ';
+        <tr>
+            <td>' . $firearm['wpn_type'] . '</td>
+            <td>' . $firearm['wpn_serial'] . '</td>
+            <td>' . $firearm['wpn_rpstatus'] . '</td>
+            <td><input type="button" class="btn btn-danger btn-sm" name="deleteFirearm" value="Delete" id='.$firearm['wpn_id'].' onclick="deleteFirearm(this)"></td>
+        </tr>
+        ';
 	}
 
 	echo '

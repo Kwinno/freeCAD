@@ -51,14 +51,13 @@ if ($row['num'] > 0) {
 	exit();
 }
 
-$default_usergroup = "Unverified";
 $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array("cost" => 12));
 $sql3          = "INSERT INTO users (username, email, password, usergroup, join_date, join_ip) VALUES (:username, :email, :password, :usergroup, :join_date, :join_ip)";
 $stmt3         = $pdo->prepare($sql3);
 $stmt3->bindValue(':username', $username);
 $stmt3->bindValue(':email', $email);
 $stmt3->bindValue(':password', $passwordHash);
-$stmt3->bindValue(':usergroup', $default_usergroup);
+$stmt3->bindValue(':usergroup', 'Unverified');
 $stmt3->bindValue(':join_date', $us_date);
 $stmt3->bindValue(':join_ip', $ip);
 $result = $stmt3->execute();

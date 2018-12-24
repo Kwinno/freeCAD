@@ -85,9 +85,22 @@
             echo "<h5>Height / Weight: " . $row['height'] . " / " . $row['weight'] . "</h5><br-leo-name-search>";
             echo "<h5>Eye Color / Hair Color: " . $row['eye_color'] . " / " . $row['hair_color'] . "</h5><br-leo-name-search>";
             echo "<hr>";
-            echo '<h5>Drivers License: ' . $row['license_driver'] . '</h5><br-leo-name-search>';
-            echo "<h5>Firearms License: " . $row['license_firearm'] . "</h5><br-leo-name-search>";
-            echo '<a class="btn btn-danger btn-sm" href="#" data-title="Delete">Suspend Drivers License</a>';
+            echo '<h5>Drivers License: '; if ($row['license_driver'] === "Suspended") {
+                echo '<font color="red"><strong>Suspended</strong></font>';
+            } else {
+                echo $row['license_driver'];
+            }
+            echo '</h5><br-leo-name-search>';
+            echo '<h5>Firearms License: '; if ($row['license_firearm'] === "Suspended") {
+                echo '<font color="red"><strong>Suspended</strong></font>';
+            } else {
+                echo $row['license_firearm'];
+            }
+            echo "</h5><br-leo-name-search>";
+            if ($_SESSION['identity_supervisor'] === "Yes") {
+                echo '<input type="button" class="btn btn-danger btn-sm" name="suspendDriversLicense" value="Suspend Drivers License" id='.$searchCharId.' onclick="suspendDriversLicense(this)">';
+                echo '  <input type="button" class="btn btn-danger btn-sm" name="suspendFirearmsLicense" value="Suspend Firearms License" id='.$searchCharId.' onclick="suspendFirearmsLicense(this)">';
+            }
             echo "<hr>";
             echo "<div class='float-left'";
             echo "<h5 style='color:black;'>WARRANTS</h5>";
