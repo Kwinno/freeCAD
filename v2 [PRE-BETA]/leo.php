@@ -61,7 +61,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 				$stmt3->bindValue(':division', $identity_division);
 				$result3 = $stmt3->execute();
             
-            header('Location: ' . $url['leo'] . '?v=main');
+            echo '<script> location.replace("'.$url['leo'].'?v=main"); </script>';
             exit();
         }
     }
