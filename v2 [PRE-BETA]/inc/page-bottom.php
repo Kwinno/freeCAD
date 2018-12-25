@@ -6,7 +6,23 @@
         <script src="assets/js/jquery.slimscroll.js"></script>
         <script src="assets/plugins/jquery-knob/jquery.knob.js"></script>
         <script src="assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+        <!-- Required datatable js -->
+        <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
+        <script src="assets/plugins/datatables/dataTables.bootstrap4.min.js"></script>
+        <!-- Buttons examples -->
+        <script src="assets/plugins/datatables/dataTables.buttons.min.js"></script>
+        <script src="assets/plugins/datatables/buttons.bootstrap4.min.js"></script>
+        <script src="assets/plugins/datatables/jszip.min.js"></script>
+        <script src="assets/plugins/datatables/pdfmake.min.js"></script>
+        <script src="assets/plugins/datatables/vfs_fonts.js"></script>
+        <!-- Responsive examples -->
+        <script src="assets/plugins/datatables/dataTables.responsive.min.js"></script>
+        <script src="assets/plugins/datatables/responsive.bootstrap4.min.js"></script>
+        <!-- Selection table -->
+        <script src="assets/plugins/datatables/dataTables.select.min.js"></script>
 	       <script>
+           // Default Datatable
+           $('#datatable').DataTable();
                 // Date Picker
             jQuery('#datepicker').datepicker();
             jQuery('#datepicker-autoclose').datepicker({

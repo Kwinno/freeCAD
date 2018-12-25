@@ -124,3 +124,47 @@ function setCivSideWarrants(str) {
         })
     }
 }
+
+function getPendingUsers() {
+    (function worker() {
+        $.ajax({
+            url: 'inc/backend/staff/users/getPendingUsers.php',
+            success: function(data) {
+                $('#getPendingUsers').html(data);
+            },
+            complete: function() {
+                // Schedule the next request when the current one's complete
+                setTimeout(worker, 1000);
+            }
+        });
+    })();
+}
+getPendingUsers();
+
+function approveUser(str) {
+    var i = str.id;
+
+    $.ajax({
+        url: "inc/backend/staff/users/approveUser.php?id=" + i,
+        cache: false,
+        success: function(result) {
+            toastr.success('User has been approved.', 'System:', {
+                timeOut: 10000
+            })
+        }
+    });
+}
+
+function rejectUser(str) {
+    var i = str.id;
+
+    $.ajax({
+        url: "inc/backend/staff/users/rejectUser.php?id=" + i,
+        cache: false,
+        success: function(result) {
+            toastr.error('User has been rejected.', 'System:', {
+                timeOut: 10000
+            })
+        }
+    });
+}

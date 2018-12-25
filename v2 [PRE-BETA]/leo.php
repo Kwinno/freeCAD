@@ -452,7 +452,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 							                <div class="form-group">
 							                	<textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="104"><?php echo $_SESSION['notepad']; ?></textarea>
 							                </div>
-													</form>
+											</form>
 						           </div>
 						         </div>
 						      </div>
@@ -469,30 +469,30 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 	 					               </button>
 	 					            </div>
 	 					            <div class="modal-body">
-	 												<form id="newTicket" action="inc/backend/user/leo/newTicket.php" method="post">
-														<div class="form-group">
-															<select class="js-example-basic-single" name="suspect" id="getAllCharacters2" required>
-																 <option selected="true" disabled="disabled">Loading Characters...</option>
-															</select>
-														</div>
-														<div class="form-group">
-															<input type="text" name="location" class="form-control" placeholder="Ticket Location" data-lpignore="true" required />
-														</div>
-														<div class="form-group">
-															<input type="text" name="postal" class="form-control" pattern="\d*" placeholder="(Nearest Postal)" data-lpignore="true" required />
-														</div>
-														<div class="form-group">
-															<input type="text" name="amount" class="form-control" pattern="\d*" placeholder="Fine Amount" data-lpignore="true" required />
-														</div>
-														<div class="form-group">
-															<input type="text" name="reason" class="form-control" maxlength="255" placeholder="Ticket Reason(s)" data-lpignore="true" required />
-														</div>
-														<div class="modal-footer">
-															<div class="form-group">
-																 <input class="btn btn-primary" type="submit" value="Submit Ticket">
-															</div>
-														</div>
-													</form>
+											<form id="newTicket" action="inc/backend/user/leo/newTicket.php" method="post">
+												<div class="form-group">
+													<select class="js-example-basic-single" name="suspect" id="getAllCharacters2" required>
+															<option selected="true" disabled="disabled">Loading Characters...</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<input type="text" name="location" class="form-control" placeholder="Ticket Location" data-lpignore="true" required />
+												</div>
+												<div class="form-group">
+													<input type="text" name="postal" class="form-control" pattern="\d*" placeholder="(Nearest Postal)" data-lpignore="true" required />
+												</div>
+												<div class="form-group">
+													<input type="text" name="amount" class="form-control" pattern="\d*" placeholder="Fine Amount" data-lpignore="true" required />
+												</div>
+												<div class="form-group">
+													<input type="text" name="reason" class="form-control" maxlength="255" placeholder="Ticket Reason(s)" data-lpignore="true" required />
+												</div>
+												<div class="modal-footer">
+													<div class="form-group">
+															<input class="btn btn-primary" type="submit" value="Submit Ticket">
+													</div>
+												</div>
+											</form>
 	 					            </div>
 	 					         </div>
 	 					      </div>

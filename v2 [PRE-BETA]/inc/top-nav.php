@@ -76,8 +76,17 @@
                           <li class="has-submenu">
                             <a href="#"><i class="mdi mdi-file-lock"></i><span> Staff </span></a>
                               <?php if (staff_siteSettings): ?>
-                                <ul class="submenu">
-                                    <li><a href="<?php echo $url['staff']; ?>?m=settings">Settings</a></li>
+                                <ul class="submenu megamenu">
+                                    <li>
+                                        <ul>
+                                            <a href="<?php echo $url['staff']; ?>?m=settings">Settings</a>
+                                        <ul>
+                                    </li>
+                                    <li>
+                                        <ul>
+                                            <a href="<?php echo $url['staff']; ?>?m=pending-users">Pending Users</a>
+                                        <ul>
+                                    </li>
                                 </ul>
                               <?php endif; ?>
                           </li>
