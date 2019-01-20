@@ -132,7 +132,7 @@ $time = date('h:i:s A', time());
 //________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 // Version Check/Control
-$data_vc = file_get_contents("https://hydrid.us/version.txt");
+$data_vc = file_get_contents("https://pastebin.com/raw/PQM5yJeD");
 
 if ($data_vc > $version) {
   define('isOutdated', true);
@@ -149,10 +149,6 @@ if (!class_exists('PDO')) {
 if (floatval(phpversion()) < 5.6) {
   die("Your PHP Version is not supported. Please update to continue using Hydrid.");
 }
-
-// Staff Announcement Control
-$data_hac = file_get_contents("https://hydrid.us/important.txt");
-
 //YOU ARE NOT ALLOWED TO REMOVE THIS. REMOVING THIS, REMOVING BACKLINKS, WILL RESULT IN A DMCA TAKEDOWN AS IT IS A BREACH OF OUR LICENSE (AGPL v3)
 if ($data_vc > $version) {
   $ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLANK">Powered by Hydrid</a></strong></small><br />
