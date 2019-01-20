@@ -30,6 +30,9 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
   $stmt->execute();
   $identity = $stmt->fetch(PDO::FETCH_ASSOC);
   if ($identity === false) {
+    $_SESSION['is_leo'] = "No";
+     $_SESSION['is_fire'] = "No";
+     $_SESSION['is_dispatch'] = "No";
      header('Location: ' . $url['index'] . '');
      exit();
   } else {
@@ -61,6 +64,11 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
 
      $sidentity_user    = $identity['user'];
      $_SESSION['on_duty'] = "No";
+
+     //Make sure other duty variables are set to no
+     $_SESSION['is_leo'] = "No";
+     $_SESSION['is_dispatch'] = "No";
+
      header('Location: fire-index.php');
      exit();
 
@@ -88,7 +96,7 @@ include('includes/header.php')
 <body>
    <div class="container-leo">
       <div class="main-leo">
-        <div class="leo-header"><div class="float-right" id="getTime"></div>
+        <div class="leo-header"><div class="float-right" id="getTime"></div></font>
           <div class="float-left">
           </div>
          <div class="center"><a href="functions/leo/api.php?a=endShift"><img src="assets/imgs/fire.png" class="main-logo" draggable="false"/></a></div>

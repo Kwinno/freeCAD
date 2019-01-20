@@ -14,12 +14,13 @@
     GNU General Public License for more details.
 **/
 
-// Debug Toggle
-$GLOBAL['debug'] = false;
+// General Configuration
+$GLOBAL['language'] = "en-us";        // Set Language
+$GLOBAL['debug'] = false;             // Toggle Debug
 
 
 // Version Number -- Do Not Change
-$version = "v1.0.7";
+$version = "v1.0.8";
 
 
 // Disable Error Reporting
@@ -28,23 +29,20 @@ if(!$GLOBAL['debug']) {
 }
 
 
-// Oudated Variables/Constants?
-$update_in_progress = "No";
-define("isDonator", false);
+// Set Language
+require('languages/' . $GLOBAL['language'] . '.php');
 
-
-// Load Plugin Loader
-//require_once("classes/lib/plugins.class.php");
-//plugins::start('plugins/');
 
 // Get Global Functions
 require_once("functions.php");
+
 
 // Get Site Config
 $settingsRow = dbquery('SELECT * FROM settings')[0];
 
 if (empty($settingsRow)) {
-  die("Database Error (2) - Contact Support");
+    throwError('Settings Table Missing/Broken', true);
+    die("Settings Table Missing/Broken");
 }
 
 //Define variables
@@ -116,7 +114,7 @@ $url['staff_edit_user'] = "staff-edituser.php";
 $url['staff_index'] = "staff.php";
 $url['fire_index'] = "fire-index.php";
 $url['leo_supervisor_view_pending_identities'] = "leo-pending-identities.php";
-$url['leo_supervisor_view_pending_identities'] = "leo-all-identities.php";
+$url['leo_supervisor_view_all_identities'] = "leo-all-identities.php";
 $url['dispatch_index'] = "dispatch-index.php";
 $url['staff_setup'] = "setup.php";
 $url['settings'] = "user-settings.php";
@@ -134,7 +132,7 @@ $time = date('h:i:s A', time());
 //________________________________________________________________________________________________________________________________________________________________________________________________________________________
 
 // Version Check/Control
-$data_vc = file_get_contents("https://pastebin.com/raw/d63r81DF");
+$data_vc = file_get_contents("https://hydrid.us/version.txt");
 
 if ($data_vc > $version) {
   define('isOutdated', true);
@@ -142,24 +140,26 @@ if ($data_vc > $version) {
   define('isOutdated', false);
 }
 
-//pdo check
+// PDO Install Check
 if (!class_exists('PDO')) {
   die("Sorry, Hydrid can not be used without PDO being enabled. If you're running on a local machine, It should already be enabled. If you are running off a hosting provider, Please contact them for further assistance.");
 }
 
-//php version check
+// PHP Version Check
 if (floatval(phpversion()) < 5.6) {
   die("Your PHP Version is not supported. Please update to continue using Hydrid.");
 }
 
-// hydrid announce check
-// Version Check/Control
-$data_hac = "";
+// Staff Announcement Control
+$data_hac = file_get_contents("https://hydrid.us/important.txt");
 
 //YOU ARE NOT ALLOWED TO REMOVE THIS. REMOVING THIS, REMOVING BACKLINKS, WILL RESULT IN A DMCA TAKEDOWN AS IT IS A BREACH OF OUR LICENSE (AGPL v3)
 if ($data_vc > $version) {
   $ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLANK">Powered by Hydrid</a></strong></small><br />
   <small>Version: '.$version.'<br />Latest Version: '.$data_vc.'<br /><small><strong><font color="red">Hydrid is Outdated. Hydrid does not provide support for Outdated versions.</font></strong></small>';
+} elseif ($data_vc < $version) {
+  $ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLANK">Powered by Hydrid</a></strong></small><br />
+  <small>Version: '.$version.'<br />Latest Version: '.$data_vc.'<br /><small><strong><font color="darkblue">Warning: This is a development build of Hydrid. Please report any bugs.</font></strong></small>';
 } else {
   $ftter = '<br /><small><strong><a href="https://discord.gg/NeRrWZC" target="_BLANK">Powered by Hydrid</a></strong></small><br />
   <small>Version: '.$version.'<br />Latest Version: '.$data_vc;

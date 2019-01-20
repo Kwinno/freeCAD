@@ -37,7 +37,7 @@ include('includes/header.php')
 <body>
    <div class="container-leo">
       <div class="main-leo">
-        <div class="leo-header"><div class="float-right" id="getTime"></div>
+        <div class="leo-header"><div class="float-right" id="getTime"></div></font>
         <div class="float-left">
           <?php if (subdivisionModule_isInstalled): ?>
             <div style="margin-top:50px;">
@@ -90,7 +90,7 @@ include('includes/header.php')
              </div>
              <?php if ($_SESSION['leo_supervisor'] === "Yes"): ?>
              <div class="col-sm-2">
-               <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
+               <a href="<?php echo $url['leo_supervisor_view_all_identities'] ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
                <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-success btn-block">Pending Identities</a><br-leo>
              </div>
              <?php endif; ?>

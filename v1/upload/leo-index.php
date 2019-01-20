@@ -31,6 +31,8 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
   $identity = $stmt->fetch(PDO::FETCH_ASSOC);
   if ($identity === false) {
      $_SESSION['is_leo'] = "No";
+     $_SESSION['is_fire'] = "No";
+     $_SESSION['is_dispatch'] = "No";
      header('Location: ' . $url['index'] . '');
      exit();
   } else {
@@ -41,8 +43,12 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
      $sidentity_name    = $identity['identifier'];
      $_SESSION['identifier'] = $sidentity_name;
 
-     $_SESSION['is_leo'] = "Yes";
-	 $_SESSION['is_dispatch'] = "No";
+     if ($identity['status'] === "Active") {
+      $_SESSION['is_leo'] = "Yes";
+    } else {
+      header('Location: ' . $url['index'] . '?np=leo');
+     exit();
+    }
 
      if ($identity['leo_supervisor'] === "Yes") {
        $_SESSION['leo_supervisor'] = "Yes";
@@ -58,6 +64,11 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
 
      $sidentity_user    = $identity['user'];
      $_SESSION['on_duty'] = "No";
+
+     //Make sure the other duty variables are set to no
+     $_SESSION['is_fire'] = "No";
+     $_SESSION['is_dispatch'] = "No";
+
      header('Location: ' . $url['leo_index'] . '');
      exit();
 
@@ -65,11 +76,6 @@ if (isset($_GET['setid']) && strip_tags($_GET['setid'])) {
     header('Location: ' . $url['index'] . '');
     exit();
   }
-}
-
-if ($_SESSION['is_leo'] === "No") {
-  header('Location: ' . $url['index'] . '?np=leo');
-  exit();
 }
 
 
@@ -214,10 +220,31 @@ if (isset($_GET['license']) && strip_tags($_GET['license']) === 'suspended') {
 $page_name = "LEO Home";
 include('includes/header.php')
 ?>
+<head>
+<?php include('includes/js.php'); ?>
+<script src="assets/js/pages/leo.js"></script>
+   <script type="text/javascript">
+   $(document).ready(function() {
+    $("#openNameSearch").on("click",function(){
+      loadNames();
+    });
+    $("#openWeaponSearch").on("click",function(){
+      loadWpns();
+    });
+    $("#openVehicleSearch").on("click",function(){
+      loadVehs();
+    });
+
+    $('#newBolo').ajaxForm(function() { 
+      toastr.success('Bolo Added To System.', 'System:', {timeOut: 10000})
+    });
+   });
+   </script>
+</head>
 <body>
    <div class="container-leo">
       <div class="main-leo">
-        <div class="leo-header"><div class="float-right" id="getTime"></div>
+        <div class="leo-header"><font size="5"><div class="float-right" id="getTime"></div></font>
           <div class="float-left">
             <?php if (subdivisionModule_isInstalled): ?>
               <div style="margin-top:50px;">
@@ -289,7 +316,7 @@ include('includes/header.php')
              </div>
              <?php if ($_SESSION['leo_supervisor'] === "Yes"): ?>
                <div class="col-sm-2">
-                 <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
+                 <a href="<?php echo $url['leo_supervisor_view_all_identities'] ?>" class="btn btn-success btn-block">All Identities</a><br-leo>
                  <a href="<?php echo $url['leo_supervisor_view_pending_identities'] ?>" class="btn btn-warning btn-block">Pending Identities</a><br-leo>
                  <a data-toggle="modal" href="#aop" class="btn btn-danger btn-block">Change AOP</a><br-leo>
                </div>
@@ -457,7 +484,7 @@ include('includes/header.php')
                </button>
             </div>
             <div class="modal-body">
-              <form method="post" action="leo-index.php">
+            <form id="newBolo" action="functions/leo/newBolo.php" method="post">
                 <div class="form-group">
                    <input type="text" name="bolo_created_by" class="form-control" maxlength="126" readonly="true" value="<?php echo $_SESSION['identifier'] ?>" data-lpignore="true" />
                 </div>
@@ -487,7 +514,7 @@ include('includes/header.php')
            </div>
            <div class="modal-footer">
            <div class="form-group">
-              <input class="btn btn-primary" name="addBoloBtn" id="addBoloBtn" type="submit" value="Add Bolo">
+              <input class="btn btn-primary" type="submit" value="Add Bolo">
            </div>
            </form>
             </div>
@@ -648,21 +675,5 @@ include('includes/header.php')
    <!-- <audio id="panicButton" src="assets/sounds/panic-button.mp3" preload="auto"></audio> -->
    <!-- end sounds -->
    <!-- js -->
-   <?php include('includes/js.php'); ?>
-   <script src="assets/js/pages/leo.js"></script>
-   <!-- end js -->
-   <script type="text/javascript">
-   $(document).ready(function() {
-    $("#openNameSearch").on("click",function(){
-      loadNames();
-    });
-    $("#openWeaponSearch").on("click",function(){
-      loadWpns();
-    });
-    $("#openVehicleSearch").on("click",function(){
-      loadVehs();
-    });
-   });
-   </script>
 </body>
 </html>

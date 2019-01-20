@@ -13,32 +13,34 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 **/
-require 'includes/connect.php';
-session_start();
+require('includes/connect.php');
 include('includes/config.php');
+session_start();
 ?>
 <!DOCTYPE html>
 <html>
 <?php
-$page_name = "Welcome";
-include('includes/header.php')
+    $page_name = $LANG['welcome'];
+    include('includes/header.php')
 ?>
-   <body>
-      <div class="container">
-         <div class="main">
-            <img src="assets/imgs/california.png" class="main-logo" draggable="false"/><br />
-            <text>
-              <strong>Thank you for signing up with Hydrid! </strong><br />
-              <?php if ($siteSettings['join_validation'] === "yes"): ?>
-                This community has validation enabled, meaning a staff member will have to validate your account. Please do not pester staff about validation. After your account is validated, you will be able to login and start using Hydrid!
-              <?php else: ?>
-                It appears that this community does not have validation enabled for new accounts. You are free to login, and start using Hydrid.
-              <?php endif; ?>
-            </text>
-            <a href="<?php print($url['login']) ?>"><button class="btn btn-block btn-primary" style="margin-top: 10px;">Continue to login</button></a>
-            <?php echo $ftter; ?>
-         </div>
-      </div>
-      <?php include('includes/js.php'); ?>
-   </body>
+    <body>
+        <div class="container">
+            <div class="main">
+                <img src="assets/imgs/california.png" class="main-logo" draggable="false"/><br />
+                <text>
+                    <strong><?php echo $LANG['welcomethanks']; ?></strong><br />
+                    <?php 
+                        if ($siteSettings['join_validation'] === "yes"){
+                            echo $LANG['welcomevalidate'];
+                        } else {
+                            echo $LANG['welcomenonvalidate'];
+                        }
+                    ?>
+                </text>
+                <a href="<?php print($url['login']) ?>"><button class="btn btn-block btn-primary" style="margin-top: 10px;"><?php echo $LANG['login']; ?></button></a>
+                <?php echo $ftter; ?>
+            </div>
+        </div>
+        <?php include('includes/js.php'); ?>
+    </body>
 </html>

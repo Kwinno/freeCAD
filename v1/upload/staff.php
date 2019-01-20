@@ -13,15 +13,16 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 **/
-require 'includes/connect.php';
+require('includes/connect.php');
 error_reporting(0);
-include 'includes/config.php';
+include('includes/config.php');
 session_start();
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
     header('Location: ' . $url['login'] . '');
     exit();
 }
-include 'includes/isLoggedIn.php';
+
+include('includes/isLoggedIn.php');
 
 if (!staff_access) {
   header('Location: ' . $url['index'] . '');
@@ -651,10 +652,10 @@ include('includes/header.php')
        <?php if (staff_editUsers): ?>
        <div class="row">
          <div class="col">
-           <label for="leoLogs">Logs</label><br>
-           <input type="text" class="form-control" id="leoLogs" onkeyup="searchleoLogs()" placeholder="Search by Action...">
+           <label for="logs">Logs</label><br>
+           <input type="text" class="form-control" id="logSearch" onkeyup="searchLogs()" placeholder="Search by Action...">
            <div style="background-color:white; color:black; overflow-y: scroll; height:300px;">
-           <table id="users" style="background-color:white; color:black;">
+           <table id="logs" style="background-color:white; color:black;">
              <tr>
                <th><center>Log ID</center></th>
                <th><center>Action</center></th>
@@ -662,8 +663,8 @@ include('includes/header.php')
                <th><center>Timestamp</center></th>
              </tr>
              <?php
-             $getLeoLogs = "SELECT * FROM logs";
-             $result = $pdo->prepare($getLeoLogs);
+             $getLogs = "SELECT * FROM logs ORDER BY log_id DESC";
+             $result = $pdo->prepare($getLogs);
              $result->execute();
              while($row = $result->fetch(PDO::FETCH_ASSOC)) {
                echo "<tr>";

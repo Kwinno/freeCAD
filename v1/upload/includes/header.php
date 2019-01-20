@@ -1,8 +1,3 @@
-    <!-- 
-    THIS COMMUNITY IS USING HYDRID. HYDRID IS A (FREE) OPEN SOURCE CAD/MDT SYSTEM. YOU CAN FIND OUR GITHUB HERE: https://github.com/HydridSystems/Hydrid-CAD-MDT/
-    THIS COMMUNITY IS USING HYDRID. HYDRID IS A (FREE) OPEN SOURCE CAD/MDT SYSTEM. YOU CAN FIND OUR GITHUB HERE: https://github.com/HydridSystems/Hydrid-CAD-MDT/
-    THIS COMMUNITY IS USING HYDRID. HYDRID IS A (FREE) OPEN SOURCE CAD/MDT SYSTEM. YOU CAN FIND OUR GITHUB HERE: https://github.com/HydridSystems/Hydrid-CAD-MDT/
-    -->
     <head>
         <meta http-equiv="refresh" content="150">
         <title><?php echo $community_name ?> &bullet; <?php echo $page_name ?> </title>
@@ -14,4 +9,7 @@
         <link rel="stylesheet" href="assets/css/main.css">
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
         <link rel="icon" href="assets/imgs/favicon.ico" />
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+        <script src="//code.jquery.com/jquery-3.3.1.js"></script>
+        <script src="http://malsup.github.com/jquery.form.js"></script>
     </head>

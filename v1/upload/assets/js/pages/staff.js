@@ -60,7 +60,6 @@ function setTheme(str) {
      };
      xmlhttp.open("GET", "functions/staff/setTheme.php?a=theme&q=" + str, true);
      xmlhttp.send();
-     alert("CAD/MDT Theme Updated... Your Page Will Refresh Soon");
      location.reload();
  }
 }
@@ -83,7 +82,6 @@ function setTimezone(str) {
      };
      xmlhttp.open("GET", "functions/staff/setTheme.php?a=timezone&q=" + str, true);
      xmlhttp.send();
-     alert("CAD/MDT TimeZone Updated... Your Page Will Refresh Soon");
      location.reload();
  }
 }
@@ -106,7 +104,6 @@ function setBackground(str) {
      };
      xmlhttp.open("GET", "functions/staff/setBackgroundColor.php?q=" + str, true);
      xmlhttp.send();
-     alert("Background Color Updated... Your Page Will Refresh Soon");
      location.reload();
  }
 }
@@ -174,6 +171,27 @@ function searchCharacters() {
      }
  }
 }
+
+function searchLogs() {
+    // Declare variables
+    var input, filter, table, tr, td, i;
+    input = document.getElementById("logSearch");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("logs");
+    tr = table.getElementsByTagName("tr");
+   
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+   }
 
 $(document).ready(function() {
  $("#dismiss").delay(3000).fadeOut("slow");
