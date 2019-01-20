@@ -75,11 +75,16 @@
                         <?php if (staff_access): ?>
                           <li class="has-submenu">
                             <a href="#"><i class="mdi mdi-file-lock"></i><span> Staff </span></a>
-                              <?php if (staff_siteSettings): ?>
+                              <?php if (staff_access): ?>
                                 <ul class="submenu megamenu">
                                     <li>
                                         <ul>
                                             <a href="<?php echo $url['staff']; ?>?m=settings">Settings</a>
+                                        <ul>
+                                    </li>
+                                    <li>
+                                        <ul>
+                                            <a href="<?php echo $url['staff']; ?>?m=users">Users</a>
                                         <ul>
                                     </li>
                                     <li>

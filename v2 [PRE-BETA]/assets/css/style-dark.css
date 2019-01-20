@@ -4587,7 +4587,6 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
   top: 0;
   width: 100%;
   background-size: cover;
-  border: 20px solid rgba(67, 89, 102, 0.3);
 }
 
 .wrapper-page {
@@ -4602,7 +4601,7 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
 
 .wrapper-page .logo {
   font-size: 42px;
-  font-family: 'Rancho', cursive;
+  font-family: 'Nunito', cursive;
   color: #FFFFFF;
 }
 

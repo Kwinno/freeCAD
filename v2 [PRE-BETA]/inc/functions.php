@@ -21,7 +21,7 @@ function throwError($error, $log = false)
                 if (typeof jQuery == "undefined") {
                     alert("Error Handler: ' . $error . '")
                 } else {
-                    toastr.error("' . $error . '", "Error Handler")
+                    toastr.error("' . $error . '")
                 }
             } else {
                 alert("Error Handler: ' . $error . '")
@@ -42,7 +42,7 @@ function clientNotify($type, $error)
                 if (typeof jQuery == "undefined") {
                     alert("System: ' . $error . '")
                 } else {
-                    toastr.' . $type . '("' . $error . '", "System")
+                    toastr.' . $type . '("' . $error . '")
                 }
             } else {
                 alert("System: ' . $error . '")

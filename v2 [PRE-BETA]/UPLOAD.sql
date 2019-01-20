@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 20, 2019 at 03:52 PM
+-- Generation Time: Jan 20, 2019 at 06:19 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -263,7 +263,9 @@ CREATE TABLE `users` (
   `join_date` varchar(126) NOT NULL,
   `join_ip` varchar(126) NOT NULL,
   `steam_id` varchar(355) DEFAULT NULL,
-  `avatar` varchar(355) DEFAULT NULL
+  `avatar` varchar(355) DEFAULT 'assets/images/users/placeholder.png',
+  `failed_logins` int(11) NOT NULL DEFAULT '0',
+  `locked` varchar(36) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -396,7 +398,8 @@ ALTER TABLE `tickets`
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`);
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
 -- Indexes for table `vehicles`

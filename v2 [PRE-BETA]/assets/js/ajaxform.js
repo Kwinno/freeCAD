@@ -10,7 +10,6 @@
  */
 /*global ActiveXObject */
 
-// AMD support
 (function (factory) {
     "use strict";
     if (typeof define === 'function' && define.amd) {
@@ -953,7 +952,7 @@ $.fn.formToArray = function(semantic, elements) {
     if (els && !/MSIE [678]/.test(navigator.userAgent)) { // #390
         els = $(els).get();  // convert to standard array
     }
-
+    // This file is used for Hydrid CAD/MDT - Discord: https://discordapp.com/invite/NeRrWZC
     // #386; account for inputs outside the form which use the 'form' attribute
     if ( formId ) {
         els2 = $(':input[form="' + formId + '"]').get(); // hat tip @thet

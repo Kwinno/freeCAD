@@ -361,7 +361,7 @@
 		}
 
 		updatePlot();
-
+		// This file is used for Hydrid CAD/MDT - Discord: https://discordapp.com/invite/NeRrWZC
 		//Donut pie graph data
 		var donutlabels = ["Series 1", "Series 2", "Series 3", "Series 4"];
 		var donutdatas = [35, 20, 10, 20];

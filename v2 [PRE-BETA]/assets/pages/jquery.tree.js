@@ -41,7 +41,8 @@ $( document ).ready(function() {
         'plugins' : ['types', 'checkbox']
     });
     
-    // Drag & Drop
+    // Drag & Drop 
+    // This file is used for Hydrid CAD/MDT - Discord: https://discordapp.com/invite/NeRrWZC
     $('#dragTree').jstree({
 		'core' : {
 			'check_callback' : true,

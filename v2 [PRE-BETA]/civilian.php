@@ -69,7 +69,6 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 }
 
 ?>
-<head>
 <script src="assets/js/pages/civilian.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -137,7 +136,6 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
         });
     });
 </script>
-</head>
     <body>
         <?php
         if (isset($_GET['error']) && strip_tags($_GET['error']) === 'character-not-found') {
@@ -389,7 +387,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                         </div>
                     </div>
                 </div>
-								<div id="isWanted"></div>
+                <div id="isWanted"></div>
                 <div class="row">
                       <div class="col">
                           <div class="card-box">
@@ -848,3 +846,4 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
         <!-- CONTENT END -->
         <?php require_once('inc/copyright.php'); ?>
         <?php require_once('inc/page-bottom.php'); ?>
+        

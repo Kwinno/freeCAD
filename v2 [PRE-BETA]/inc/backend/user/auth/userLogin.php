@@ -52,6 +52,11 @@ if ($user === false) {
 		echo json_encode($error);
 		exit();
 	} else {
+		// Just a place holder for now until I actually make it proper.
+		// $sql_la               = "UPDATE `users` SET `failed_logins`= `failed_logins` + 1 WHERE `user_id`=:user_id";
+		// $stmt_la              = $pdo->prepare($sql_la);
+		// $stmt_la->bindValue(':user_id', $user['user_id']);
+		// $updateFailedLogins = $stmt_la->execute();
 		$error['msg'] = "Your password is invalid. Please try again.";
 		echo json_encode($error);
 		exit();

@@ -8,13 +8,26 @@ require 'inc/backend/user/auth/userIsLoggedIn.php';
 $page['name'] = 'Staff Panel';
 require_once('inc/page-top.php');
 
-if (staff_access && staff_siteSettings) {
-  //any page php is executed here
+if (staff_access && staff_editUsers) {
+  if (isset($_POST['editUserBtn'])) {
+    $updateUsername    = !empty($_POST['username']) ? trim($_POST['username']) : null;
+    $updateEmail       = !empty($_POST['email']) ? trim($_POST['email']) : null;
+    $updateUsergroup   = !empty($_POST['usergroup']) ? trim($_POST['usergroup']) : null;
+
+    $updateUsername    = strip_tags($updateUsername);
+    $updateEmail       = strip_tags($updateEmail);
+    $updateUsergroup   = strip_tags($updateUsergroup);
+    
+    $sql = "UPDATE users SET username=?, email=?, usergroup=? WHERE user_id=?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$updateUsername, $updateEmail, $updateUsergroup, $_SESSION['editing_user_id']]);
+    header('Location: staff.php?m=edit-user&user-id='.$_SESSION['editing_user_id']);
+    exit();
+  }
 }
 
 $view = strip_tags($_GET['m']);
 ?>
-<head>
 <script src="assets/js/pages/staff.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
@@ -35,7 +48,6 @@ $(document).ready(function () {
     });
 });
 </script>
-</head>
 <body>
     <?php require_once('inc/top-nav.php'); ?>
 
@@ -48,9 +60,14 @@ $(document).ready(function () {
                 </div>
             </div>
             <!-- CONTENT HERE -->
-            <?php if (staff_access && staff_siteSettings): ?>
+            <?php if (staff_access): ?>
             <?php switch($view):
 			         case "settings": ?>
+               <?php 
+               if (!staff_siteSettings) {
+                exit('<div class="alert alert-danger" role="alert"><strong>You do not have permission to access this page.</strong></div>');
+               }
+               ?>
                 <div class="row">
                   <div class="col">
                     <div class="form-group">
@@ -145,6 +162,11 @@ $(document).ready(function () {
             <?php break; ?>
 
             <?php case "pending-users":?>
+              <?php 
+               if (!staff_approveUsers) {
+                exit('<div class="alert alert-danger" role="alert"><strong>You do not have permission to access this page.</strong></div>');
+               }
+              ?>
               <div class="row">
                 <div class="col-lg-12">
                     <div class="card-box">
@@ -152,7 +174,136 @@ $(document).ready(function () {
                         <div id="getPendingUsers"></div>
                     </div>
                 </div>
-            </div>
+              </div>
+            <?php break; ?>
+
+            <?php case "users":?>
+              <?php 
+               if (!staff_viewUsers) {
+                exit('<div class="alert alert-danger" role="alert"><strong>You do not have permission to access this page.</strong></div>');
+               }
+              ?>
+              <div class="row">
+                <div class="col-lg-12">
+                    <div class="card-box">
+                        <h4 class="m-t-0 header-title">All Users</h4>
+                        <table id="datatable" class="table table-borderless">
+                          <thead>
+                          <tr>
+                              <th>User ID</th>
+                              <th>Username</th>
+                              <th>Email</th>
+                              <th>Usergroup</th>
+                              <th>Join Date</th>
+                              <th>Actions</th>
+                          </tr>
+                          </thead>
+
+
+                          <tbody>
+                          <?php 
+                          $sql             = "SELECT * FROM users";
+                          $stmt            = $pdo->prepare($sql);
+                          $stmt->execute();
+                          $usersRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                          foreach ($usersRow as $user) {
+                            echo '
+                            <tr>
+                              <td>'. $user['user_id'] .'</td>
+                              <td>'. $user['username'] .'</td>
+                              <td>'. $user['email'] .'</td>
+                              <td>'. $user['usergroup'] .'</td>
+                              <td>'. $user['join_date'] .'</td>
+                              <td><a href="staff.php?m=edit-user&user-id='. $user['user_id'] .'"><input type="button" class="btn btn-sm btn-success btn-block" value="Edit"></a></td>
+                          </tr>
+                            ';
+                          }
+                          ?>
+                        </table>
+                    </div>
+                </div>
+              </div>
+            <?php break; ?>
+
+            <?php case "edit-user": ?>
+              <?php 
+               if (!staff_editUsers) {
+                exit('<div class="alert alert-danger" role="alert"><strong>You do not have permission to access this page.</strong></div>');
+               }
+              ?>
+                <?php 
+                  if (isset($_GET['user-id']) && strip_tags($_GET['user-id'])) {
+                    $id   = $_GET['user-id'];
+                    $sql  = "SELECT * FROM users WHERE user_id = :user_id";
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->bindValue(':user_id', $id);
+                    $stmt->execute();
+                    $userDB = $stmt->fetch(PDO::FETCH_ASSOC);
+                    if ($userDB === false) {
+                        header('Location: ' . $url['staff'] . '?m=users');
+                        exit();
+                    } else {
+                        $editing_user['user_id'] = $userDB['user_id'];
+                        $_SESSION['editing_user_id'] = $editing_user['user_id'];
+                        $editing_user['username'] = $userDB['username'];
+                        $editing_user['email'] = $userDB['email'];
+                        $editing_user['usergroup'] = $userDB['usergroup'];
+                        $editing_user['join_date'] = $userDB['join_date'];
+                        $editing_user['join_ip'] = $userDB['join_ip'];
+                        $editing_user['steam_id'] = $userDB['steam_id'];
+                        $editing_user['avatar'] = $userDB['avatar'];
+                    }
+                }
+                ?>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="bg-picture card-box">
+                            <div class="profile-info-name">
+                                <img src="<?php echo $editing_user['avatar']; ?>"
+                                     class="img-thumbnail" alt="profile-image">
+
+                                <div class="profile-info-detail">
+                                    <form method="POST">
+                                      <div class="form-group">
+                                        <div class="col-12">
+                                          <label for="username">Username</label>
+                                          <input class="form-control" type="text" required="" id="username" name="username" value="<?php echo $editing_user['username']; ?>" placeholder="Username">
+                                        </div>
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="col-12">
+                                          <label for="email">Email</label>
+                                          <input class="form-control" type="email" required="" id="email" name="email" value="<?php echo $editing_user['email']; ?>" placeholder="Email">
+                                        </div>
+                                      </div>
+                                      <div class="form-group">
+                                        <div class="col-12">
+                                          <label for="usergroup">Usergroup</label>
+                                          <select class="custom-select my-1 mr-sm-2" id="usergroup" name="usergroup">
+                                            <option selected value="<?php echo $editing_user['usergroup']; ?>"><?php echo $editing_user['usergroup']; ?> (Current)</option>
+                                            <option value="Banned">Banned</option>
+                                            <option value="Unverified">Unverified</option>
+                                            <option value="User">User</option>
+                                            <option value="Moderator">Moderator</option>
+                                            <option value="Admin">Admin</option>
+                                            <option value="Super Admin">Super Admin</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                      <div class="form-group text-center m-t-30">
+                                        <div class="col-12">
+                                            <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit" name="editUserBtn">Edit User</button>
+                                        </div>
+                                      </div>
+                                    </form>
+                                </div>
+
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <?php break; ?>
             
             <?php endswitch; ?>

@@ -7,25 +7,23 @@ $page['name'] = 'Login';
 require_once ('inc/page-top.php');
 
 ?>
-    <head>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('#userLogin').ajaxForm(function (error) {
-                    error = JSON.parse(error);
-                    if (error['msg'] === "") {
-                        toastr.success('Logged in... Redirecting', 'System:', {
-                            timeOut: 10000
-                        })
-                        window.location.href = "<?php echo $url['index']; ?>";
-                    } else {
-                        toastr.error(error['msg'], 'System:', {
-                            timeOut: 10000
-                        })
-                    }
-                });
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#userLogin').ajaxForm(function (error) {
+                error = JSON.parse(error);
+                if (error['msg'] === "") {
+                    toastr.success('Logged in... Redirecting', 'System:', {
+                        timeOut: 10000
+                    })
+                    window.location.href = "index.php";
+                } else {
+                    toastr.error(error['msg'], 'System:', {
+                        timeOut: 10000
+                    })
+                }
             });
-        </script>
-    </head>
+        });
+    </script>
     <body>
         <?php
         if (isset($_GET['error']) && strip_tags($_GET['error']) === 'banned') {

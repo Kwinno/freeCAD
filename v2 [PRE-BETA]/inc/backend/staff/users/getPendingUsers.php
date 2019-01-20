@@ -7,7 +7,7 @@ require '../../../config.php';
 
 require '../../../backend/user/auth/userIsLoggedIn.php';
 
-if (staff_access && staff_siteSettings) {
+if (staff_access && staff_approveUsers) {
     $sql             = "SELECT * FROM users WHERE usergroup='Unverified'";
     $stmt            = $pdo->prepare($sql);
     $stmt->execute();
