@@ -216,7 +216,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			                                  "preventOpenDuplicates": true
 			                                 };
 			                                 toastr.error('PRIORITY IN PROGRESS.', 'System:', {timeOut: 10000})
-			                                 $('#panicButtonStatus').html("<font color='red'><b>PRIORITY IN PROGRESS</b></font>");
+			                                 $('#panicButtonStatus').html("<font color='red'><b> - PRIORITY IN PROGRESS</b></font>");
 
 			                                 if (!priority) {
 			                                     var audio = new Audio('assets/sounds/signal100.mp3');
@@ -260,31 +260,13 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			               <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#newArrestReportModal">Arrest Report</button>
 			               <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#notepadModal">Notepad</button>
 			               <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#activeUnitsModal">Active Units</button>
-										 <?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
-										 <button class="btn btn-darkred btn-sm" data-toggle="modal" data-target="#pendingIdsModal">Pending Identites</button>
-										 <?php endif; ?>
+								<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+									<button class="btn btn-darkred btn-sm" data-toggle="modal" data-target="#pendingIdsModal">Pending Identites</button>
+								<?php endif; ?>
 			            </div>
 			         </div>
 			      </div>
 			      <div class="row">
-			         <div class="col-3">
-			            <div class="card-box">
-			               <h4 class="header-title mt-0 m-b-30">Current Status: <label id="getDutyStatus">Loading...</label></h4>
-			               <div class="form-group">
-			                  <select class="form-control" name="setUnitStatus" onChange='setUnitStatus(this)'>
-									<?php
-									$sql             = "SELECT * FROM 10_codes";
-									$stmt            = $pdo->prepare($sql);
-									$stmt->execute();
-									$dbq10codes = $stmt->fetchAll(PDO::FETCH_ASSOC); 
-									foreach($dbq10codes as $codes) {
-			                  	echo '<option value="'. $codes['code'] .'">'. $codes['code'] .'</option>';
-			                  }
-			                  ?>
-			                  </select>
-			               </div>
-			            </div>
-			         </div>
 			         <div class="col-9">
 			            <div class="card-box">
 			               <h4 class="header-title mt-0 m-b-30">My Calls</h4>
@@ -306,10 +288,26 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			               </table>
 			            </div>
 			         </div>
+						<div class="col">
+			            <div class="card-box">
+			               <h4 class="header-title mt-0 m-b-30">Current Status: <label id="getDutyStatus">Loading...</label></h4>
+			               <div class="form-group">
+			                  <select class="form-control" name="setUnitStatus" onChange='setUnitStatus(this)'>
+									<?php
+									$sql             = "SELECT * FROM 10_codes";
+									$stmt            = $pdo->prepare($sql);
+									$stmt->execute();
+									$dbq10codes = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+									foreach($dbq10codes as $codes) {
+			                  	echo '<option value="'. $codes['code'] .'">'. $codes['code'] .'</option>';
+			                  }
+			                  ?>
+			                  </select>
+			               </div>
+			            </div>
+			         </div>
 			      </div>
 			      <div class="row">
-			         <div class="col-3">
-			         </div>
 			         <div class="col-9">
 			            <div class="card-box">
 			               <h4 class="header-title mt-0 m-b-30">Active Bolos</h4>
