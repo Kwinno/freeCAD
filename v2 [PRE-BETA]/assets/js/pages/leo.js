@@ -77,7 +77,7 @@ getAllCharacters();
 function getAllCharacters2() {
     (function getAllCharacters2() {
         $.ajax({
-            url: 'inc/backend/user/leo/getAllCharacters2.php',
+            url: 'inc/backend/user/leo/getAllCharacters.php',
             success: function(data) {
                 $('#getAllCharacters2').html(data);
             },
@@ -89,6 +89,22 @@ function getAllCharacters2() {
     })();
 }
 getAllCharacters2();
+
+function getAllCharacters3() {
+    (function getAllCharacters3() {
+        $.ajax({
+            url: 'inc/backend/user/leo/getAllCharacters.php',
+            success: function(data) {
+                $('#getAllCharacters3').html(data);
+            },
+            complete: function() {
+                // Schedule the next request when the current one's complete
+                setTimeout(getAllCharacters3, 60000);
+            }
+        });
+    })();
+}
+getAllCharacters3();
 
 function getAllVehicles() {
     (function getAllVehicles() {

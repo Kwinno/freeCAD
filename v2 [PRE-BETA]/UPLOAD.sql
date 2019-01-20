@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 24, 2018 at 08:54 PM
+-- Generation Time: Jan 20, 2019 at 03:52 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -75,7 +75,7 @@ CREATE TABLE `911calls` (
 CREATE TABLE `arrest_reports` (
   `arrest_id` int(11) NOT NULL,
   `arresting_officer` varchar(126) NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `timestamp` varchar(64) NOT NULL,
   `suspect` varchar(126) NOT NULL,
   `suspect_id` int(11) NOT NULL,
   `summary` text NOT NULL
@@ -228,7 +228,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`setting_id`, `site_name`, `account_validation`, `identity_validation`, `steam_required`, `timezone`, `civ_side_warrants`, `dark_mode`) VALUES
-(1, 'Hydrid CAD/MDT', 'no', 'no', 'false', 'America/New_York', 'false', 'false');
+(1, 'Hydrid CAD/MDT', 'no', 'no', 'false', 'America/New_York', 'false', 'true');
 
 -- --------------------------------------------------------
 

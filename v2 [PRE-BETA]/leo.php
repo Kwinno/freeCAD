@@ -67,7 +67,6 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
     }
 }
 ?>
-<head>
 <script src="assets/js/pages/leo.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -88,20 +87,30 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                 })
             }
         });
-				$('#newTicket').ajaxForm(function (error) {
-						error = JSON.parse(error);
-						if (error['msg'] === "") {
-								$('#newTicketModal').modal('hide');
-								toastr.success('Ticket Created!', 'System:', {timeOut: 10000})
-						} else {
-								toastr.error(error['msg'], 'System:', {
-										timeOut: 10000
-								})
-						}
-				});
+			$('#newTicket').ajaxForm(function (error) {
+					error = JSON.parse(error);
+					if (error['msg'] === "") {
+							$('#newTicketModal').modal('hide');
+							toastr.success('Ticket Created!', 'System:', {timeOut: 10000})
+					} else {
+							toastr.error(error['msg'], 'System:', {
+									timeOut: 10000
+							})
+					}
+			});
+			$('#newArrestReport').ajaxForm(function (error) {
+					error = JSON.parse(error);
+					if (error['msg'] === "") {
+							$('#newArrestReportModal').modal('hide');
+							toastr.success('Arrest Report Created!', 'System:', {timeOut: 10000})
+					} else {
+							toastr.error(error['msg'], 'System:', {
+									timeOut: 10000
+							})
+					}
+			});
     });
 </script>
-</head>
     <body>
         <?php require_once('inc/top-nav.php');
 
@@ -256,10 +265,10 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			               <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openNameSearch">Name Database</button>
 			               <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openVehicleSearch">Vehicle Database</button>
 			               <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openFirearmSearch">Weapon Database</button>
-			               <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#newTicketModal">Ticket Report</button>
-			               <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#newArrestReportModal">Arrest Report</button>
-			               <button class="btn btn-success btn-sm" data-toggle="modal" data-target="#notepadModal">Notepad</button>
-			               <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#activeUnitsModal">Active Units</button>
+			               <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#newTicketModal">Ticket Report</button>
+			               <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#newArrestReportModal">Arrest Report</button>
+			               <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#notepadModal">Notepad</button>
+			               <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#activeUnitsModal">Active Units</button>
 								<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
 									<button class="btn btn-darkred btn-sm" data-toggle="modal" data-target="#pendingIdsModal">Pending Identites</button>
 								<?php endif; ?>
@@ -457,7 +466,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 						   </div>
 							 <!-- // -->
 							 <!-- new ticket modal -->
-	 					   <div class="modal fade" id="newTicketModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	 					    <div class="modal fade" id="newTicketModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	 					      <div class="modal-dialog modal-md modal-dialog-centered" role="document">
 	 					         <div class="modal-content">
 	 					            <div class="modal-header">
@@ -488,6 +497,37 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 												<div class="modal-footer">
 													<div class="form-group">
 															<input class="btn btn-primary" type="submit" value="Submit Ticket">
+													</div>
+												</div>
+											</form>
+	 					            </div>
+	 					         </div>
+	 					      </div>
+	 					   </div>
+	 						 <!-- // -->
+							 <!-- new arrest modal -->
+							 <div class="modal fade" id="newArrestReportModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	 					      <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+	 					         <div class="modal-content">
+	 					            <div class="modal-header">
+	 					               <h5 class="modal-title" id="exampleModalLabel">Writing New Arrest Report</h5>
+	 					               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	 					               <span aria-hidden="true">&times;</span>
+	 					               </button>
+	 					            </div>
+	 					            <div class="modal-body">
+											<form id="newArrestReport" action="inc/backend/user/leo/newArrestReport.php" method="post">
+												<div class="form-group">
+													<select class="js-example-basic-single" name="suspect" id="getAllCharacters3" required>
+															<option selected="true" disabled="disabled">Loading Characters...</option>
+													</select>
+												</div>
+												<div class="form-group">
+													<input type="text" name="reason" class="form-control" maxlength="500" placeholder="Summary" data-lpignore="true" required />
+												</div>
+												<div class="modal-footer">
+													<div class="form-group">
+															<input class="btn btn-primary" type="submit" value="Submit Arrest Report">
 													</div>
 												</div>
 											</form>
