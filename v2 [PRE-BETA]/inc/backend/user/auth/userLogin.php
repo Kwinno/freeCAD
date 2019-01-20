@@ -43,7 +43,6 @@ if ($user === false) {
 				$updateUserGroup = $stmt2->execute();
 			}
 		}
-
 		$_SESSION['user_id']   = $user['user_id'];
 		$_SESSION['logged_in'] = time();
 

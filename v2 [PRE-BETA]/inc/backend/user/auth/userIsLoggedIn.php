@@ -35,6 +35,7 @@ else {
 	$user['join_date'] = $userRow['join_date'];
 	$user['avatar'] = $userRow['avatar'];
 	$user['failed_logins'] = $userRow['failed_logins'];
+	$user['last_ip'] = $userRow['last_ip'];
 
 	if ($settings['steam_required'] === "true") {
 		$user['steam_id'] = $userRow['steam_id'];
@@ -49,6 +50,7 @@ else {
 	$perms['staff_viewUsers'] = false;
 	$perms['staff_editUsers'] = false;
 	$perms['staff_siteSettings'] = false;
+	$perms['staff_banUsers'] = false;
 
 	// Define User Permissions
 
@@ -83,6 +85,7 @@ else {
 		$perms['staff_viewUsers'] = true;
 		$perms['staff_editUsers'] = true;
 		$perms['staff_siteSettings'] = true;
+		$perms['staff_banUsers'] = true;
 		break;
 	}
 
@@ -95,6 +98,7 @@ else {
 	define("staff_viewUsers", $perms['staff_viewUsers']);
 	define("staff_editUsers", $perms['staff_editUsers']);
 	define("staff_siteSettings", $perms['staff_siteSettings']);
+	define("staff_banUsers", $perms['staff_banUsers']);
 
 	// Check If Banned
 

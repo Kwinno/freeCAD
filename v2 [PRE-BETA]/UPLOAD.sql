@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 20, 2019 at 06:19 PM
+-- Generation Time: Jan 21, 2019 at 12:08 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -63,7 +63,8 @@ CREATE TABLE `911calls` (
   `call_crossstreat` varchar(128) NOT NULL,
   `call_postal` int(11) NOT NULL,
   `call_status` varchar(534) NOT NULL DEFAULT 'NOT ASSIGNED',
-  `call_timestamp` text NOT NULL
+  `call_timestamp` text NOT NULL,
+  `call_isPriority` enum('false','true') DEFAULT 'false'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -262,10 +263,12 @@ CREATE TABLE `users` (
   `usergroup` enum('Banned','Unverified','User','Moderator','Admin','Super Admin') NOT NULL DEFAULT 'User',
   `join_date` varchar(126) NOT NULL,
   `join_ip` varchar(126) NOT NULL,
+  `last_ip` varchar(36) DEFAULT NULL,
   `steam_id` varchar(355) DEFAULT NULL,
   `avatar` varchar(355) DEFAULT 'assets/images/users/placeholder.png',
   `failed_logins` int(11) NOT NULL DEFAULT '0',
-  `locked` varchar(36) DEFAULT NULL
+  `locked` varchar(36) DEFAULT NULL,
+  `ban_reason` varchar(126) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

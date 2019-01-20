@@ -10,6 +10,7 @@ require_once ('inc/page-top.php');
     <script type="text/javascript">
         $(document).ready(function () {
             $('#userLogin').ajaxForm(function (error) {
+                console.log(error);
                 error = JSON.parse(error);
                 if (error['msg'] === "") {
                     toastr.success('Logged in... Redirecting', 'System:', {

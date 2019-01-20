@@ -14,11 +14,11 @@ if (!isset($_SESSION['character_full_name'])) {
 	exit();
 }
 
-$newVeh['plate']       	    = !empty($_POST['plate']) ? trim($_POST['plate']) : null;
-$newVeh['color']       	    = !empty($_POST['color']) ? trim($_POST['color']) : null;
-$newVeh['model']       	    = !empty($_POST['model']) ? trim($_POST['model']) : null;
-$newVeh['insurance_status']       	    = !empty($_POST['insurance_status']) ? trim($_POST['insurance_status']) : null;
-$newVeh['registration_status']       	    = !empty($_POST['registration_status']) ? trim($_POST['registration_status']) : null;
+$newVeh['plate']       	        = !empty($_POST['plate']) ? trim($_POST['plate']) : null;
+$newVeh['color']       	        = !empty($_POST['color']) ? trim($_POST['color']) : null;
+$newVeh['model']       	        = !empty($_POST['model']) ? trim($_POST['model']) : null;
+$newVeh['insurance_status']     = !empty($_POST['insurance_status']) ? trim($_POST['insurance_status']) : null;
+$newVeh['registration_status']  = !empty($_POST['registration_status']) ? trim($_POST['registration_status']) : null;
 
 $error = array();
 

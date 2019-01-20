@@ -23,6 +23,21 @@ if (staff_access && staff_editUsers) {
     $stmt->execute([$updateUsername, $updateEmail, $updateUsergroup, $_SESSION['editing_user_id']]);
     header('Location: staff.php?m=edit-user&user-id='.$_SESSION['editing_user_id']);
     exit();
+  } elseif (isset($_POST['banUserBtn'])) {
+    $banReason    = !empty($_POST['reason']) ? trim($_POST['reason']) : null;
+    $banReason    = strip_tags($banReason);
+    
+    $sql = "UPDATE users SET usergroup=?, ban_reason=? WHERE user_id=?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['Banned', $banReason, $_SESSION['editing_user_id']]);
+    header('Location: staff.php?m=edit-user&user-id='.$_SESSION['editing_user_id']);
+    exit();
+  } elseif (isset($_POST['unbanUserBtn'])) {
+    $sql = "UPDATE users SET usergroup=?, ban_reason=? WHERE user_id=?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['User', NULL, $_SESSION['editing_user_id']]);
+    header('Location: staff.php?m=edit-user&user-id='.$_SESSION['editing_user_id']);
+    exit();
   }
 }
 
@@ -103,13 +118,13 @@ $(document).ready(function () {
                       <select class="form-control" id="darkmode" onchange="setDarkTheme(this.value)">
                         <option selected="true" disabled="disabled"><?php
                         if ($settings['dark_mode'] === "true") {
-                          echo 'Yes';
+                          echo 'On';
                         } elseif ($settings['dark_mode'] === "false") {
-                          echo 'No';
+                          echo 'Off';
                         }?>
                         </option>
-                        <option value="true">True</option>
-                        <option value="false">False</option>
+                        <option value="true">On</option>
+                        <option value="false">Off</option>
                       </select>
                     </div>
                   </div>
@@ -125,8 +140,8 @@ $(document).ready(function () {
                         }
                         ?>
                         </option>
-                        <option value="true">True</option>
-                        <option value="false">False</option>
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
                       </select>
                     </div>
                   </div>
@@ -253,16 +268,28 @@ $(document).ready(function () {
                         $editing_user['join_ip'] = $userDB['join_ip'];
                         $editing_user['steam_id'] = $userDB['steam_id'];
                         $editing_user['avatar'] = $userDB['avatar'];
+
+                        if ($editing_user['usergroup'] === "Banned") {
+                          $editing_user['isBanned'] = true;
+                        } else {
+                          $editing_user['isBanned'] = false;
+                        }
                     }
                 }
                 ?>
                 <div class="row">
-                    <div class="col-12">
+                  <div class="col-12">
+                    <?php if($editing_user['isBanned']): ?>
+                      <div class="alert alert-danger" role="alert">
+                        <strong>THIS USER IS BANNED. YOU CAN NOT EDIT THIS USER UNLESS THEY ARE UNBANNED.</strong>
+                      </div>
+                    <?php endif; ?>
+                    </div>
+                    <div class="col-6">
                         <div class="bg-picture card-box">
+                        <h4 class="m-t-0 header-title">Edit User</h4>
                             <div class="profile-info-name">
-                                <img src="<?php echo $editing_user['avatar']; ?>"
-                                     class="img-thumbnail" alt="profile-image">
-
+                                <img src="<?php echo $editing_user['avatar']; ?>" class="img-thumbnail" alt="profile-image">
                                 <div class="profile-info-detail">
                                     <form method="POST">
                                       <div class="form-group">
@@ -282,7 +309,6 @@ $(document).ready(function () {
                                           <label for="usergroup">Usergroup</label>
                                           <select class="custom-select my-1 mr-sm-2" id="usergroup" name="usergroup">
                                             <option selected value="<?php echo $editing_user['usergroup']; ?>"><?php echo $editing_user['usergroup']; ?> (Current)</option>
-                                            <option value="Banned">Banned</option>
                                             <option value="Unverified">Unverified</option>
                                             <option value="User">User</option>
                                             <option value="Moderator">Moderator</option>
@@ -291,19 +317,49 @@ $(document).ready(function () {
                                           </select>
                                         </div>
                                       </div>
-                                      <div class="form-group text-center m-t-30">
+                                      <div class="form-group text-center">
                                         <div class="col-12">
+                                            <?php if($editing_user['isBanned']): ?>
+                                            <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" disabled>Edit User</button>
+                                            <?php else: ?>
                                             <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit" name="editUserBtn">Edit User</button>
+                                            <?php endif; ?>
                                         </div>
                                       </div>
                                     </form>
                                 </div>
-
                                 <div class="clearfix"></div>
                             </div>
                         </div>
                     </div>
-                </div>
+                    <div class="col-6">
+                        <div class="bg-picture card-box">
+                        <h4 class="m-t-0 header-title">Ban Manager</h4>
+                        <form method="POST">
+                          <?php if($editing_user['isBanned']): ?>
+                          <div class="form-group text-center">
+                            <div class="col-12">
+                                <button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="unbanUserBtn">Unban User</button>
+                            </div>
+                          </div>
+                          <?php else: ?>
+                          <div class="form-group">
+                            <div class="col-12">
+                              <label for="reason">Reason</label>
+                              <input class="form-control" type="text" required="" id="reason" name="reason" placeholder="Reason">
+                            </div>
+                          </div>
+                          <div class="form-group text-center">
+                            <div class="col-12">
+                                <button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="banUserBtn">Ban User</button>
+                            </div>
+                          </div>
+                          <?php endif; ?>
+                        </form>
+                        <div class="clearfix"></div>
+                      </div>
+                    </div>
+                  </div>
             <?php break; ?>
             
             <?php endswitch; ?>

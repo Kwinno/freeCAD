@@ -664,7 +664,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                           </div>
                           <div class="modal-body">
                              <form id="deleteCharacter" action="inc/backend/user/civ/deleteCharacter.php" method="post">
-                               <h4><font color="warning"><b>Are you sure you want to delete this character? This can NOT be undone.</b></font></h4>
+                             <div class="alert alert-danger" role="alert"><strong>Are you sure you want to delete this Character? This can NOT be undone.</strong></div>
                           </div>
                           <div class="modal-footer">
                             <div class="form-group">
