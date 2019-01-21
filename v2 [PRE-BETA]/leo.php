@@ -70,13 +70,6 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 <script src="assets/js/pages/leo.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        $("input[type='submit']").attr("disabled", false);
-
-        $("form").submit(function(){
-          $("input[type='submit']").attr("disabled", true);
-          setTimeout(function(){ $("input[type='submit']").attr("disabled", false); }, 30000);
-          return true;
-        })
         $('#createIdentity').ajaxForm(function (error) {
             error = JSON.parse(error);
             if (error['msg'] === "") {
@@ -128,7 +121,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			      <div class="row">
 			         <div class="col">
 			            <h4 class="page-title">
-			               <?php echo $page['name']; ?>
+			               <?php echo $page['name']; ?> <label id="displayAOP"></label>
 			            </h4>
 			         </div>
 			      </div>
@@ -178,13 +171,27 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			      <!-- js is put here to prevent issues on other parts of leo -->
 			      <script type="text/javascript">
 			         $(document).ready(function () {
-			         var priority = false;
+			         	 var priority = false;
 			             function checkTime(i) {
 			                 if (i < 10) {
 			                     i = "0" + i;
 			                 }
 			                 return i;
-			             }
+							 }
+							 
+							 $('#changeAOP').ajaxForm(function (error) {
+									console.log(error);
+									error = JSON.parse(error);
+									if (error['msg'] === "") {
+										toastr.success('New AOP Set - Please allow a minute for changes to display.', 'System:', {
+												timeOut: 10000
+										})
+									} else {
+										toastr.error(error['msg'], 'System:', {
+												timeOut: 10000
+										})
+									}
+								});
 
 			             function startTime() {
 			                 var today = new Date();
@@ -212,6 +219,18 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			                         complete: function () {
 			                             // Schedule the next request when the current one's complete
 			                             setTimeout(loadStatus, 1000);
+			                         }
+			                     });
+								  })();
+								  (function loadAOP() {
+			                     $.ajax({
+			                         url: 'inc/backend/user/leo/getAOP.php',
+			                         success: function (data) {
+			                             $('#displayAOP').html(data);
+			                         },
+			                         complete: function () {
+			                             // Schedule the next request when the current one's complete
+			                             setTimeout(loadStatus, 60000);
 			                         }
 			                     });
 			                 })();
@@ -253,90 +272,104 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			         });
 			      </script>
 			      <!-- code here -->
-			      <div class="row">
-			         <div class="col">
-			            <div class="card-box">
-			               <div class="dropdown pull-right">
-			                  <b>
-			                     <div id="getTime">Loading...</div>
-			                  </b>
-			               </div>
-			               <h4 class="header-title mt-0 m-b-30"><?php echo $_SESSION['identity_name']; ?> <?php if ($_SESSION['identity_supervisor'] === "Yes"): ?><small><font color="white"><i>Supervisor</i></font></small><?php endif; ?> <label id="panicButtonStatus">Loading...</label></h4>
-			               <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openNameSearch">Name Database</button>
-			               <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openVehicleSearch">Vehicle Database</button>
-			               <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openFirearmSearch">Weapon Database</button>
-			               <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#newTicketModal">Ticket Report</button>
-			               <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#newArrestReportModal">Arrest Report</button>
-			               <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#notepadModal">Notepad</button>
-			               <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#activeUnitsModal">Active Units</button>
-								<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
-									<button class="btn btn-darkred btn-sm" data-toggle="modal" data-target="#pendingIdsModal">Pending Identites</button>
+						<div class="row">
+							<div class="col">
+								<div class="card-box">
+									<div class="dropdown pull-right">
+										<b>
+											<div id="getTime">Loading...</div>
+										</b>
+									</div>
+									<h4 class="header-title mt-0 m-b-30"><?php echo $_SESSION['identity_name']; ?> <?php if ($_SESSION['identity_supervisor'] === "Yes"): ?><small><font color="white"><i>Supervisor</i></font></small><?php endif; ?> <label id="panicButtonStatus">Loading...</label></h4>
+									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openNameSearch">Name Database</button>
+									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openVehicleSearch">Vehicle Database</button>
+									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openFirearmSearch">Weapon Database</button>
+									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#newTicketModal">Ticket Report</button>
+									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#newArrestReportModal">Arrest Report</button>
+									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#notepadModal">Notepad</button>
+									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#activeUnitsModal">Active Units</button>
+									<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+										<button class="btn btn-darkred btn-sm" data-toggle="modal" data-target="#pendingIdsModal">Pending Identites</button>
+									<?php endif; ?>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-9">
+								<div class="card-box">
+									<h4 class="header-title mt-0 m-b-30">My Calls</h4>
+									<table class="table table-borderless">
+										<thead>
+											<tr>
+												<th>Info</th>
+												<th>Location</th>
+												<th>Other Units Assigned</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td width="50%">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, neque optio. Ea adipisci harum vel quibusdam aperiam molestiae. Dolorem sapiente totam mollitia facilis recusandae explicabo veniam vero, quos soluta velit!</td>
+												<td>Sandy Shores RD / Joshua RD</td>
+												<td>[1A-99] John Doe</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								<div class="card-box">
+									<h4 class="header-title mt-0 m-b-30">Active Bolos</h4>
+									<table class="table table-borderless">
+										<thead>
+											<tr>
+												<th>Description</th>
+												<th>Created On</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr>
+												<td width="75%">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, neque optio. Ea adipisci harum vel quibusdam aperiam molestiae. Dolorem sapiente totam mollitia facilis recusandae explicabo veniam vero, quos soluta velit!</td>
+												<td>11/24/2018 6:52:04PM</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="col-3">
+								<div class="card-box">
+									<h4 class="header-title mt-0 m-b-30">Current Status: <label id="getDutyStatus">Loading...</label></h4>
+									<div class="form-group">
+										<select class="form-control" name="setUnitStatus" onChange='setUnitStatus(this)'>
+										<?php
+										$sql             = "SELECT * FROM 10_codes";
+										$stmt            = $pdo->prepare($sql);
+										$stmt->execute();
+										$dbq10codes = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+										foreach($dbq10codes as $codes) {
+											echo '<option value="'. $codes['code'] .'">'. $codes['code'] .'</option>';
+										}
+										?>
+										</select>
+									</div>
+								</div>
+
+								<?php if($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+								<div class="card-box">
+									<h4 class="header-title mt-0 m-b-30">AOP Editor</h4>
+									<form method="post" action="inc/backend/user/leo/setAOP.php" id="changeAOP">
+										<div class="form-group">
+											<div class="col">
+												<input class="form-control" type="text" required="" name="newAOP" placeholder="New AOP" value="<?php echo $_SESSION['current_aop']; ?>">
+											</div>
+											<div class="col m-t-5">
+											<button class="btn btn-warning btn-bordred btn-block waves-effect waves-light" type="submit">Change AOP</button>
+										</div>
+										</div>
+									</form>
+								</div>
 								<?php endif; ?>
-			            </div>
-			         </div>
-			      </div>
-			      <div class="row">
-			         <div class="col-9">
-			            <div class="card-box">
-			               <h4 class="header-title mt-0 m-b-30">My Calls</h4>
-			               <table class="table table-borderless">
-			                  <thead>
-			                     <tr>
-			                        <th>Info</th>
-			                        <th>Location</th>
-			                        <th>Other Units Assigned</th>
-			                     </tr>
-			                  </thead>
-			                  <tbody>
-			                     <tr>
-			                        <td width="50%">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, neque optio. Ea adipisci harum vel quibusdam aperiam molestiae. Dolorem sapiente totam mollitia facilis recusandae explicabo veniam vero, quos soluta velit!</td>
-			                        <td>Sandy Shores RD / Joshua RD</td>
-			                        <td>[1A-99] John Doe</td>
-			                     </tr>
-			                  </tbody>
-			               </table>
-			            </div>
-			         </div>
-						<div class="col">
-			            <div class="card-box">
-			               <h4 class="header-title mt-0 m-b-30">Current Status: <label id="getDutyStatus">Loading...</label></h4>
-			               <div class="form-group">
-			                  <select class="form-control" name="setUnitStatus" onChange='setUnitStatus(this)'>
-									<?php
-									$sql             = "SELECT * FROM 10_codes";
-									$stmt            = $pdo->prepare($sql);
-									$stmt->execute();
-									$dbq10codes = $stmt->fetchAll(PDO::FETCH_ASSOC); 
-									foreach($dbq10codes as $codes) {
-			                  	echo '<option value="'. $codes['code'] .'">'. $codes['code'] .'</option>';
-			                  }
-			                  ?>
-			                  </select>
-			               </div>
-			            </div>
-			         </div>
-			      </div>
-			      <div class="row">
-			         <div class="col-9">
-			            <div class="card-box">
-			               <h4 class="header-title mt-0 m-b-30">Active Bolos</h4>
-			               <table class="table table-borderless">
-			                  <thead>
-			                     <tr>
-			                        <th>Description</th>
-			                        <th>Created On</th>
-			                     </tr>
-			                  </thead>
-			                  <tbody>
-			                     <tr>
-			                        <td width="75%">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, neque optio. Ea adipisci harum vel quibusdam aperiam molestiae. Dolorem sapiente totam mollitia facilis recusandae explicabo veniam vero, quos soluta velit!</td>
-			                        <td>11/24/2018 6:52:04PM</td>
-			                     </tr>
-			                  </tbody>
-			               </table>
-			            </div>
-			         </div>
-			      </div>
+							
+							</div>
+						</div>
 						<!-- MODALS -->
 						<!-- search name modal -->
 						<div class="modal fade" id="openNameSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

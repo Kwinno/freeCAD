@@ -6390,3 +6390,6 @@ File: Responsive
 .modal-full .modal-content {
   min-height: 100vh;
 }
+
+div.inline { float:left; }
+.clearBoth { clear:both; }

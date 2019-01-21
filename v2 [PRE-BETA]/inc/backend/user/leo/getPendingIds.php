@@ -15,10 +15,11 @@ if (!isset($_SESSION['on_duty'])) {
 }
 
 // Supervisor Check
-// if ($_SESSION['identity_supervisor'] !== "Yes") {
-//   header('Location: ../../../../' . $url['leo'] . '?v=nosession');
-// 	exit();
-// }
+if ($_SESSION['identity_supervisor'] !== "Yes" || staff_siteSettings) {
+  $error['msg'] = "Permission Error";
+  echo json_encode($error);
+  exit();
+}
 
 // Page PHP
 $sql             = "SELECT * FROM identities WHERE status='Approval Needed' AND department='Law Enforcement'";

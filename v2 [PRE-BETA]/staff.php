@@ -360,6 +360,7 @@ $(document).ready(function () {
                       </div>
                     </div>
                   </div>
+                </div>
             <?php break; ?>
             
             <?php endswitch; ?>
