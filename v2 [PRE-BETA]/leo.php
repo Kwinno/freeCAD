@@ -48,8 +48,8 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
             $_SESSION['on_duty'] = "LEO";
             
             if ($identity_owner !== $user_id) {
-                header('Location: ' . $url['leo'] . '?v=nosession&error=identity-owner');
-                exit();
+					echo '<script> location.replace("'.$url['leo'].'?v=nosession&error=identity-owner"); </script>';
+					exit();
 				}
 				
 				$stmt2              = $pdo->prepare("DELETE FROM `on_duty` WHERE `name`=:identity_name");

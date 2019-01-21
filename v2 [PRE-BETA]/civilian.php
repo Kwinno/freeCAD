@@ -58,11 +58,15 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
             $_SESSION['character_license_firearm'] = $character_license_firearm;
             $_SESSION['character_full_name']       = $character_first_name . ' ' . $character_last_name;
             if ($character_owner_id !== $user_id) {
-                header('Location: ' . $url['civilian'] . '?v=nosession&error=character-owner');
+                echo '<script type="text/javascript">
+                window.location.href = "civilian.php?v=nosession&error=character-owner";
+                </script>';
                 exit();
             }
-            
-            header('Location: ' . $url['civilian'] . '?v=main');
+
+            echo '<script type="text/javascript">
+            window.location.href = "civilian.php?v=main";
+            </script>';
             exit();
         }
     }
