@@ -30,11 +30,11 @@
         $stmt3->bindValue(':name', $_SESSION['identity_name']);
         $result = $stmt3->execute();
     } else {
-        $sql5          = "INSERT INTO weapons (name, department, division, status) VALUES (:name, :department, :division, '10-41')";
+        $sql5          = "INSERT INTO on_duty (name, department, division, status) VALUES (:name, :department, :division, '10-41')";
         $stmt5         = $pdo->prepare($sql5);
-        $stmt5->bindValue(':name', $newWpn['weapon_type']);
-        $stmt5->bindValue(':department', $serial);
-        $stmt5->bindValue(':division', $_SESSION['character_id']);
+        $stmt5->bindValue(':name', $_SESSION['identity_name']);
+        $stmt5->bindValue(':department', $_SESSION['identity_department']);
+        $stmt5->bindValue(':division', $_SESSION['identity_division']);
         $result = $stmt5->execute();
     }
     } else {

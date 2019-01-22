@@ -46,6 +46,8 @@ if ($user === false) {
 		$_SESSION['user_id']   = $user['user_id'];
 		$_SESSION['logged_in'] = time();
 
+		logAction('Logged In', $user['username']);
+
 		//Successful login
 		$error['msg'] = "";
 		echo json_encode($error);

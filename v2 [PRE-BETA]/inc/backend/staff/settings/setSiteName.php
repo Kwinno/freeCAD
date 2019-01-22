@@ -15,11 +15,12 @@ if (staff_access && staff_siteSettings) {
   $stmt              = $pdo->prepare("UPDATE `settings` SET `site_name`=:q");
   $stmt->bindValue(':q', $site_name);
   $result = $stmt->execute();
-
+  logAction('Changed Website Setting: Name', $user['username']);
   $error['msg'] = "";
   echo json_encode($error);
   exit();
 } else {
+  logAction('Attempted To Change Website Setting: Name', $user['username']);
   $error['msg'] = "You don't have permission.";
   echo json_encode($error);
   exit();

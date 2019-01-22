@@ -40,25 +40,25 @@ require_once ('inc/page-top.php');
                   <strong>Warning: </strong> This is a PRE-BETA release. We do not support public use of this version, as modules are missing and bugs may be present. Report any bugs on our Discord.
                 </div>
                 <div class="row">
-                    <div class="col">
+                    <div class="col col-xs-6">
                         <div class="card-box">
                             <h4 class="header-title mt-0 m-b-30">Total Users</h4>
                             <h2 class="p-t-10 mb-0"><?php echo $stats['users']; ?></h2>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col col-xs-6">
                         <div class="card-box">
                             <h4 class="header-title mt-0 m-b-30">Total Staff</h4>
                             <h2 class="p-t-10 mb-0"><?php echo $stats['staff']; ?></h2>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col col-xs-6">
                         <div class="card-box">
                             <h4 class="header-title mt-0 m-b-30">Total Civilians</h4>
                             <h2 class="p-t-10 mb-0"><?php echo $stats['civ']; ?></h2>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col col-xs-6">
                         <div class="card-box">
                             <h4 class="header-title mt-0 m-b-30">Total Emergency Services</h4>
                             <h2 class="p-t-10 mb-0"><?php echo $stats['ems']; ?></h2>

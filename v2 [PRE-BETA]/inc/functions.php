@@ -3,8 +3,16 @@
 
 function logAction($action, $user)
 {
-	global $time;
-	global $us_date;
+    global $pdo;
+    global $time;
+    global $us_date;
+    
+    $sql_log          = "INSERT INTO logs (action, username, timestamp) VALUES (:action, :username, :timestamp)";
+    $stmt_log         = $pdo->prepare($sql_log);
+    $stmt_log->bindValue(':action', $action);
+    $stmt_log->bindValue(':username', $user);
+    $stmt_log->bindValue(':timestamp', $us_date .' '. $time);
+    $result_log = $stmt_log->execute();
 }
 
 // Throw Visual Error (Only works after Header is loaded)
