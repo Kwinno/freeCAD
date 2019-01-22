@@ -24,3 +24,5 @@ catch(Exception $e) {
 	throwError('Unable to connect to database.', true);
 	die('Unable to connect to database.');
 }
+
+?>

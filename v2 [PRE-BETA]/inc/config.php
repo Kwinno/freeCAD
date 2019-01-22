@@ -59,3 +59,5 @@ $date = date('Y-m-d');
 $us_date = date_format(date_create_from_format('Y-m-d', $date) , 'm/d/Y');
 $time = date('h:i:s A', time());
 $datetime = $us_date . ' ' . $time;
+
+?>

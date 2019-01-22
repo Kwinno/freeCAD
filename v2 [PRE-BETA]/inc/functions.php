@@ -83,3 +83,5 @@ function hydridErrors($errno, $errstr, $errfile, $errline, $errcontext)
     }
 }
 set_error_handler("hydridErrors");
+
+?>

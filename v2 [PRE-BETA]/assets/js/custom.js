@@ -1,6 +1,9 @@
 function pleaseWaitMsg() {
     toastr.warning('Please wait...')
 }
+function panicBtnMsg() {
+    toastr.error('Panic Button function will not be hard coded in until Dispatch Module is done.')
+}
 $(document).ready(function () {
     document.oncontextmenu = document.body.oncontextmenu = function () { return false; }
 });

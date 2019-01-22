@@ -288,6 +288,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#newArrestReportModal">Arrest Report</button>
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#notepadModal">Notepad</button>
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#activeUnitsModal">Active Units</button>
+									<button class="btn btn-warning btn-sm" onclick="panicBtnMsg();">PANIC BUTTON</button>
 									<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
 										<a href="leo.php?v=supervisor"><button class="btn btn-darkred btn-sm">Supervisor Panel</button></a>
 									<?php endif; ?>
@@ -470,10 +471,10 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 						            </div>
 						            <div class="modal-body">
 							            <form method="post" action="leo-index.php">
-							                <div class="form-group">
-							                	<textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="104"><?php echo $_SESSION['notepad']; ?></textarea>
-							                </div>
-											</form>
+											<div class="form-group">
+												<textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="104"><?php echo $_SESSION['notepad']; ?></textarea>
+											</div>
+										</form>
 						           </div>
 						         </div>
 						      </div>
@@ -490,30 +491,30 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 	 					               </button>
 	 					            </div>
 	 					            <div class="modal-body">
-											<form id="newTicket" action="inc/backend/user/leo/newTicket.php" method="post">
+										<form id="newTicket" action="inc/backend/user/leo/newTicket.php" method="post">
+											<div class="form-group">
+												<select class="js-example-basic-single" name="suspect" id="getAllCharacters2" required>
+														<option selected="true" disabled="disabled">Loading Characters...</option>
+												</select>
+											</div>
+											<div class="form-group">
+												<input type="text" name="location" class="form-control" placeholder="Ticket Location" data-lpignore="true" required />
+											</div>
+											<div class="form-group">
+												<input type="text" name="postal" class="form-control" pattern="\d*" placeholder="(Nearest Postal)" data-lpignore="true" required />
+											</div>
+											<div class="form-group">
+												<input type="text" name="amount" class="form-control" pattern="\d*" placeholder="Fine Amount" data-lpignore="true" required />
+											</div>
+											<div class="form-group">
+												<input type="text" name="reason" class="form-control" maxlength="255" placeholder="Ticket Reason(s)" data-lpignore="true" required />
+											</div>
+											<div class="modal-footer">
 												<div class="form-group">
-													<select class="js-example-basic-single" name="suspect" id="getAllCharacters2" required>
-															<option selected="true" disabled="disabled">Loading Characters...</option>
-													</select>
+														<input class="btn btn-primary" onClick="disableClick()" type="submit" value="Submit Ticket">
 												</div>
-												<div class="form-group">
-													<input type="text" name="location" class="form-control" placeholder="Ticket Location" data-lpignore="true" required />
-												</div>
-												<div class="form-group">
-													<input type="text" name="postal" class="form-control" pattern="\d*" placeholder="(Nearest Postal)" data-lpignore="true" required />
-												</div>
-												<div class="form-group">
-													<input type="text" name="amount" class="form-control" pattern="\d*" placeholder="Fine Amount" data-lpignore="true" required />
-												</div>
-												<div class="form-group">
-													<input type="text" name="reason" class="form-control" maxlength="255" placeholder="Ticket Reason(s)" data-lpignore="true" required />
-												</div>
-												<div class="modal-footer">
-													<div class="form-group">
-															<input class="btn btn-primary" onClick="disableClick()" type="submit" value="Submit Ticket">
-													</div>
-												</div>
-											</form>
+											</div>
+										</form>
 	 					            </div>
 	 					         </div>
 	 					      </div>
@@ -530,21 +531,21 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 	 					               </button>
 	 					            </div>
 	 					            <div class="modal-body">
-											<form id="newArrestReport" action="inc/backend/user/leo/newArrestReport.php" method="post">
+										<form id="newArrestReport" action="inc/backend/user/leo/newArrestReport.php" method="post">
+											<div class="form-group">
+												<select class="js-example-basic-single" name="suspect" id="getAllCharacters3" required>
+														<option selected="true" disabled="disabled">Loading Characters...</option>
+												</select>
+											</div>
+											<div class="form-group">
+												<input type="text" name="reason" class="form-control" maxlength="500" placeholder="Summary" data-lpignore="true" required />
+											</div>
+											<div class="modal-footer">
 												<div class="form-group">
-													<select class="js-example-basic-single" name="suspect" id="getAllCharacters3" required>
-															<option selected="true" disabled="disabled">Loading Characters...</option>
-													</select>
+														<input class="btn btn-primary" onClick="disableClick()" type="submit" value="Submit Arrest Report">
 												</div>
-												<div class="form-group">
-													<input type="text" name="reason" class="form-control" maxlength="500" placeholder="Summary" data-lpignore="true" required />
-												</div>
-												<div class="modal-footer">
-													<div class="form-group">
-															<input class="btn btn-primary" onClick="disableClick()" type="submit" value="Submit Arrest Report">
-													</div>
-												</div>
-											</form>
+											</div>
+										</form>
 	 					            </div>
 	 					         </div>
 	 					      </div>
@@ -746,13 +747,12 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-8">
+								<div class="col-7">
 									<div class="card-box">
 										<h4 class="header-title mt-0 m-b-30">All LEO Identities</h4>
 										<table id="datatable" class="table table-borderless">
 										<thead>
 										<tr>
-												<th>ID</th>
 												<th>Name</th>
 												<th>Division</th>
 												<th>Supervisor</th>
@@ -761,8 +761,6 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 												<th>Actions</th>
 										</tr>
 										</thead>
-
-
 										<tbody>
 										<?php 
 										$sql             = "SELECT * FROM identities WHERE department='Law Enforcement'";
@@ -773,7 +771,6 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 										foreach ($leoIdsRow as $identity) {
 											echo '
 											<tr>
-												<td>'. $identity['identity_id'] .'</td>
 												<td>'. $identity['name'] .'</td>
 												<td>'. $identity['division'] .'</td>
 												<td>'. $identity['supervisor'] .'</td>
@@ -787,7 +784,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 										</table>
 									</div>
 								</div>
-								<div class="col-4">
+								<div class="col-5">
 									<div class="card-box">
 										<h4 class="header-title mt-0 m-b-30">Pending Identities</h4>
 										<div id="getPendingIds"></div>
