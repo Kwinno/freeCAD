@@ -22,10 +22,12 @@ if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings) {
   $stmt->bindValue(':server_id', $_SESSION['server']);
   $result = $stmt->execute();
   if ($result) {
+    if ($settings['discord_alerts'] === 'true') {
     discordAlert('**AOP Updated**
     The Area of Patrol has been updated for Server **'. $_SESSION['server'] .'**
     New AOP: **'. $newAOP['aop'] . '**
       - **Hydrid CAD System**');
+    }
     $error['msg'] = "";
     echo json_encode($error);
     exit();

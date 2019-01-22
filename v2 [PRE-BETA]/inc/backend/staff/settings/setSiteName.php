@@ -16,9 +16,12 @@ if (staff_access && staff_siteSettings) {
   $stmt->bindValue(':q', $site_name);
   $result = $stmt->execute();
   logAction('Changed Website Setting: Name', $user['username']);
+
+  if ($settings['discord_alerts'] === 'true') {
   discordAlert('**Panel Settings Changed**
 	  Name has been updated by '. $user['username'] .'
       - **Hydrid CAD System**');
+  }
   $error['msg'] = "";
   echo json_encode($error);
   exit();

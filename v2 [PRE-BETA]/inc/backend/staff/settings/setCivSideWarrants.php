@@ -16,9 +16,12 @@ if (staff_access && staff_siteSettings) {
     $stmt->bindValue(':q', $q);
     $result = $stmt->execute();
     logAction('Changed Website Setting: Civ Side Warrants', $user['username']);
+
+    if ($settings['discord_alerts'] === 'true') {
     discordAlert('**Panel Settings Changed**
 	  Civ Side Warrants have been updated by '. $user['username'] .'
       - **Hydrid CAD System**');
+    }
   } else {
     $error['msg'] = "System Error";
     echo json_encode($error);

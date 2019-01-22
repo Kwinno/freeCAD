@@ -27,6 +27,8 @@ $stmt              = $pdo->prepare("UPDATE `identities` SET `status`='Active' WH
 $stmt->bindValue(':id', $id);
 $result = $stmt->execute();
 
+if ($settings['discord_alerts'] === 'true') {
 discordAlert('**ID Approved**
 	  ID #'. $id .' has been Approved for Law Enforcement
-      - **Hydrid CAD System**');
+	  - **Hydrid CAD System**');
+}

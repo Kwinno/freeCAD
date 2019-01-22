@@ -27,6 +27,8 @@ $stmt              = $pdo->prepare("DELETE FROM identities WHERE `identity_id`=:
 $stmt->bindValue(':id', $id);
 $result = $stmt->execute();
 
+if ($settings['discord_alerts'] === 'true') {
 discordAlert('**ID Rejected**
 	  ID #'. $id .' has been Rejected for Law Enforcement
-      - **Hydrid CAD System**');
+	  - **Hydrid CAD System**');
+}

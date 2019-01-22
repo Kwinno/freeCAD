@@ -43,11 +43,13 @@ $stmt->bindValue(':call_postal', $call_postal);
 $stmt->bindValue(':call_timestamp', $us_date . ' ' . $time);
 $result = $stmt->execute();
 if ($result) {
+	if ($settings['discord_alerts'] === 'true') {
 	discordAlert('**NEW 911 CALL**
 	**Description:** '. $call_description .'
 	**Location:** '. $call_location .' / '. $call_crossstreat .' / '. $call_postal .'
 	**Called On:** '. $datetime .'
-      - **Hydrid CAD System**');
+	  - **Hydrid CAD System**');
+	}
     $error['msg'] = "";
 	echo json_encode($error);
 	exit();
