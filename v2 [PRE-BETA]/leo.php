@@ -168,6 +168,15 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			      </div>
 			      <?php break; ?>
 			      <?php case "main": ?>
+				  <?php 
+				 // Fix bug that casuses AOP changer to fuck itself, should be a better way to do this
+				 $sql_aopfix = "SELECT * FROM servers WHERE id=:server_id";
+				 $stmt_aopfix = $pdo->prepare($sql_aopfix);
+				 $stmt_aopfix->bindValue(':server_id', $_SESSION['server']);
+				 $stmt_aopfix->execute();
+				 $getAOP = $stmt->fetch(PDO::FETCH_ASSOC);
+				 $_SESSION['current_aop'] = $getAOP['aop']; 
+				  ?>
 			      <!-- js is put here to prevent issues on other parts of leo -->
 			      <script type="text/javascript">
 			         $(document).ready(function () {
@@ -359,11 +368,11 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 									<form method="post" action="inc/backend/user/leo/setAOP.php" id="changeAOP">
 										<div class="form-group">
 											<div class="col">
-												<input class="form-control" type="text" required="" name="newAOP" placeholder="New AOP" value="<?php echo $_SESSION['current_aop']; ?>">
+												<input class="form-control" type="text" required="" name="newAOP" placeholder="New AOP">
 											</div>
 											<div class="col m-t-5">
-											<button class="btn btn-warning btn-bordred btn-block waves-effect waves-light" onClick="disableClick()" type="submit">Change AOP</button>
-										</div>
+												<button class="btn btn-warning btn-bordred btn-block waves-effect waves-light" onClick="disableClick()" type="submit">Change AOP</button>
+											</div>
 										</div>
 									</form>
 								</div>

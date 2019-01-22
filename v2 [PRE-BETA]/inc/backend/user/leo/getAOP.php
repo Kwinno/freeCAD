@@ -15,8 +15,8 @@ if (!isset($_SESSION['on_duty'])) {
 }
 
 // Page PHP
-
-$stmt = $pdo->prepare("SELECT * FROM servers WHERE id=:server_id");
+$sql = "SELECT * FROM servers WHERE id=:server_id";
+$stmt = $pdo->prepare($sql);
 $stmt->bindValue(':server_id', $_SESSION['server']);
 $stmt->execute();
 $aop_row = $stmt->fetch(PDO::FETCH_ASSOC);
