@@ -17,6 +17,10 @@
 	       <script>
            // Default Datatable
            $('#datatable').DataTable();
+           $('#datatable2').DataTable();
+           $('#datatable3').DataTable();
+           $('#datatable4').DataTable();
+           $('#datatable5').DataTable();
                 // Date Picker
             jQuery('#datepicker').datepicker();
             jQuery('#datepicker-autoclose').datepicker({

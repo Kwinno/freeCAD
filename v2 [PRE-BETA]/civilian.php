@@ -76,13 +76,6 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 <script src="assets/js/pages/civilian.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
-        // $("input[type='submit']").attr("disabled", false);
-
-        // $("form").submit(function(){
-        //   $("input[type='submit']").attr("disabled", true);
-        //   setTimeout(function(){ $("input[type='submit']").attr("disabled", false); }, 30000);
-        //   return true;
-        // })
         $('#createCharacter').ajaxForm(function (error) {
             console.log(error);
             var error = JSON.parse(error);
@@ -285,7 +278,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                                 </div>
                                 <div class="row">
                                     <div class="col">
-                                        <input class="btn btn-success btn-block" type="submit" value="Create Character">
+                                        <input class="btn btn-success btn-block" onClick="disableClick()" type="submit" value="Create Character">
                                     </div>
                                 </div>
                             </form>
@@ -648,7 +641,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                             </div>
                             <div class="modal-footer">
                               <div class="form-group">
-                                 <input class="btn btn-primary" type="submit" value="Create New Call">
+                                 <input class="btn btn-primary" onClick="disableClick()" type="submit" value="Create New Call">
                               </div>
                             </div>
                             </form>
@@ -673,7 +666,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                           <div class="modal-footer">
                             <div class="form-group">
                                <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
-                               <input class="btn btn-danger" type="submit" value="Yes">
+                               <input class="btn btn-danger" onClick="disableClick()" type="submit" value="Yes">
                             </div>
                           </div>
                           </form>
@@ -751,7 +744,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                                </div>
                                <div class="modal-footer">
                                  <div class="form-group">
-                                   <input class="btn btn-primary" type="submit" value="Complete">
+                                   <input class="btn btn-primary" onClick="disableClick()" type="submit" value="Complete">
                                  </div>
                                </div>
                              </form>
@@ -835,7 +828,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                            </div>
                            <div class="modal-footer">
                              <div class="form-group">
-                               <input class="btn btn-primary" type="submit" value="Complete">
+                               <input class="btn btn-primary" onClick="disableClick()" type="submit" value="Complete">
                              </div>
                            </div>
                          </form>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 21, 2019 at 12:08 AM
+-- Generation Time: Jan 22, 2019 at 05:10 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -138,7 +138,7 @@ CREATE TABLE `identities` (
   `created_on` varchar(126) NOT NULL,
   `user` int(11) NOT NULL,
   `user_name` varchar(128) NOT NULL,
-  `status` enum('Active','Approval Needed') NOT NULL DEFAULT 'Active'
+  `status` enum('Active','Approval Needed','Suspended') NOT NULL DEFAULT 'Active'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -205,7 +205,7 @@ CREATE TABLE `servers` (
 --
 
 INSERT INTO `servers` (`id`, `name`, `aop`, `priority`) VALUES
-(1, 'Server 1', 'Not Set', 0);
+(1, 'Server 1', 'Blaine County', 0);
 
 -- --------------------------------------------------------
 
@@ -229,7 +229,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`setting_id`, `site_name`, `account_validation`, `identity_validation`, `steam_required`, `timezone`, `civ_side_warrants`, `dark_mode`) VALUES
-(1, 'Hydrid CAD/MDT', 'no', 'no', 'false', 'America/New_York', 'false', 'true');
+(1, 'Hydrid CAD/MDT', 'no', 'no', 'false', 'America/New_York', 'true', 'true');
 
 -- --------------------------------------------------------
 

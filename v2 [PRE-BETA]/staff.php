@@ -46,13 +46,6 @@ $view = strip_tags($_GET['m']);
 <script src="assets/js/pages/staff.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
-    $("input[type='submit']").attr("disabled", false);
-
-    $("form").submit(function(){
-      $("input[type='submit']").attr("disabled", true);
-      setTimeout(function(){ $("input[type='submit']").attr("disabled", false); }, 30000);
-      return true;
-    })
     $('#updateSiteName').ajaxForm(function (error) {
         error = JSON.parse(error);
         if (error['msg'] === "") {
@@ -169,7 +162,7 @@ $(document).ready(function () {
                   <div class="form-group">
                     <label for="site_name">Site Name</label>
                     <input class="form-control" type="text" required="" name="site_name" value="<?php echo $settings['name']; ?>" placeholder="<?php echo $settings['name']; ?>">
-                    <button class="btn btn-success btn-block" type="submit">Update</button>
+                    <button class="btn btn-success btn-block" onClick="disableClick()" type="submit">Update</button>
                   </div>
                 </form>
               </div>

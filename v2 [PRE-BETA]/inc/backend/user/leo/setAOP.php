@@ -12,26 +12,26 @@ if (!isset($_SESSION['identity_name'])) {
 }
 
 // Supervisor Check
-if ($_SESSION['identity_supervisor'] !== "Yes" || staff_siteSettings) {
-  $error['msg'] = "Permission Error";
-  echo json_encode($error);
-  exit();
-}
+if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings) {
+  // Page PHP
+  $newAOP['aop'] = strip_tags($_POST['newAOP']);
+  $error = array();
 
-// Page PHP
-$newAOP['aop'] = strip_tags($_POST['newAOP']);
-$error = array();
-
-$stmt              = $pdo->prepare("UPDATE `servers` SET `aop`=:newAOP WHERE `id`=:server_id");
-$stmt->bindValue(':newAOP', $newAOP['aop']);
-$stmt->bindValue(':server_id', $_SESSION['server']);
-$result = $stmt->execute();
-if ($result) {
-  $error['msg'] = "";
-  echo json_encode($error);
-  exit();
+  $stmt              = $pdo->prepare("UPDATE `servers` SET `aop`=:newAOP WHERE `id`=:server_id");
+  $stmt->bindValue(':newAOP', $newAOP['aop']);
+  $stmt->bindValue(':server_id', $_SESSION['server']);
+  $result = $stmt->execute();
+  if ($result) {
+    $error['msg'] = "";
+    echo json_encode($error);
+    exit();
+  } else {
+    $error['msg'] = "Database Error";
+    echo json_encode($error);
+    exit();
+  }
 } else {
-  $error['msg'] = "Database Error";
+  $error['msg'] = "Permission Error";
   echo json_encode($error);
   exit();
 }

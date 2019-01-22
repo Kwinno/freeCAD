@@ -230,7 +230,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			                         },
 			                         complete: function () {
 			                             // Schedule the next request when the current one's complete
-			                             setTimeout(loadStatus, 60000);
+			                             setTimeout(loadAOP, 60000);
 			                         }
 			                     });
 			                 })();
@@ -289,7 +289,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#notepadModal">Notepad</button>
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#activeUnitsModal">Active Units</button>
 									<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
-										<button class="btn btn-darkred btn-sm" data-toggle="modal" data-target="#pendingIdsModal">Pending Identites</button>
+										<a href="leo.php?v=supervisor"><button class="btn btn-darkred btn-sm">Supervisor Panel</button></a>
 									<?php endif; ?>
 								</div>
 							</div>
@@ -361,7 +361,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 												<input class="form-control" type="text" required="" name="newAOP" placeholder="New AOP" value="<?php echo $_SESSION['current_aop']; ?>">
 											</div>
 											<div class="col m-t-5">
-											<button class="btn btn-warning btn-bordred btn-block waves-effect waves-light" type="submit">Change AOP</button>
+											<button class="btn btn-warning btn-bordred btn-block waves-effect waves-light" onClick="disableClick()" type="submit">Change AOP</button>
 										</div>
 										</div>
 									</form>
@@ -458,25 +458,6 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 					      </div>
 					   </div>
 						 <!-- // -->
-						 <?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
-							 <!-- pending ids modal -->
-   					   <div class="modal fade" id="pendingIdsModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-   					      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-   					         <div class="modal-content">
-   					            <div class="modal-header">
-   					               <h5 class="modal-title" id="exampleModalLabel">Pending Identites</h5>
-   					               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-   					               <span aria-hidden="true">&times;</span>
-   					               </button>
-   					            </div>
-   					            <div class="modal-body">
-   					              <div id="getPendingIds"></div>
-   					            </div>
-   					         </div>
-   					      </div>
-   					   </div>
-   						 <!-- // -->
-						 <?php endif; ?>
 						 <!-- notepad modal -->
 						   <div class="modal fade" id="notepadModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -529,7 +510,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 												</div>
 												<div class="modal-footer">
 													<div class="form-group">
-															<input class="btn btn-primary" type="submit" value="Submit Ticket">
+															<input class="btn btn-primary" onClick="disableClick()" type="submit" value="Submit Ticket">
 													</div>
 												</div>
 											</form>
@@ -560,7 +541,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 												</div>
 												<div class="modal-footer">
 													<div class="form-group">
-															<input class="btn btn-primary" type="submit" value="Submit Arrest Report">
+															<input class="btn btn-primary" onClick="disableClick()" type="submit" value="Submit Arrest Report">
 													</div>
 												</div>
 											</form>
@@ -570,6 +551,256 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 	 					   </div>
 	 						 <!-- // -->
 			      <?php break; ?>
+
+					<?php case "supervisor": ?>
+						<?php if($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+							<?php if(isset($_GET['a']) && strip_tags($_GET['a']) === 'edit-id'): ?>
+								<?php
+								$id   = $_GET['id'];
+								$sql  = "SELECT * FROM identities WHERE identity_id = :identity_id AND department='Law Enforcement'";
+								$stmt = $pdo->prepare($sql);
+								$stmt->bindValue(':identity_id', $id);
+								$stmt->execute();
+								$idDB = $stmt->fetch(PDO::FETCH_ASSOC);
+								if ($idDB === false) {
+									 echo '<script> location.replace("' . $url['leo'] . '?v=supervisor&error=id-not-found"); </script>';
+									 exit();
+								} else {
+									$editing_id['id']	= $idDB['identity_id'];
+									$_SESSION['editing_identity_id']	= $editing_id['id'];
+									
+									$editing_id['name']	= $idDB['name'];
+									$editing_id['division']	= $idDB['division'];
+									$editing_id['supervisor']	= $idDB['supervisor'];
+									$editing_id['user']	= $idDB['user_name'];
+									$editing_id['status']	= $idDB['status'];
+								}
+
+								if (isset($_POST['suspendIdBtn'])) {
+									$sql = "UPDATE identities SET status=? WHERE identity_id=?";
+									$stmt = $pdo->prepare($sql);
+									$stmt->execute(['Suspended', $_SESSION['editing_identity_id']]);
+									echo '<script> location.replace("' . $url['leo'] . '?v=supervisor&id=suspended"); </script>';
+									exit();
+								}
+								if (isset($_POST['unsuspendIdBtn'])) {
+									$sql = "UPDATE identities SET status=? WHERE identity_id=?";
+									$stmt = $pdo->prepare($sql);
+									$stmt->execute(['Active', $_SESSION['editing_identity_id']]);
+									echo '<script> location.replace("' . $url['leo'] . '?v=supervisor&id=unsuspended"); </script>';
+									exit();
+								}
+								if (isset($_POST['editIdBtn'])) {
+									$updateDivision    = !empty($_POST['division']) ? trim($_POST['division']) : null;
+									$updateDivision    = strip_tags($updateDivision);
+									$updateSupervisor    = !empty($_POST['supervisor']) ? trim($_POST['supervisor']) : null;
+    								$updateSupervisor    = strip_tags($updateSupervisor);
+
+									$sql = "UPDATE identities SET division=?, supervisor=? WHERE identity_id=?";
+									$stmt = $pdo->prepare($sql);
+									$stmt->execute([$updateDivision, $updateSupervisor, $_SESSION['editing_identity_id']]);
+									echo '<script> location.replace("' . $url['leo'] . '?v=supervisor&id=edited"); </script>';
+									exit();
+								}
+								?>
+								<div class="row">
+									<div class="col-7">
+									<?php if($editing_id['status'] === "Suspended"): ?>
+										<div class="alert alert-danger" role="alert">
+											<strong>This identity is Suspended.</strong>
+										</div>
+									<?php endif; ?>
+										<div class="card-box">
+											<h4 class="header-title mt-0 m-b-30">Identity Editor (<?php echo $editing_id['name']; ?>)</h4>
+											<form method="POST">
+												<div class="form-group">
+													<div class="col-12">
+													<label for="supervisor">Supervisor</label>
+													<select class="custom-select my-1 mr-sm-2" id="supervisor" name="supervisor">
+														<option selected value="<?php echo $editing_id['supervisor']; ?>"><?php echo $editing_id['supervisor']; ?> (Current)</option>
+														<option value="No">No</option>
+														<option value="Yes">Yes</option>
+													</select>
+													</div>
+												</div>
+												<div class="form-group">
+													<div class="col-12">
+													<label for="division">Division</label>
+													<select class="custom-select my-1 mr-sm-2" id="division" name="division">
+														<option selected value="<?php echo $editing_id['division']; ?>"><?php echo $editing_id['division']; ?> (Current)</option>
+														<?php 
+														$sql             = "SELECT * FROM leo_division";
+														$stmt            = $pdo->prepare($sql);
+														$stmt->execute();
+														$divRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+														foreach($divRow as $leoDivision) {
+															echo '
+																<option value="' . $leoDivision['name'] . '">' . $leoDivision['name'] . '</option>
+															';
+														}
+														?>
+													</select>
+													</div>
+												</div>
+												<div class="form-group text-center">
+													<div class="row">
+														<div class="col-6">
+															<button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit" name="editIdBtn">Edit</button>
+														</div>
+														<div class="col-6">
+															<?php if($editing_id['status'] === "Suspended"): ?>
+															<button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="unsuspendIdBtn">Unsuspend</button>
+															<?php else: ?>
+															<button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="suspendIdBtn">Suspend</button>
+															<?php endif; ?>
+														</div>
+													 </div>
+                                      </div>
+											</form>
+										</div>
+										<div class="card-box">
+											<h4 class="header-title mt-0 m-b-30">Arrests (<?php echo $editing_id['name']; ?>)</h4>
+											<table id="datatable" class="table table-borderless">
+											<thead>
+											<tr>
+													<th>Arrest ID</th>
+													<th>Date/Time</th>
+													<th>Suspect</th>
+													<th>Summary</th>
+											</tr>
+											</thead>
+
+
+											<tbody>
+											<?php 
+											$sql             = "SELECT * FROM arrest_reports WHERE arresting_officer=:editing_idname";
+											$stmt            = $pdo->prepare($sql);
+											$stmt->bindValue(':editing_idname', $editing_id['name']);
+											$stmt->execute();
+											$arrestsRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+											foreach ($arrestsRow as $arrest) {
+												echo '
+												<tr>
+													<td>'. $arrest['arrest_id'] .'</td>
+													<td>'. $arrest['timestamp'] .'</td>
+													<td>'. $arrest['suspect'] .'</td>
+													<td width="50%">'. $arrest['summary'] .'</td>
+												</tr>
+												';
+											}
+											?>
+											</table>
+										</div>
+										<div class="card-box">
+											<h4 class="header-title mt-0 m-b-30">Tickets (<?php echo $editing_id['name']; ?>)</h4>
+											<table id="datatable2" class="table table-borderless">
+											<thead>
+											<tr>
+													<th>Ticket ID</th>
+													<th>Date/Time</th>
+													<th>Suspect</th>
+													<th>Reason</th>
+											</tr>
+											</thead>
+
+
+											<tbody>
+											<?php 
+											$sql2             = "SELECT * FROM tickets WHERE officer=:editing_idname";
+											$stmt2            = $pdo->prepare($sql2);
+											$stmt2->bindValue(':editing_idname', $editing_id['name']);
+											$stmt2->execute();
+											$ticketRow = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+											foreach ($ticketRow as $ticket) {
+												echo '
+												<tr>
+													<td>'. $ticket['ticket_id'] .'</td>
+													<td>'. $ticket['ticket_timestamp'] .'</td>
+													<td>'. $ticket['suspect'] .'</td>
+													<td width="50%">'. $ticket['reason'] .'</td>
+												</tr>
+												';
+											}
+											?>
+											</table>
+										</div>
+									</div>
+									<div class="col-5">
+										<div class="card-box">
+											<h4 class="header-title mt-0 m-b-30">Shift Logs (<?php echo $editing_id['name']; ?>)</h4>
+											<!-- CONTENT -->
+										</div>
+									</div>
+								</div>
+							<?php else: ?>
+							<div class="row">
+								<div class="col">
+									<div class="card-box">
+										<h4 class="header-title mt-0 m-b-30"><?php echo $_SESSION['identity_name']; ?> <?php if ($_SESSION['identity_supervisor'] === "Yes"): ?><small><font color="white"><i>Supervisor</i></font></small><?php endif; ?></h4>
+										<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+											<a href="leo.php?v=main"><button class="btn btn-info btn-sm">Back To Patrol Panel</button></a>
+										<?php endif; ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-8">
+									<div class="card-box">
+										<h4 class="header-title mt-0 m-b-30">All LEO Identities</h4>
+										<table id="datatable" class="table table-borderless">
+										<thead>
+										<tr>
+												<th>ID</th>
+												<th>Name</th>
+												<th>Division</th>
+												<th>Supervisor</th>
+												<th>User</th>
+												<th>Status</th>
+												<th>Actions</th>
+										</tr>
+										</thead>
+
+
+										<tbody>
+										<?php 
+										$sql             = "SELECT * FROM identities WHERE department='Law Enforcement'";
+										$stmt            = $pdo->prepare($sql);
+										$stmt->execute();
+										$leoIdsRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+										foreach ($leoIdsRow as $identity) {
+											echo '
+											<tr>
+												<td>'. $identity['identity_id'] .'</td>
+												<td>'. $identity['name'] .'</td>
+												<td>'. $identity['division'] .'</td>
+												<td>'. $identity['supervisor'] .'</td>
+												<td>'. $identity['user_name'] .'</td>
+												<td>'. $identity['status'] .'</td>
+												<td><a href="leo.php?v=supervisor&a=edit-id&id='. $identity['identity_id'] .'"><input type="button" class="btn btn-sm btn-success btn-block" value="Edit"></a></td>
+											</tr>
+											';
+										}
+										?>
+										</table>
+									</div>
+								</div>
+								<div class="col-4">
+									<div class="card-box">
+										<h4 class="header-title mt-0 m-b-30">Pending Identities</h4>
+										<div id="getPendingIds"></div>
+									</div>
+								</div>
+							</div>
+							<?php endif; ?>
+						<?php else: ?>
+							<div class="alert alert-danger" role="alert">
+								You are not a supervisor.
+							</div>
+						<?php endif; ?>
+					<?php break; ?>
 			      <?php endswitch; ?>
 			   </div>
 			</div>
