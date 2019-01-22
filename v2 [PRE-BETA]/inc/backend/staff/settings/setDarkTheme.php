@@ -16,6 +16,9 @@ if (staff_access && staff_siteSettings) {
     $stmt->bindValue(':q', $q);
     $result = $stmt->execute();
     logAction('Changed Website Setting: Dark Mode', $user['username']);
+    discordAlert('**Panel Settings Changed**
+	  Dark Mode Settings have been updated by '. $user['username'] .'
+      - **Hydrid CAD System**');
   } else {
     $error['msg'] = "System Error";
     echo json_encode($error);

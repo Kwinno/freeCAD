@@ -1,6 +1,5 @@
 <?php
 // Log Function
-
 function logAction($action, $user)
 {
     global $pdo;
@@ -91,5 +90,27 @@ function hydridErrors($errno, $errstr, $errfile, $errline, $errcontext)
     }
 }
 set_error_handler("hydridErrors");
+
+function discordAlert($message) {
+    global $discord_webhook;
+    //=======================================================================
+    // Create new webhook in your Discord channel settings and copy&paste URL
+    //=======================================================================
+    $webhookurl = $discord_webhook;
+    //=======================================================================
+    // Compose message. You can use Markdown
+    //=======================================================================
+    $json_data = array ('content'=>"$message");
+    $make_json = json_encode($json_data);
+    $ch = curl_init( $webhookurl );
+    curl_setopt( $ch, CURLOPT_POST, 1);
+    curl_setopt( $ch, CURLOPT_POSTFIELDS, $make_json);
+    curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt( $ch, CURLOPT_HEADER, 0);
+    curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
+    $response = curl_exec( $ch );
+
+    return $response;
+}
 
 ?>

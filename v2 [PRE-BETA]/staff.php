@@ -44,6 +44,41 @@ if (staff_access && staff_editUsers) {
   }
 }
 
+if (staff_access) {
+  if (isset($_POST['enableAlertsBtn'])) {
+    $webhook_url    = !empty($_POST['webhook_url']) ? trim($_POST['webhook_url']) : null;
+    $webhook_url    = strip_tags($webhook_url);
+
+    if (empty($webhook_url)) {
+      echo "<script> location.replace('staff.php?m=settings&error=webhook-empty'); </script>";
+      exit();
+    }
+
+    if (!filter_var($webhook_url, FILTER_VALIDATE_URL)) {
+      echo "<script> location.replace('staff.php?m=settings&error=webhook-invalid'); </script>";
+      exit();
+    }
+    
+    $sql = "UPDATE settings SET discord_alerts=?, discord_webhook=? WHERE setting_id=?";
+    $stmt = $pdo->prepare($sql);
+    $result = $stmt->execute(['true', $webhook_url, '1']);
+    
+    if ($result) {
+      discordAlert('This message is to verify that you have successfully setup Discord Alerts on **Hydrid**. If you would like to disable Discord Alerts, you can do so from the Admin Panel.
+      - **Hydrid CAD System**');
+    }
+    echo "<script> location.replace('staff.php?m=settings&success=webhook-setup'); </script>";
+    exit();
+  }
+  if (isset($_POST['disableAlertsBtn'])) {    
+    $sql = "UPDATE settings SET discord_alerts=? WHERE setting_id=?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute(['false', '1']);
+    echo "<script> location.replace('staff.php?m=settings&success=webhook-disabled'); </script>";
+    exit();
+  }
+}
+
 $view = strip_tags($_GET['m']);
 ?>
 <script src="assets/js/pages/staff.js"></script>
@@ -61,7 +96,17 @@ $(document).ready(function () {
 </script>
 <body>
     <?php require_once('inc/top-nav.php'); ?>
-
+    <?php
+    if (isset($_GET['error']) && strip_tags($_GET['error']) === 'webhook-invalid') {
+        throwError('Invalid Discord Webhook Entered');
+    } elseif (isset($_GET['error']) && strip_tags($_GET['error']) === 'webhook-empty') {
+        throwError('You must enter a Discord Webhook to enable this feature!.');
+    } elseif (isset($_GET['success']) && strip_tags($_GET['success']) === 'webhook-setup') {
+      clientNotify('success', 'You have now setup Discord Alerts. We will send a welcome alert to verify it is all working!');
+    } elseif (isset($_GET['success']) && strip_tags($_GET['success']) === 'webhook-disabled') {
+      clientNotify('success', 'Discord Alerts have been disabled!');
+    }
+    ?>
     <!-- CONTENT START -->
     <div class="wrapper m-b-15">
         <div class="container-fluid">
@@ -126,23 +171,6 @@ $(document).ready(function () {
                   </div>
                   <div class="col">
                     <div class="form-group">
-                      <label for="darkmode">Require Steam Login</label>
-                      <select class="form-control" id="steam_login" onchange="setSteamLogin(this.value)">
-                        <option selected="true" disabled="disabled"><?php
-                        if ($settings['steam_required'] === "true") {
-                          echo 'Yes';
-                        } elseif ($settings['steam_required'] === "false") {
-                          echo 'No';
-                        }
-                        ?>
-                        </option>
-                        <option value="true">Yes</option>
-                        <option value="false">No</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-group">
                       <label for="darkmode">Civ Side Warrants</label>
                       <select class="form-control" id="steam_login" onchange="setCivSideWarrants(this.value)">
                         <option selected="true" disabled="disabled"><?php
@@ -168,6 +196,47 @@ $(document).ready(function () {
                     <button class="btn btn-success btn-block" onClick="disableClick()" type="submit">Update</button>
                   </div>
                 </form>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-6">
+                <div class="card-box">
+                    <h4 class="m-t-0 header-title">Discord Alerts</h4>
+                    <div class="alert alert-warning" role="alert"><strong>How To Setup - </strong>To setup the Discord Alert system, please follow all of the steps.<br>
+                    1 - Create a Channel In Discord that that alerts will be sent in.<br>
+                    2 - Right Click the server --> Server Settings --> Web Hooks<br>
+                    3 - Press "Create Webhook"<br>
+                    4 - Name (Hydrid CAD Alerts) : Channel (The channel you setup) : Copy the "WEBHOOK URL"
+                    5 - Paste the Webhook URL in the textbox below
+                    </div>
+                    <form method="POST">
+                      <div class="form-group">
+                        <div class="col-12">
+                          <label for="webhook_url">Webhook URL</label>
+                          <input class="form-control" type="text" required="" name="webhook_url" id="webhook_url" value="<?php if ($discord_webhook === NULL || $discord_webhook === "") {
+                            echo '';
+                          } else {
+                            echo $discord_webhook;
+                          } ?>" placeholder="Discord Webhook URL">
+                        </div>
+                      </div>
+                      <div class="form-group text-center">
+                        <div class="col-12">
+                            <?php if($settings['discord_alerts'] === 'true'): ?>
+                            <button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="disableAlertsBtn">Disable Alerts</button>
+                            <?php else: ?>
+                            <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit" name="enableAlertsBtn">Enable Alerts</button>
+                            <?php endif; ?>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="card-box">
+                    <h4 class="m-t-0 header-title">Steam Integration</h4>
+                    <div class="alert alert-danger" role="alert"><strong>Currently Disabled.</strong></div>
+                </div>
               </div>
             </div>
             <?php break; ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 22, 2019 at 05:10 PM
+-- Generation Time: Jan 22, 2019 at 11:28 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -205,7 +205,7 @@ CREATE TABLE `servers` (
 --
 
 INSERT INTO `servers` (`id`, `name`, `aop`, `priority`) VALUES
-(1, 'Server 1', 'Blaine County', 0);
+(1, 'Server 1', 'Statewide', 0);
 
 -- --------------------------------------------------------
 
@@ -219,6 +219,8 @@ CREATE TABLE `settings` (
   `account_validation` varchar(36) NOT NULL DEFAULT 'false',
   `identity_validation` varchar(36) NOT NULL DEFAULT 'false',
   `steam_required` varchar(36) NOT NULL DEFAULT 'false',
+  `discord_alerts` enum('true','false') NOT NULL DEFAULT 'false',
+  `discord_webhook` text,
   `timezone` varchar(128) NOT NULL DEFAULT 'America/Los_Angeles',
   `civ_side_warrants` varchar(36) NOT NULL DEFAULT 'false',
   `dark_mode` enum('true','false') NOT NULL DEFAULT 'false'
@@ -228,8 +230,8 @@ CREATE TABLE `settings` (
 -- Dumping data for table `settings`
 --
 
-INSERT INTO `settings` (`setting_id`, `site_name`, `account_validation`, `identity_validation`, `steam_required`, `timezone`, `civ_side_warrants`, `dark_mode`) VALUES
-(1, 'Hydrid CAD/MDT', 'no', 'no', 'false', 'America/New_York', 'true', 'true');
+INSERT INTO `settings` (`setting_id`, `site_name`, `account_validation`, `identity_validation`, `steam_required`, `discord_alerts`, `discord_webhook`, `timezone`, `civ_side_warrants`, `dark_mode`) VALUES
+(1, 'Hydrid CAD/MDT', 'no', 'no', 'false', 'false', NULL, 'America/New_York', 'false', 'false');
 
 -- --------------------------------------------------------
 

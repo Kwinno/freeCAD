@@ -26,3 +26,7 @@ $id = strip_tags($_GET['id']);
 $stmt              = $pdo->prepare("UPDATE `identities` SET `status`='Active' WHERE `identity_id`=:id");
 $stmt->bindValue(':id', $id);
 $result = $stmt->execute();
+
+discordAlert('**ID Approved**
+	  ID #'. $id .' has been Approved for Law Enforcement
+      - **Hydrid CAD System**');

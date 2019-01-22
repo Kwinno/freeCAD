@@ -26,3 +26,7 @@ $id = strip_tags($_GET['id']);
 $stmt              = $pdo->prepare("DELETE FROM identities WHERE `identity_id`=:id");
 $stmt->bindValue(':id', $id);
 $result = $stmt->execute();
+
+discordAlert('**ID Rejected**
+	  ID #'. $id .' has been Rejected for Law Enforcement
+      - **Hydrid CAD System**');
