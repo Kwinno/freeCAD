@@ -21,7 +21,8 @@ if (staff_access && staff_editUsers) {
     $sql = "UPDATE users SET username=?, email=?, usergroup=? WHERE user_id=?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$updateUsername, $updateEmail, $updateUsergroup, $_SESSION['editing_user_id']]);
-    header('Location: staff.php?m=edit-user&user-id='.$_SESSION['editing_user_id']);
+
+    echo "<script> location.replace('staff.php?m=users&user=edited'); </script>";
     exit();
   } elseif (isset($_POST['banUserBtn'])) {
     $banReason    = !empty($_POST['reason']) ? trim($_POST['reason']) : null;
@@ -30,13 +31,15 @@ if (staff_access && staff_editUsers) {
     $sql = "UPDATE users SET usergroup=?, ban_reason=? WHERE user_id=?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['Banned', $banReason, $_SESSION['editing_user_id']]);
-    header('Location: staff.php?m=edit-user&user-id='.$_SESSION['editing_user_id']);
+
+    echo "<script> location.replace('staff.php?m=users&user=banned'); </script>";
     exit();
   } elseif (isset($_POST['unbanUserBtn'])) {
     $sql = "UPDATE users SET usergroup=?, ban_reason=? WHERE user_id=?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['User', NULL, $_SESSION['editing_user_id']]);
-    header('Location: staff.php?m=edit-user&user-id='.$_SESSION['editing_user_id']);
+
+    echo "<script> location.replace('staff.php?m=users&user=unbanned'); </script>";
     exit();
   }
 }
