@@ -202,7 +202,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			                                  "preventOpenDuplicates": true
 			                                 };
 			                                 toastr.error('SIGNAL 100 IS IN EFFECT.', 'System:', {timeOut: 10000})
-			                                 $('#signal100Status').html("<font color='red'><b> - SIGNAL 100 IN IN EFFECT</b></font>");
+			                                 $('#signal100Status').html("<font color='red'><b> - SIGNAL 100 IS IN EFFECT</b></font>");
 
 			                                 if (!signal100) {
 			                                     var audio = new Audio('assets/sounds/signal100.mp3');
