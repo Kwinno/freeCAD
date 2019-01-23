@@ -729,7 +729,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 													<td>'. $ticket['ticket_id'] .'</td>
 													<td>'. $ticket['ticket_timestamp'] .'</td>
 													<td>'. $ticket['suspect'] .'</td>
-													<td width="50%">'. $ticket['reason'] .'</td>
+													<td width="50%">'. $ticket['reasons'] .'</td>
 												</tr>
 												';
 											}
