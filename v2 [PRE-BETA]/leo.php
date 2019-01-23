@@ -481,7 +481,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 						            <div class="modal-body">
 							            <form method="post" action="leo-index.php">
 											<div class="form-group">
-												<textarea name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="104"><?php echo $_SESSION['notepad']; ?></textarea>
+												<textarea class="form-control" name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="104"><?php echo $_SESSION['notepad']; ?></textarea>
 											</div>
 										</form>
 						           </div>
