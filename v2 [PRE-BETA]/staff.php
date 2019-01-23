@@ -350,7 +350,7 @@ $(document).ready(function () {
                       </div>
                     <?php endif; ?>
                     </div>
-                    <div class="col-6 col-sm-12 col-xs-12">
+                    <div class="col-6">
                         <div class="bg-picture card-box">
                         <h4 class="m-t-0 header-title">Edit User</h4>
                             <div class="profile-info-name">
@@ -397,7 +397,7 @@ $(document).ready(function () {
                             </div>
                         </div>
                     </div>
-                    <div class="col-6 col-sm-12 col-xs-12">
+                    <div class="col-6">
                         <div class="bg-picture card-box">
                         <h4 class="m-t-0 header-title">Ban Manager</h4>
                         <form method="POST">
