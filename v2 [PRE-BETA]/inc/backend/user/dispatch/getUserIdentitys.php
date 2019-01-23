@@ -10,7 +10,7 @@ require '../../../backend/user/auth/userIsLoggedIn.php';
 // Page PHP
 
 echo '<option disabled="disabled" selected="true"> Select Identity </option>';
-$sql             = "SELECT * FROM identities WHERE user=:user_id AND department='Law Enforcement'";
+$sql             = "SELECT * FROM identities WHERE user=:user_id AND department='Dispatch'";
 $stmt            = $pdo->prepare($sql);
 $stmt->bindValue(':user_id', $user_id);
 $stmt->execute();
@@ -23,7 +23,7 @@ foreach($query as $identity) {
         ';
     } else {
         echo '
-        <option value="' . $url['leo'] . '?v=setsession&id=' . $identity['identity_id'] . '">' . $identity['name'] . ' - ' . $identity['division'] . '</option>
+        <option value="' . $url['dispatch'] . '?v=setsession&id=' . $identity['identity_id'] . '">' . $identity['name'] . '</option>
         ';
     }
     

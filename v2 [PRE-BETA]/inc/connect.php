@@ -1,8 +1,4 @@
 <?php
-if (floatval(phpversion()) < 5.6) {
-	die("Your PHP Version is not supported. Please update to continue using Hydrid.");
-}
-
 // MySQL Settings
 define("DB_HOST", "localhost");
 define("DB_USER", "root");
@@ -24,5 +20,4 @@ catch(Exception $e) {
 	throwError('Unable to connect to database.', true);
 	die('Unable to connect to database.');
 }
-
 ?>

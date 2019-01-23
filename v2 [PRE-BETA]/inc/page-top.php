@@ -2,7 +2,7 @@
 <html>
   <head>
         <meta charset="utf-8" />
-        <title><?php echo $page['name']; ?> - <?php echo $settings['name']; ?></title>
+        <title><?php echo $page['name']. ' - ' . $settings['name']; ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <meta content="Computer Aided Dispatch (CAD) System and Mobile Data Terminal (MDT) for GTA V Roleplaying." name="description" />
         <meta content="HydridSystems" name="author" />
@@ -19,7 +19,7 @@
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
         <?php
-            if($settings['dark_mode'] == "true") {
+            if($settings['dark_mode'] === "true") {
                 echo '<link href="assets/css/style-dark.css" rel="stylesheet" type="text/css" />';
             } else {
                 echo '<link href="assets/css/style.css" rel="stylesheet" type="text/css" />';

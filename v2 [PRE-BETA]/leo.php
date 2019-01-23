@@ -1,14 +1,13 @@
 <?php
 session_name('hydrid');
 session_start();
-require 'inc/connect.php';
+include 'inc/connect.php';
 
-require 'inc/config.php';
+include 'inc/config.php';
 
-require 'inc/backend/user/auth/userIsLoggedIn.php';
+include 'inc/backend/user/auth/userIsLoggedIn.php';
 
 $page['name'] = 'Law Enforcement Module';
-require_once('inc/page-top.php');
 
 // Page PHP
 $view = strip_tags($_GET['v']);
@@ -48,25 +47,26 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
             $_SESSION['on_duty'] = "LEO";
             
             if ($identity_owner !== $user_id) {
-					echo '<script> location.replace("'.$url['leo'].'?v=nosession&error=identity-owner"); </script>';
-					exit();
-				}
+				header('Location: '.$url['leo'].'?v=nosession&error=identity-owner');
+				exit();
+			}
 				
-				$stmt2              = $pdo->prepare("DELETE FROM `on_duty` WHERE `name`=:identity_name");
-				$stmt2->bindValue(':identity_name', $identity_name);
-				$result2 = $stmt2->execute();
-				$stmt3              = $pdo->prepare("INSERT INTO on_duty (name, department, division, status) VALUES (:name, :department, :division, '10-41')");
-				$stmt3->bindValue(':name', $identity_name);
-				$stmt3->bindValue(':department', $identity_department);
-				$stmt3->bindValue(':division', $identity_division);
-				$result3 = $stmt3->execute();
+			$stmt2              = $pdo->prepare("DELETE FROM `on_duty` WHERE `name`=:identity_name");
+			$stmt2->bindValue(':identity_name', $identity_name);
+			$result2 = $stmt2->execute();
+			$stmt3              = $pdo->prepare("INSERT INTO on_duty (name, department, division, status) VALUES (:name, :department, :division, 'Off-Duty')");
+			$stmt3->bindValue(':name', $identity_name);
+			$stmt3->bindValue(':department', $identity_department);
+			$stmt3->bindValue(':division', $identity_division);
+			$result3 = $stmt3->execute();
             
-            echo '<script> location.replace("'.$url['leo'].'?v=main"); </script>';
-            exit();
+            header('Location: '.$url['leo'].'?v=main');
+			exit();
         }
     }
 }
 ?>
+<?php include 'inc/page-top.php'; ?>
 <script src="assets/js/pages/leo.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -105,7 +105,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
     });
 </script>
     <body>
-        <?php require_once('inc/top-nav.php');
+        <?php include 'inc/top-nav.php';
 
         if (isset($_GET['error']) && strip_tags($_GET['error']) === 'identity-not-found') {
             clientNotify('error', 'We couldn\'t find that Identity.');
@@ -180,7 +180,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			      <!-- js is put here to prevent issues on other parts of leo -->
 			      <script type="text/javascript">
 			         $(document).ready(function () {
-			         	 var priority = false;
+			         	 var signal100 = false;
 			             function checkTime(i) {
 			                 if (i < 10) {
 			                     i = "0" + i;
@@ -243,36 +243,36 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			                         }
 			                     });
 			                 })();
-			                 (function loadPriorityStatus() {
+			                 (function loadSig100Status() {
 			                     $.ajax({
-			                         url: 'inc/backend/user/leo/panicButton.php',
+			                         url: 'inc/backend/user/leo/checkSignal100.php',
 			                         success: function (data) {
 			                             if (data === "1") {
 			                                 toastr.options = {
 			                                  "preventDuplicates": true,
 			                                  "preventOpenDuplicates": true
 			                                 };
-			                                 toastr.error('PRIORITY IN PROGRESS.', 'System:', {timeOut: 10000})
-			                                 $('#panicButtonStatus').html("<font color='red'><b> - PRIORITY IN PROGRESS</b></font>");
+			                                 toastr.error('SIGNAL 100 IS IN EFFECT.', 'System:', {timeOut: 10000})
+			                                 $('#signal100Status').html("<font color='red'><b> - SIGNAL 100 IN IN EFFECT</b></font>");
 
-			                                 if (!priority) {
+			                                 if (!signal100) {
 			                                     var audio = new Audio('assets/sounds/signal100.mp3');
 			                                     audio.play();
 			                                     setTimeout(() => {
-			                                         var msg = new SpeechSynthesisUtterance('Priority In Progress - Check For Details');
+			                                         var msg = new SpeechSynthesisUtterance('Signal 100 Activated - Check CAD For Details');
 			                                         var voices = window.speechSynthesis.getVoices();
 			                                         window.speechSynthesis.speak(msg);
 			                                     }, 3000);
 			                                 }
-			                                 priority = true;
+			                                 signal100 = true;
 			                             } else {
-			                                 $('#panicButtonStatus').html("");
-			                                 priority = false;
+			                                 $('#signal100Status').html("");
+			                                 signal100 = false;
 			                             }
 			                         },
 			                         complete: function () {
 			                             // Schedule the next request when the current one's complete
-			                             setTimeout(loadPriorityStatus, 500);
+			                             setTimeout(loadSig100Status, 500);
 			                         }
 			                     });
 			                 })();
@@ -289,7 +289,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 											<div id="getTime">Loading...</div>
 										</b>
 									</div>
-									<h4 class="header-title mt-0 m-b-30"><?php echo $_SESSION['identity_name']; ?> <?php if ($_SESSION['identity_supervisor'] === "Yes"): ?><small><font color="white"><i>Supervisor</i></font></small><?php endif; ?> <label id="panicButtonStatus">Loading...</label></h4>
+									<h4 class="header-title mt-0 m-b-30"><?php echo $_SESSION['identity_name']; ?> <?php if ($_SESSION['identity_supervisor'] === "Yes"): ?><small><i>Supervisor</i></small><?php endif; ?> <label id="signal100Status">Loading...</label></h4>
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openNameSearch">Name Database</button>
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openVehicleSearch">Vehicle Database</button>
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openFirearmSearch">Weapon Database</button>
@@ -297,7 +297,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#newArrestReportModal">Arrest Report</button>
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#notepadModal">Notepad</button>
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#activeUnitsModal">Active Units</button>
-									<button class="btn btn-warning btn-sm" onclick="panicBtnMsg();">PANIC BUTTON</button>
+									<button class="btn btn-danger btn-sm" onclick="signal100();">PANIC BUTTON</button>
 									<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
 										<a href="leo.php?v=supervisor"><button class="btn btn-darkred btn-sm">Supervisor Panel</button></a>
 									<?php endif; ?>
@@ -811,5 +811,5 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			   </div>
 			</div>
         <!-- CONTENT END -->
-        <?php require_once('inc/copyright.php'); ?>
-        <?php require_once('inc/page-bottom.php'); ?>
+        <?php include 'inc/copyright.php'; ?>
+        <?php include 'inc/page-bottom.php'; ?>

@@ -1,12 +1,11 @@
 <?php
-require 'inc/connect.php';
+include 'inc/connect.php';
 
-require 'inc/config.php';
+include 'inc/config.php';
 
 $page['name'] = 'Login';
-require_once ('inc/page-top.php');
-
 ?>
+<?php include 'inc/page-top.php'; ?>
     <script type="text/javascript">
         $(document).ready(function () {
             $('#userLogin').ajaxForm(function (error) {
@@ -67,4 +66,4 @@ require_once ('inc/page-top.php');
                 </div>
             </div>
         </div>
-        <?php require_once('inc/page-bottom.php'); ?>
+        <?php include 'inc/page-bottom.php'; ?>

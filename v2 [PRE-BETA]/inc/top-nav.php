@@ -70,7 +70,7 @@
                             <a href="#"><i class="mdi mdi-heart-pulse"></i> <span> Fire / EMS </span> </a>
                         </li>
                         <li class="has-submenu">
-                            <a href="#"><i class="mdi mdi-phone-in-talk"></i> <span> Dispatch </span> </a>
+                            <a href="dispatch.php?v=nosession"><i class="mdi mdi-phone-in-talk"></i> <span> Dispatch </span> </a>
                         </li>
                         <?php if (staff_access): ?>
                           <li class="has-submenu">

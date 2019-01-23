@@ -1,27 +1,25 @@
 <?php
-require 'inc/connect.php';
-require 'inc/config.php';
+include 'inc/connect.php';
+include 'inc/config.php';
 $page['name'] = 'Register';
-require_once('inc/page-top.php'); 
 ?>
-    <head>
-        <script type="text/javascript">
-            $(document).ready(function () {
-                $('#userRegister').ajaxForm(function (error) {
-                    if (error['msg'] == "") {
-                        toastr.success('Account Created! You will be redirected to the Login page shortly.', 'System', {
-                            timeOut: 10000
-                        })
-                        window.location.href = "<?php echo $url['login']; ?>";
-                    } else {
-                        toastr.error(error['msg'], 'System', {
-                            timeOut: 10000
-                        })
-                    }
-                });
+<?php include 'inc/page-top.php'; ?>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#userRegister').ajaxForm(function (error) {
+                if (error['msg'] == "") {
+                    toastr.success('Account Created! You will be redirected to the Login page shortly.', 'System', {
+                        timeOut: 10000
+                    })
+                    window.location.href = "<?php echo $url['login']; ?>";
+                } else {
+                    toastr.error(error['msg'], 'System', {
+                        timeOut: 10000
+                    })
+                }
             });
-        </script>
-    </head>
+        });
+    </script>
     <body>
         <div class="account-pages"></div>
         <div class="clearfix"></div>
@@ -62,4 +60,4 @@ require_once('inc/page-top.php');
                 </div>
             </div>
         </div>
-        <?php require_once('inc/page-bottom.php'); ?>
+        <?php include 'inc/page-bottom.php'; ?>

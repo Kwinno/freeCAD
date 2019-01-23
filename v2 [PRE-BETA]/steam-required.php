@@ -1,21 +1,19 @@
 <?php
 session_name('hydrid');
 
-require 'steamauth/steamauth.php';
+include 'steamauth/steamauth.php';
 
-require 'inc/connect.php';
+include 'inc/connect.php';
 
-require 'inc/config.php';
+include 'inc/config.php';
 
-require 'inc/backend/user/auth/userIsLoggedIn.php';
+include 'inc/backend/user/auth/userIsLoggedIn.php';
 
 error_reporting(0);
 ini_set('display_errors', 0);
 
 
 $page['name'] = 'Please Link Your Steam';
-require_once ('inc/page-top.php');
-
 if (isset($_GET['s']) && strip_tags($_GET['s']) === '2') {
     include ('steamauth/userInfo.php');
     //db stuff    
@@ -35,8 +33,9 @@ if (isset($_GET['s']) && strip_tags($_GET['s']) === '2') {
 
 // Page PHP
 ?>
+<?php include 'inc/page-top.php'; ?>
 <body>
-    <?php require_once('inc/top-nav.php'); ?>
+    <?php include 'inc/top-nav.php'; ?>
     <!-- CONTENT START -->
     <div class="wrapper m-b-15">
         <div class="container-fluid">
@@ -60,5 +59,5 @@ if (isset($_GET['s']) && strip_tags($_GET['s']) === '2') {
         </div>
     </div>
     <!-- CONTENT END -->
-    <?php require_once('inc/copyright.php'); ?>
-    <?php require_once('inc/page-bottom.php'); ?>
+    <?php include 'inc/copyright.php'; ?>
+    <?php include 'inc/page-bottom.php'; ?>

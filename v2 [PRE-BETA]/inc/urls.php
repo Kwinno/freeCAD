@@ -6,6 +6,7 @@ $url['logout'] = "logout.php";
 $url['civilian'] = "civilian.php";
 $url['steam-required'] = "steam-required.php";
 $url['leo'] = "leo.php";
+$url['dispatch'] = "dispatch.php";
 $url['staff'] = "staff.php";
 
 ?>

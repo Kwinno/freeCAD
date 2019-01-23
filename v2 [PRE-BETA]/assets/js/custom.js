@@ -1,8 +1,16 @@
 function pleaseWaitMsg() {
     toastr.warning('Please wait...')
 }
-function panicBtnMsg() {
-    toastr.error('Panic Button function will not be hard coded in until Dispatch Module is done.')
+function changeSignal() {
+    $.ajax({
+        url: "inc/backend/user/dispatch/signal100.php",
+        cache: false,
+        success: function(result) {
+            toastr.info('Please wait...', 'System:', {
+                timeOut: 10000
+            })
+        }
+    });
 }
 $(document).ready(function () {
     document.oncontextmenu = document.body.oncontextmenu = function () { return false; }

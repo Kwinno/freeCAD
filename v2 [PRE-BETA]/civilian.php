@@ -1,14 +1,13 @@
 <?php
 session_name('hydrid');
 session_start();
-require 'inc/connect.php';
+include 'inc/connect.php';
 
-require 'inc/config.php';
+include 'inc/config.php';
 
-require 'inc/backend/user/auth/userIsLoggedIn.php';
+include 'inc/backend/user/auth/userIsLoggedIn.php';
 
 $page['name'] = 'Civilian Module';
-require_once('inc/page-top.php');
 
 // Page PHP
 
@@ -73,6 +72,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 }
 
 ?>
+<?php include 'inc/page-top.php'; ?>
 <script src="assets/js/pages/civilian.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -145,7 +145,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
             clientNotify('error', 'Character Deleted!');
         }
         ?>
-        <?php require_once('inc/top-nav.php'); ?>
+        <?php include 'inc/top-nav.php'; ?>
         <!-- CONTENT START -->
         <div class="wrapper m-b-15">
             <div class="container-fluid">
@@ -841,6 +841,6 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
             </div>
         </div>
         <!-- CONTENT END -->
-        <?php require_once('inc/copyright.php'); ?>
-        <?php require_once('inc/page-bottom.php'); ?>
+        <?php include 'inc/copyright.php'; ?>
+        <?php include 'inc/page-bottom.php'; ?>
         

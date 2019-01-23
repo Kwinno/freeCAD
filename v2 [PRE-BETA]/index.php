@@ -1,19 +1,17 @@
 <?php
 session_name('hydrid');
 session_start();
-require 'inc/connect.php';
+include 'inc/connect.php';
 
-require 'inc/config.php';
+include 'inc/config.php';
 
-require 'inc/backend/user/auth/userIsLoggedIn.php';
+include 'inc/backend/user/auth/userIsLoggedIn.php';
 
 $page['name'] = 'Home';
-require_once ('inc/page-top.php');
-
 ?>
-
+<?php include 'inc/page-top.php'; ?>
     <body>
-        <?php require_once('inc/top-nav.php'); ?>
+        <?php include 'inc/top-nav.php'; ?>
         <?php
         if (isset($_GET['notify']) && strip_tags($_GET['notify']) === 'steam-linked') {
             clientNotify('success', 'Your Steam Account Has Been Linked.');
@@ -75,6 +73,6 @@ require_once ('inc/page-top.php');
                 </div>
         </div>
       </div>
-        <!-- CONTENT END -->
-        <?php require_once('inc/copyright.php'); ?>
-        <?php require_once('inc/page-bottom.php'); ?>
+    <!-- CONTENT END -->
+    <?php include 'inc/copyright.php'; ?>
+    <?php include 'inc/page-bottom.php'; ?>

@@ -1,12 +1,11 @@
 <?php
 session_name('hydrid');
 session_start();
-require 'inc/connect.php';
-require 'inc/config.php';
-require 'inc/backend/user/auth/userIsLoggedIn.php';
+include 'inc/connect.php';
+include 'inc/config.php';
+include 'inc/backend/user/auth/userIsLoggedIn.php';
 
 $page['name'] = 'Staff Panel';
-require_once('inc/page-top.php');
 
 if (staff_access && staff_editUsers) {
   if (isset($_POST['editUserBtn'])) {
@@ -81,6 +80,7 @@ if (staff_access) {
 
 $view = strip_tags($_GET['m']);
 ?>
+<?php include 'inc/page-top.php'; ?>
 <script src="assets/js/pages/staff.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
@@ -95,7 +95,7 @@ $(document).ready(function () {
 });
 </script>
 <body>
-    <?php require_once('inc/top-nav.php'); ?>
+    <?php include 'inc/top-nav.php'; ?>
     <?php
     if (isset($_GET['error']) && strip_tags($_GET['error']) === 'webhook-invalid') {
         throwError('Invalid Discord Webhook Entered');
@@ -436,5 +436,5 @@ $(document).ready(function () {
             <?php endif; ?>
     </div>
     <!-- CONTENT END -->
-    <?php require_once('inc/copyright.php'); ?>
-    <?php require_once('inc/page-bottom.php'); ?>
+    <?php include 'inc/copyright.php'; ?>
+    <?php include 'inc/page-bottom.php'; ?>
