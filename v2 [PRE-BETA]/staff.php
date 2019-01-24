@@ -16,7 +16,7 @@ if (staff_access && staff_editUsers) {
     $updateUsername    = strip_tags($updateUsername);
     $updateEmail       = strip_tags($updateEmail);
     $updateUsergroup   = strip_tags($updateUsergroup);
-    
+
     $sql = "UPDATE users SET username=?, email=?, usergroup=? WHERE user_id=?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$updateUsername, $updateEmail, $updateUsergroup, $_SESSION['editing_user_id']]);
@@ -26,7 +26,7 @@ if (staff_access && staff_editUsers) {
   } elseif (isset($_POST['banUserBtn'])) {
     $banReason    = !empty($_POST['reason']) ? trim($_POST['reason']) : null;
     $banReason    = strip_tags($banReason);
-    
+
     $sql = "UPDATE users SET usergroup=?, ban_reason=? WHERE user_id=?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['Banned', $banReason, $_SESSION['editing_user_id']]);
@@ -57,11 +57,11 @@ if (staff_access) {
       echo "<script> location.replace('staff.php?m=settings&error=webhook-invalid'); </script>";
       exit();
     }
-    
+
     $sql = "UPDATE settings SET discord_alerts=?, discord_webhook=? WHERE setting_id=?";
     $stmt = $pdo->prepare($sql);
     $result = $stmt->execute(['true', $webhook_url, '1']);
-    
+
     if ($result) {
       discordAlert('This message is to verify that you have successfully setup Discord Alerts on **Hydrid**. If you would like to disable Discord Alerts, you can do so from the Admin Panel.
       - **Hydrid CAD System**');
@@ -69,11 +69,46 @@ if (staff_access) {
     echo "<script> location.replace('staff.php?m=settings&success=webhook-setup'); </script>";
     exit();
   }
-  if (isset($_POST['disableAlertsBtn'])) {    
+  if (isset($_POST['disableAlertsBtn'])) {
     $sql = "UPDATE settings SET discord_alerts=? WHERE setting_id=?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(['false', '1']);
     echo "<script> location.replace('staff.php?m=settings&success=webhook-disabled'); </script>";
+    exit();
+  }
+}
+
+if ($user['usergroup'] === "Super Admin") {
+  // Makes sure the user is actually Super Admin before allowing them to wipe anything
+  if (isset($_POST['wipeLogsBtn'])) {
+    sleep(3);
+    $stmt       = $pdo->prepare("DELETE FROM logs");
+    $stmt->execute();
+    sleep(3);
+    $sql2 = "INSERT INTO logs (action, username, timestamp) VALUES (?,?,?)";
+    $pdo->prepare($sql2)->execute(['Wiped All Logs', $user['username'], $datetime]);
+
+    header('Location: '.$url['staff'].'?m=settings&success=wiped-logs');
+    exit();
+  } elseif (isset($_POST['wipeCharactersBtn'])) {
+    sleep(3);
+    $stmt       = $pdo->prepare("DELETE FROM characters");
+    $stmt->execute();
+    sleep(3);
+    $sql2 = "INSERT INTO logs (action, username, timestamp) VALUES (?,?,?)";
+    $pdo->prepare($sql2)->execute(['Wiped All Characters', $user['username'], $datetime]);
+
+    header('Location: '.$url['staff'].'?m=settings&success=wiped-characters');
+    exit();
+  } elseif (isset($_POST['wipeIdentitiesBtn'])) {
+    sleep(3);
+    $stmt       = $pdo->prepare("DELETE FROM identities");
+    $stmt->execute();
+    sleep(3);
+    $sql2 = "INSERT INTO logs (action, username, timestamp) VALUES (?,?,?)";
+    $pdo->prepare($sql2)->execute(['Wiped All Identities', $user['username'], $datetime]);
+
+    header('Location: '.$url['staff'].'?m=settings&success=wiped-identities');
     exit();
   }
 }
@@ -105,6 +140,12 @@ $(document).ready(function () {
       clientNotify('success', 'You have now setup Discord Alerts. We will send a welcome alert to verify it is all working!');
     } elseif (isset($_GET['success']) && strip_tags($_GET['success']) === 'webhook-disabled') {
       clientNotify('success', 'Discord Alerts have been disabled!');
+    } elseif (isset($_GET['success']) && strip_tags($_GET['success']) === 'wiped-logs') {
+      clientNotify('success', 'All Logs Have Been Wiped!');
+    } elseif (isset($_GET['success']) && strip_tags($_GET['success']) === 'wiped-characters') {
+      clientNotify('success', 'All Characters Have Been Wiped!');
+    } elseif (isset($_GET['success']) && strip_tags($_GET['success']) === 'wiped-identities') {
+      clientNotify('success', 'All Characters Have Been Wiped!');
     }
     ?>
     <!-- CONTENT START -->
@@ -119,84 +160,93 @@ $(document).ready(function () {
             <?php if (staff_access): ?>
             <?php switch($view):
 			         case "settings": ?>
-               <?php 
+               <?php
                if (!staff_siteSettings) {
                 exit('<div class="alert alert-danger" role="alert"><strong>You do not have permission to access this page.</strong></div>');
                }
                ?>
-                <div class="row">
-                  <div class="col">
-                    <div class="form-group">
-                      <label for="IdentityVerification">Identity Verification</label>
-                      <select class="form-control" id="IdentityVerification" onchange="setIdentityVerification(this.value)">
-                        <option selected="true" disabled="disabled"><?php if ($settings['identity_validation'] === "no") {
-                          echo 'No';
-                        } else {
-                          echo 'Yes';
-                        } ?></option>
-                        <option value="no">No</option>
-                        <option value="yes">Yes</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-group">
-                      <label for="SignUpVerification">Account Verification</label>
-                      <select class="form-control" id="SignUpVerification" onchange="setAccountVerification(this.value)">
-                        <option selected="true" disabled="disabled"><?php if ($settings['account_validation'] === "no") {
-                          echo 'No';
-                        } else {
-                          echo 'Yes';
-                        } ?></option>
-                        <option value="no">No</option>
-                        <option value="yes">Yes</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-group">
-                      <label for="darkmode">Dark Mode</label>
-                      <select class="form-control" id="darkmode" onchange="setDarkTheme(this.value)">
-                        <option selected="true" disabled="disabled"><?php
-                        if ($settings['dark_mode'] === "true") {
-                          echo 'On';
-                        } elseif ($settings['dark_mode'] === "false") {
-                          echo 'Off';
-                        }?>
-                        </option>
-                        <option value="true">On</option>
-                        <option value="false">Off</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-group">
-                      <label for="darkmode">Civ Side Warrants</label>
-                      <select class="form-control" id="steam_login" onchange="setCivSideWarrants(this.value)">
-                        <option selected="true" disabled="disabled"><?php
-                        if ($settings['civ_side_warrants'] === "true") {
-                          echo 'Yes';
-                        } elseif ($settings['civ_side_warrants'] === "false") {
-                          echo 'No';
-                        }
-                        ?>
-                        </option>
-                        <option value="true">True</option>
-                        <option value="false">False</option>
-                      </select>
-                    </div>
-                  </div>
-            </div>
             <div class="row">
-              <div class="col">
-                <form id="updateSiteName" action="inc/backend/staff/settings/setSiteName.php" method="post">
-                  <div class="form-group">
-                    <label for="site_name">Site Name</label>
-                    <input class="form-control" type="text" required="" name="site_name" value="<?php echo $settings['name']; ?>" placeholder="<?php echo $settings['name']; ?>">
-                    <button class="btn btn-success btn-block" onClick="disableClick()" type="submit">Update</button>
+                <div class="col-12">
+                  <div class="card-box">
+                  <h4 class="m-t-0 header-title">Site Settings</h4>
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-group">
+                          <label for="IdentityVerification">Identity Verification</label>
+                          <select class="form-control" id="IdentityVerification" onchange="setIdentityVerification(this.value)">
+                            <option selected="true" disabled="disabled"><?php if ($settings['identity_validation'] === "no") {
+                              echo 'No';
+                            } else {
+                              echo 'Yes';
+                            } ?></option>
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-group">
+                          <label for="SignUpVerification">Account Verification</label>
+                          <select class="form-control" id="SignUpVerification" onchange="setAccountVerification(this.value)">
+                            <option selected="true" disabled="disabled"><?php if ($settings['account_validation'] === "no") {
+                              echo 'No';
+                            } else {
+                              echo 'Yes';
+                            } ?></option>
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-group">
+                          <label for="darkmode">Dark Mode</label>
+                          <select class="form-control" id="darkmode" onchange="setDarkTheme(this.value)">
+                            <option selected="true" disabled="disabled"><?php
+                            if ($settings['dark_mode'] === "true") {
+                              echo 'On';
+                            } elseif ($settings['dark_mode'] === "false") {
+                              echo 'Off';
+                            }?>
+                            </option>
+                            <option value="true">On</option>
+                            <option value="false">Off</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-group">
+                          <label for="darkmode">Civ Side Warrants</label>
+                          <select class="form-control" id="steam_login" onchange="setCivSideWarrants(this.value)">
+                            <option selected="true" disabled="disabled"><?php
+                            if ($settings['civ_side_warrants'] === "true") {
+                              echo 'Yes';
+                            } elseif ($settings['civ_side_warrants'] === "false") {
+                              echo 'No';
+                            }
+                            ?>
+                            </option>
+                            <option value="true">True</option>
+                            <option value="false">False</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <form id="updateSiteName" action="inc/backend/staff/settings/setSiteName.php" method="post">
+                          <div class="form-group">
+                            <label for="site_name">Site Name</label>
+                            <input class="form-control" type="text" required="" name="site_name" value="<?php echo $settings['name']; ?>" placeholder="<?php echo $settings['name']; ?>">
+                          </div>
+                          <div class="form-group">
+                            <button class="btn btn-success btn-block" onClick="disableClick()" type="submit">Update</button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
                   </div>
-                </form>
-              </div>
+                </div>
             </div>
             <div class="row">
               <div class="col-6">
@@ -238,11 +288,36 @@ $(document).ready(function () {
                     <div class="alert alert-danger" role="alert"><strong>Currently Disabled.</strong></div>
                 </div>
               </div>
+              <div class="col-6">
+                <div class="card-box">
+                  <h4 class="m-t-0 header-title">Site Actions (SUPER ADMIN ONLY)</h4>
+                  <div class="alert alert-danger" role="alert"><strong>Notice:</strong> These should only be used in required situations. Anything deleted can NOT be recovered.</div>
+                    <form method="POST">
+                      <div class="row">
+                        <div class="col-4">
+                          <div class="form-group">
+                            <button class="btn btn-danger btn-block waves-effect waves-light" type="submit" id="wipeLogs" onclick="return confirm('Are you sure you want to delete? This data can not be recovered after you start the deletion process.')" name="wipeLogsBtn">Wipe Logs</button>
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="form-group">
+                            <button class="btn btn-danger btn-block waves-effect waves-light" type="submit" id="wipeCharacters" onclick="return confirm('Are you sure you want to delete? This data can not be recovered after you start the deletion process.')" name="wipeCharactersBtn">Wipe Characters</button>
+                          </div>
+                        </div>
+                        <div class="col-4">
+                          <div class="form-group">
+                            <button class="btn btn-danger btn-block waves-effect waves-light" type="submit" id="wipeIdentities" onclick="return confirm('Are you sure you want to delete? This data can not be recovered after you start the deletion process.')" name="wipeIdentitiesBtn">Wipe Identities</button>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+              </div>
             </div>
             <?php break; ?>
 
             <?php case "pending-users":?>
-              <?php 
+              <?php
                if (!staff_approveUsers) {
                 exit('<div class="alert alert-danger" role="alert"><strong>You do not have permission to access this page.</strong></div>');
                }
@@ -258,7 +333,7 @@ $(document).ready(function () {
             <?php break; ?>
 
             <?php case "users":?>
-              <?php 
+              <?php
                if (!staff_viewUsers) {
                 exit('<div class="alert alert-danger" role="alert"><strong>You do not have permission to access this page.</strong></div>');
                }
@@ -281,7 +356,7 @@ $(document).ready(function () {
 
 
                           <tbody>
-                          <?php 
+                          <?php
                           $sql             = "SELECT * FROM users";
                           $stmt            = $pdo->prepare($sql);
                           $stmt->execute();
@@ -308,12 +383,12 @@ $(document).ready(function () {
             <?php break; ?>
 
             <?php case "edit-user": ?>
-              <?php 
+              <?php
                if (!staff_editUsers) {
                 exit('<div class="alert alert-danger" role="alert"><strong>You do not have permission to access this page.</strong></div>');
                }
               ?>
-                <?php 
+                <?php
                   if (isset($_GET['user-id']) && strip_tags($_GET['user-id'])) {
                     $id   = $_GET['user-id'];
                     $sql  = "SELECT * FROM users WHERE user_id = :user_id";
@@ -440,7 +515,7 @@ $(document).ready(function () {
 
 
                           <tbody>
-                          <?php 
+                          <?php
                           $sql             = "SELECT * FROM logs WHERE username=?";
                           $stmt            = $pdo->prepare($sql);
                           $stmt->execute([$editing_user['username']]);
@@ -464,7 +539,7 @@ $(document).ready(function () {
                   </div>
                 </div>
             <?php break; ?>
-            
+
             <?php endswitch; ?>
             <?php else: ?>
               <div class="alert alert-danger" role="alert">
