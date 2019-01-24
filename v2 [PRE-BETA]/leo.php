@@ -26,31 +26,31 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
         } else {
             $identity_id             = $identityDB['identity_id'];
             $_SESSION['identity_id'] = $identity_id;
-            
+
             $identity_name             = $identityDB['name'];
             $_SESSION['identity_name'] = $identity_name;
-            
+
             $identity_department             = $identityDB['department'];
             $_SESSION['identity_department'] = $identity_department;
-            
+
             $identity_division             = $identityDB['division'];
             $_SESSION['identity_division'] = $identity_division;
-            
+
             $identity_supervisor             = $identityDB['supervisor'];
             $_SESSION['identity_supervisor'] = $identity_supervisor;
-            
+
             $identity_owner             = $identityDB['user'];
             $_SESSION['identity_owner'] = $identity_owner;
-            
+
             $_SESSION['notepad'] = "";
-            
+
             $_SESSION['on_duty'] = "LEO";
-            
+
             if ($identity_owner !== $user_id) {
-				header('Location: '.$url['leo'].'?v=nosession&error=identity-owner');
-				exit();
+    				header('Location: '.$url['leo'].'?v=nosession&error=identity-owner');
+    				exit();
 			}
-				
+
 			$stmt2              = $pdo->prepare("DELETE FROM `on_duty` WHERE `name`=:identity_name");
 			$stmt2->bindValue(':identity_name', $identity_name);
 			$result2 = $stmt2->execute();
@@ -59,7 +59,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			$stmt3->bindValue(':department', $identity_department);
 			$stmt3->bindValue(':division', $identity_division);
 			$result3 = $stmt3->execute();
-            
+
             header('Location: '.$url['leo'].'?v=main');
 			exit();
         }
@@ -168,14 +168,14 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			      </div>
 			      <?php break; ?>
 			      <?php case "main": ?>
-				  <?php 
+				  <?php
 				 // Fix bug that casuses AOP changer to fuck itself, should be a better way to do this
 				 $sql_aopfix = "SELECT * FROM servers WHERE id=:server_id";
 				 $stmt_aopfix = $pdo->prepare($sql_aopfix);
 				 $stmt_aopfix->bindValue(':server_id', $_SESSION['server']);
 				 $stmt_aopfix->execute();
 				 $getAOP = $stmt->fetch(PDO::FETCH_ASSOC);
-				 $_SESSION['current_aop'] = $getAOP['aop']; 
+				 $_SESSION['current_aop'] = $getAOP['aop'];
 				  ?>
 			      <!-- js is put here to prevent issues on other parts of leo -->
 			      <script type="text/javascript">
@@ -187,7 +187,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			                 }
 			                 return i;
 							 }
-							 
+
 							 $('#changeAOP').ajaxForm(function (error) {
 									console.log(error);
 									error = JSON.parse(error);
@@ -353,7 +353,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 										$sql             = "SELECT * FROM 10_codes";
 										$stmt            = $pdo->prepare($sql);
 										$stmt->execute();
-										$dbq10codes = $stmt->fetchAll(PDO::FETCH_ASSOC); 
+										$dbq10codes = $stmt->fetchAll(PDO::FETCH_ASSOC);
 										foreach($dbq10codes as $codes) {
 											echo '<option value="'. $codes['code'] .'">'. $codes['code'] .'</option>';
 										}
@@ -377,7 +377,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 									</form>
 								</div>
 								<?php endif; ?>
-							
+
 							</div>
 						</div>
 						<!-- MODALS -->
@@ -578,7 +578,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 								} else {
 									$editing_id['id']	= $idDB['identity_id'];
 									$_SESSION['editing_identity_id']	= $editing_id['id'];
-									
+
 									$editing_id['name']	= $idDB['name'];
 									$editing_id['division']	= $idDB['division'];
 									$editing_id['supervisor']	= $idDB['supervisor'];
@@ -638,7 +638,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 													<label for="division">Division</label>
 													<select class="custom-select my-1 mr-sm-2" id="division" name="division">
 														<option selected value="<?php echo $editing_id['division']; ?>"><?php echo $editing_id['division']; ?> (Current)</option>
-														<?php 
+														<?php
 														$sql             = "SELECT * FROM leo_division";
 														$stmt            = $pdo->prepare($sql);
 														$stmt->execute();
@@ -682,7 +682,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 
 
 											<tbody>
-											<?php 
+											<?php
 											$sql             = "SELECT * FROM arrest_reports WHERE arresting_officer=:editing_idname";
 											$stmt            = $pdo->prepare($sql);
 											$stmt->bindValue(':editing_idname', $editing_id['name']);
@@ -716,7 +716,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 
 
 											<tbody>
-											<?php 
+											<?php
 											$sql2             = "SELECT * FROM tickets WHERE officer=:editing_idname";
 											$stmt2            = $pdo->prepare($sql2);
 											$stmt2->bindValue(':editing_idname', $editing_id['name']);
@@ -771,7 +771,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 										</tr>
 										</thead>
 										<tbody>
-										<?php 
+										<?php
 										$sql             = "SELECT * FROM identities WHERE department='Law Enforcement'";
 										$stmt            = $pdo->prepare($sql);
 										$stmt->execute();

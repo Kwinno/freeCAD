@@ -26,31 +26,31 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
         } else {
             $identity_id             = $identityDB['identity_id'];
             $_SESSION['identity_id'] = $identity_id;
-            
+
             $identity_name             = $identityDB['name'];
             $_SESSION['identity_name'] = $identity_name;
-            
+
             $identity_department             = $identityDB['department'];
             $_SESSION['identity_department'] = $identity_department;
-            
+
             $identity_division             = $identityDB['division'];
             $_SESSION['identity_division'] = $identity_division;
-            
+
             $identity_supervisor             = $identityDB['supervisor'];
             $_SESSION['identity_supervisor'] = $identity_supervisor;
-            
+
             $identity_owner             = $identityDB['user'];
             $_SESSION['identity_owner'] = $identity_owner;
-            
+
             $_SESSION['notepad'] = "";
-            
+
             $_SESSION['on_duty'] = "Dispatch";
-            
+
             if ($identity_owner !== $user_id) {
 				header('Location: '.$url['dispatch'].'?v=nosession&error=identity-owner');
 				exit();
 			}
-				
+
 			$stmt2              = $pdo->prepare("DELETE FROM `on_duty` WHERE `name`=:identity_name");
 			$stmt2->bindValue(':identity_name', $identity_name);
 			$result2 = $stmt2->execute();
@@ -136,7 +136,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 									}
 									return i;
 								}
-								
+
 								$('#changeAOP').ajaxForm(function (error) {
 									console.log(error);
 									error = JSON.parse(error);
@@ -249,6 +249,97 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 								</div>
 							</div>
 						</div>
+						<!-- MODALS -->
+						<!-- search name modal -->
+						<div class="modal fade" id="openNameSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							 <div class="modal-dialog modal-full" role="document">
+									<div class="modal-content">
+										 <div class="modal-header">
+												<h5 class="modal-title" id="exampleModalLabel">Name Database</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+												</button>
+										 </div>
+										 <div class="modal-body">
+												<form>
+													 <select class="js-example-basic-single" name="nameSearch" id="getAllCharacters" onchange="showName(this.value)">
+															<option selected="true" disabled="disabled">Loading Characters...</option>
+													 </select>
+												</form>
+												<br>
+												<div id="showPersonInfo"></div>
+										 </div>
+									</div>
+							 </div>
+						</div>
+						<!-- // -->
+						<!-- search vehicle modal -->
+						<div class="modal fade" id="openVehicleSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							 <div class="modal-dialog modal-full" role="document">
+									<div class="modal-content">
+										 <div class="modal-header">
+												<h5 class="modal-title" id="exampleModalLabel">Vehicle Database</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+												</button>
+										 </div>
+										 <div class="modal-body">
+												<form>
+													 <select class="js-example-basic-single" name="vehicleSearch" id="getAllVehicles" onchange="showVehicle(this.value)">
+															<option selected="true" disabled="disabled">Loading Vehicles...</option>
+													 </select>
+												</form>
+												<br>
+												<div id="showVehicleInfo"></div>
+										 </div>
+									</div>
+							 </div>
+						</div>
+						<!-- // -->
+						<!-- search firearm modal -->
+						<div class="modal fade" id="openFirearmSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							 <div class="modal-dialog modal-full" role="document">
+									<div class="modal-content">
+										 <div class="modal-header">
+												<h5 class="modal-title" id="exampleModalLabel">Firearms Database</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+												</button>
+										 </div>
+										 <div class="modal-body">
+												<form>
+													 <select class="js-example-basic-single" name="firearmSearch" id="getAllFirearms" onchange="showFirearm(this.value)">
+															<option selected="true" disabled="disabled">Loading Firearms...</option>
+													 </select>
+												</form>
+												<br>
+												<div id="showFirearmInfo"></div>
+										 </div>
+									</div>
+							 </div>
+						</div>
+						<!-- // -->
+						 <!-- notepad modal -->
+					   <div class="modal fade" id="notepadModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+					         <div class="modal-content">
+					            <div class="modal-header">
+					               <h5 class="modal-title" id="exampleModalLabel">Notepad</h5>
+					               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					               <span aria-hidden="true">&times;</span>
+					               </button>
+					            </div>
+					            <div class="modal-body">
+						            <form method="post" action="leo-index.php">
+										<div class="form-group">
+											<textarea class="form-control" name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="104"><?php echo $_SESSION['notepad']; ?></textarea>
+										</div>
+									</form>
+					           </div>
+					         </div>
+					      </div>
+					   </div>
+						 <!-- // -->
 			      <?php break; ?>
 
 			      <?php endswitch; ?>
