@@ -107,9 +107,9 @@
             echo "<table>";
             $person        = $row['first_name'] . " " . $row['last_name'];
             $wanted_status = "WANTED";
-            $getWpn        = "SELECT * FROM warrants WHERE wanted_person='$person' AND wanted_status='$wanted_status'";
-            $result        = $pdo->prepare($getWpn);
-            $result->execute();
+            $getWanted        = "SELECT * FROM warrants WHERE wanted_person='$person' AND wanted_status='$wanted_status'";
+            $result2        = $pdo->prepare($getWanted);
+            $result2->execute();
             while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
                 echo "<tr>";
                 echo "<td><center><font color='red'><b>" . $row['reason'] . "</b></font></center></td>";

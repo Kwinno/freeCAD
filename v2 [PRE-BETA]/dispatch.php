@@ -249,6 +249,16 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 								</div>
 							</div>
 						</div>
+
+						<div class="row">
+							<div class="col-9">
+								<div class="card-box">
+									<h4 class="header-title mt-0 m-b-30">Active Units</h4>
+									<div id="getActiveUnits"></div>
+								</div>
+							</div>
+						</div>
+
 						<!-- MODALS -->
 						<!-- search name modal -->
 						<div class="modal fade" id="openNameSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
