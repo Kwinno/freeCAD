@@ -251,7 +251,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 						</div>
 
 						<div class="row">
-							<div class="col-9">
+							<div class="col-6">
 								<div class="card-box">
 									<h4 class="header-title mt-0 m-b-30">Active Units</h4>
 									<div id="getActiveUnits"></div>

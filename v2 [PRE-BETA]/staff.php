@@ -397,8 +397,8 @@ $(document).ready(function () {
                     $stmt->execute();
                     $userDB = $stmt->fetch(PDO::FETCH_ASSOC);
                     if ($userDB === false) {
-                        header('Location: ' . $url['staff'] . '?m=users');
-                        exit();
+                      echo "<script> location.replace('staff.php?m=users'); </script>";
+                      exit();
                     } else {
                         $editing_user['user_id'] = $userDB['user_id'];
                         $_SESSION['editing_user_id'] = $editing_user['user_id'];
@@ -414,6 +414,11 @@ $(document).ready(function () {
                           $editing_user['isBanned'] = true;
                         } else {
                           $editing_user['isBanned'] = false;
+                        }
+
+                        if ($user['usergroup'] === "Admin" && $editing_user['usergroup'] === "Super Admin" || $editing_user['usergroup'] === "Admin") {
+                          echo "<script> location.replace('staff.php?m=users&error=perm'); </script>";
+                          exit();
                         }
                     }
                 }
