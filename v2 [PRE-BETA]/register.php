@@ -1,6 +1,6 @@
 <?php
-include 'inc/connect.php';
-include 'inc/config.php';
+require_once 'inc/connect.php';
+require_once 'inc/config.php';
 $page['name'] = 'Register';
 ?>
 <?php include 'inc/page-top.php'; ?>

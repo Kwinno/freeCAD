@@ -1,11 +1,11 @@
 <?php
 session_name('hydrid');
 session_start();
-include 'inc/connect.php';
+require_once 'inc/connect.php';
 
-include 'inc/config.php';
+require_once 'inc/config.php';
 
-include 'inc/backend/user/auth/userIsLoggedIn.php';
+require_once 'inc/backend/user/auth/userIsLoggedIn.php';
 
 $page['name'] = 'Civilian Module';
 
@@ -765,7 +765,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                       <div class="modal-body">
                          <form id="createFirearm" action="inc/backend/user/civ/createFirearm.php" method="post">
                            <div class="form-group">
-                             <select class="form-control" name="weapon" required>
+                             <select class="form-control" id="weaponSelector" name="weapon" required>
                                <option value="" disabled selected>Weapon...</option>
                                <option value="AP Pistol">AP Pistol</option>
                                <option value="Combat Pistol">Combat Pistol</option>

@@ -8,5 +8,6 @@ $url['steam-required'] = "steam-required.php";
 $url['leo'] = "leo.php";
 $url['dispatch'] = "dispatch.php";
 $url['staff'] = "staff.php";
+$url['settings'] = "user-settings.php";
 
 ?>

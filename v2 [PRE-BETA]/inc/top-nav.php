@@ -35,7 +35,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
                                 <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                <a href="<?php echo $url['settings']; ?>" class="dropdown-item notify-item">
                                 <i class="ti-settings m-r-5"></i> Settings
                                 </a>
                                 <!-- item-->

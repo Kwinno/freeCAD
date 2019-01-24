@@ -4,7 +4,7 @@ define("DB_HOST", "localhost");
 define("DB_USER", "root");
 define("DB_PASS", "");
 define("DB_NAME", "hydrid_rw");
-require ('functions.php');
+require_once 'functions.php';
 
 // Do Not Edit Below --- SERIOUSLY DON'T TOUCH THIS STUFF.
 

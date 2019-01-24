@@ -1,13 +1,13 @@
 <?php
 session_name('hydrid');
 
-include 'steamauth/steamauth.php';
+require_once 'steamauth/steamauth.php';
 
-include 'inc/connect.php';
+require_once 'inc/connect.php';
 
-include 'inc/config.php';
+require_once 'inc/config.php';
 
-include 'inc/backend/user/auth/userIsLoggedIn.php';
+require_once 'inc/backend/user/auth/userIsLoggedIn.php';
 
 error_reporting(0);
 ini_set('display_errors', 0);

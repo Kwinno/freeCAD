@@ -1,9 +1,9 @@
 <?php
 session_name('hydrid');
 session_start();
-include 'inc/connect.php';
-include 'inc/config.php';
-include 'inc/backend/user/auth/userIsLoggedIn.php';
+require_once 'inc/connect.php';
+require_once 'inc/config.php';
+require_once 'inc/backend/user/auth/userIsLoggedIn.php';
 
 $page['name'] = 'Staff Panel';
 
@@ -300,7 +300,8 @@ $(document).ready(function () {
                             ';
                           }
                           ?>
-                        </table>
+                          </tbody>
+                      </table>
                     </div>
                 </div>
               </div>
@@ -424,6 +425,42 @@ $(document).ready(function () {
                         <div class="clearfix"></div>
                       </div>
                     </div>
+                    <div class="col-12">
+                      <div class="bg-picture card-box">
+                      <h4 class="m-t-0 header-title">User Logs</h4>
+                      <!-- CONTENT -->
+                      <table id="datatable" class="table table-borderless">
+                          <thead>
+                          <tr>
+                              <th>Log ID</th>
+                              <th>Action</th>
+                              <th>Date/Time</th>
+                          </tr>
+                          </thead>
+
+
+                          <tbody>
+                          <?php 
+                          $sql             = "SELECT * FROM logs WHERE username=?";
+                          $stmt            = $pdo->prepare($sql);
+                          $stmt->execute([$editing_user['username']]);
+                          $logRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                          foreach ($logRow as $log) {
+                          echo '
+                          <tr>
+                              <td>'. $log['log_id'] .'</td>
+                              <td>'. $log['action'] .'</td>
+                              <td>'. $log['timestamp'] .'</td>
+                          </tr>
+                          ';
+                          }
+                          ?>
+                          </tbody>
+                      </table>
+                      <div class="clearfix"></div>
+                      </div>
+                  </div>
                   </div>
                 </div>
             <?php break; ?>

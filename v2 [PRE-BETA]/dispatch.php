@@ -1,11 +1,11 @@
 <?php
 session_name('hydrid');
 session_start();
-include 'inc/connect.php';
+require_once 'inc/connect.php';
 
-include 'inc/config.php';
+require_once 'inc/config.php';
 
-include 'inc/backend/user/auth/userIsLoggedIn.php';
+require_once 'inc/backend/user/auth/userIsLoggedIn.php';
 
 $page['name'] = 'Dispatch Module';
 

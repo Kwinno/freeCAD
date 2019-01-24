@@ -11,7 +11,7 @@ $version = "v2.0.0 (PRE-BETA)";
 // require('languages/' . $GLOBAL['language'] . '.php');
 // Get Global Functions
 
-require_once ("functions.php");
+require_once "functions.php";
 
 // Get Site Config
 
@@ -51,7 +51,7 @@ $_SESSION['server'] = '1';
 
 // Define URLS
 
-require_once ("urls.php");
+require_once "urls.php";
 
 $ip = $_SERVER['REMOTE_ADDR'];
 date_default_timezone_set($settings['timezone']);
