@@ -214,23 +214,6 @@ $(document).ready(function () {
                           </select>
                         </div>
                       </div>
-                      <div class="col">
-                        <div class="form-group">
-                          <label for="darkmode">Civ Side Warrants</label>
-                          <select class="form-control" id="steam_login" onchange="setCivSideWarrants(this.value)">
-                            <option selected="true" disabled="disabled"><?php
-                            if ($settings['civ_side_warrants'] === "true") {
-                              echo 'Yes';
-                            } elseif ($settings['civ_side_warrants'] === "false") {
-                              echo 'No';
-                            }
-                            ?>
-                            </option>
-                            <option value="true">True</option>
-                            <option value="false">False</option>
-                          </select>
-                        </div>
-                      </div>
                     </div>
                     <div class="row">
                       <div class="col">
@@ -281,14 +264,6 @@ $(document).ready(function () {
                       </div>
                     </form>
                 </div>
-              </div>
-              <div class="col-6">
-                <div class="card-box">
-                    <h4 class="m-t-0 header-title">Steam Integration</h4>
-                    <div class="alert alert-danger" role="alert"><strong>Currently Disabled.</strong></div>
-                </div>
-              </div>
-              <div class="col-6">
                 <div class="card-box">
                   <h4 class="m-t-0 header-title">Site Actions (SUPER ADMIN ONLY)</h4>
                   <div class="alert alert-danger" role="alert"><strong>Notice:</strong> These should only be used in required situations. Anything deleted can NOT be recovered.</div>
@@ -311,6 +286,46 @@ $(document).ready(function () {
                         </div>
                       </div>
                     </form>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="card-box">
+                    <h4 class="m-t-0 header-title">Steam Integration</h4>
+                    <div class="alert alert-danger" role="alert"><strong>Currently Disabled.</strong></div>
+                </div>
+                <div class="card-box">
+                    <h4 class="m-t-0 header-title">Module Config</h4>
+                    <div class="form-group">
+                      <label for="darkmode">Civ Side Warrants</label>
+                      <select class="form-control" id="steam_login" onchange="setCivSideWarrants(this.value)">
+                        <option selected="true" disabled="disabled"><?php
+                        if ($settings['civ_side_warrants'] === "true") {
+                          echo 'Enabled';
+                        } elseif ($settings['civ_side_warrants'] === "false") {
+                          echo 'Disabled';
+                        }
+                        ?>
+                        </option>
+                        <option value="true">Enabled</option>
+                        <option value="false">Disabled</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="darkmode">Who Can Add Warrants</label>
+                      <select class="form-control" id="steam_login" onchange="setAddWarrantPerm(this.value)">
+                        <option selected="true" disabled="disabled"><?php
+                        if ($settings['add_warrant'] === "all") {
+                          echo 'All LEO';
+                        } elseif ($settings['add_warrant'] === "supervisor") {
+                          echo 'Supervisors Only';
+                        }
+                        ?>
+                        </option>
+                        <option value="all">All LEO</option>
+                        <option value="supervisor">Supervisors Only</option>
+                      </select>
+                    </div>
                 </div>
               </div>
             </div>

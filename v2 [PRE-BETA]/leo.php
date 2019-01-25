@@ -179,106 +179,120 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 				  ?>
 			      <!-- js is put here to prevent issues on other parts of leo -->
 			      <script type="text/javascript">
-			         $(document).ready(function () {
-			         	 var signal100 = false;
-			             function checkTime(i) {
-			                 if (i < 10) {
-			                     i = "0" + i;
-			                 }
-			                 return i;
-							 }
+    			         $(document).ready(function () {
+    			         	 var signal100 = false;
+    			             function checkTime(i) {
+    			                 if (i < 10) {
+    			                     i = "0" + i;
+    			                 }
+    			                 return i;
+    							 }
 
-							 $('#changeAOP').ajaxForm(function (error) {
-									console.log(error);
-									error = JSON.parse(error);
-									if (error['msg'] === "") {
-										toastr.success('New AOP Set - Please allow a minute for changes to display.', 'System:', {
-												timeOut: 10000
-										})
-									} else {
-										toastr.error(error['msg'], 'System:', {
-												timeOut: 10000
-										})
-									}
-								});
+      							 $('#changeAOP').ajaxForm(function (error) {
+      									console.log(error);
+      									error = JSON.parse(error);
+      									if (error['msg'] === "") {
+      										toastr.success('New AOP Set - Please allow a minute for changes to display.', 'System:', {
+      												timeOut: 10000
+      										})
+      									} else {
+      										toastr.error(error['msg'], 'System:', {
+      												timeOut: 10000
+      										})
+      									}
+      								});
+                      $('#addWarrant').ajaxForm(function (error) {
+       									console.log(error);
+       									error = JSON.parse(error);
+       									if (error['msg'] === "") {
+                          $("#addWarrant")[0].reset();
+       										toastr.success('Warrant Added.', 'System:', {
+       												timeOut: 10000
+       										})
+       									} else {
+       										toastr.error(error['msg'], 'System:', {
+       												timeOut: 10000
+       										})
+       									}
+       								});
 
-			             function startTime() {
-			                 var today = new Date();
-			                 var h = today.getHours();
-			                 var m = today.getMinutes();
-			                 var s = today.getSeconds();
-			                 // add a zero in front of numbers<10
-			                 m = checkTime(m);
-			                 s = checkTime(s);
-			                 document.getElementById('getTime').innerHTML = h + ":" + m + ":" + s;
-			                 t = setTimeout(function () {
-			                     startTime()
-			                 }, 500);
-			             }
+      	             function startTime() {
+      	                 var today = new Date();
+      	                 var h = today.getHours();
+      	                 var m = today.getMinutes();
+      	                 var s = today.getSeconds();
+      	                 // add a zero in front of numbers<10
+      	                 m = checkTime(m);
+      	                 s = checkTime(s);
+      	                 document.getElementById('getTime').innerHTML = h + ":" + m + ":" + s;
+      	                 t = setTimeout(function () {
+      	                     startTime()
+      	                 }, 500);
+      	             }
 
-			             startTime();
+  	                 startTime();
 
-			             function getLeoInfo() {
-			                 (function loadStatus() {
-			                     $.ajax({
-			                         url: 'inc/backend/user/leo/getStatus.php',
-			                         success: function (data) {
-			                             $('#getDutyStatus').html(data);
-			                         },
-			                         complete: function () {
-			                             // Schedule the next request when the current one's complete
-			                             setTimeout(loadStatus, 1000);
-			                         }
-			                     });
-								  })();
-								  (function loadAOP() {
-			                     $.ajax({
-			                         url: 'inc/backend/user/leo/getAOP.php',
-			                         success: function (data) {
-			                             $('#displayAOP').html(data);
-			                         },
-			                         complete: function () {
-			                             // Schedule the next request when the current one's complete
-			                             setTimeout(loadAOP, 60000);
-			                         }
-			                     });
-			                 })();
-			                 (function loadSig100Status() {
-			                     $.ajax({
-			                         url: 'inc/backend/user/leo/checkSignal100.php',
-			                         success: function (data) {
-			                             if (data === "1") {
-			                                 toastr.options = {
-			                                  "preventDuplicates": true,
-			                                  "preventOpenDuplicates": true
-			                                 };
-			                                 toastr.error('SIGNAL 100 IS IN EFFECT.', 'System:', {timeOut: 10000})
-			                                 $('#signal100Status').html("<font color='red'><b> - SIGNAL 100 IS IN EFFECT</b></font>");
+      	             function getLeoInfo() {
+      	                 (function loadStatus() {
+      	                     $.ajax({
+      	                         url: 'inc/backend/user/leo/getStatus.php',
+      	                         success: function (data) {
+      	                             $('#getDutyStatus').html(data);
+      	                         },
+      	                         complete: function () {
+      	                             // Schedule the next request when the current one's complete
+      	                             setTimeout(loadStatus, 1000);
+      	                         }
+      	                     });
+      						  })();
+      						  (function loadAOP() {
+      	                     $.ajax({
+      	                         url: 'inc/backend/user/leo/getAOP.php',
+      	                         success: function (data) {
+      	                             $('#displayAOP').html(data);
+      	                         },
+      	                         complete: function () {
+      	                             // Schedule the next request when the current one's complete
+      	                             setTimeout(loadAOP, 60000);
+      	                         }
+      	                     });
+      	                 })();
+  	                 (function loadSig100Status() {
+  	                     $.ajax({
+  	                         url: 'inc/backend/user/leo/checkSignal100.php',
+  	                         success: function (data) {
+  	                             if (data === "1") {
+  	                                 toastr.options = {
+  	                                  "preventDuplicates": true,
+  	                                  "preventOpenDuplicates": true
+  	                                 };
+  	                                 toastr.error('SIGNAL 100 IS IN EFFECT.', 'System:', {timeOut: 10000})
+  	                                 $('#signal100Status').html("<font color='red'><b> - SIGNAL 100 IS IN EFFECT</b></font>");
 
-			                                 if (!signal100) {
-			                                     var audio = new Audio('assets/sounds/signal100.mp3');
-			                                     audio.play();
-			                                     setTimeout(() => {
-			                                         var msg = new SpeechSynthesisUtterance('Signal 100 Activated - Check CAD For Details');
-			                                         var voices = window.speechSynthesis.getVoices();
-			                                         window.speechSynthesis.speak(msg);
-			                                     }, 3000);
-			                                 }
-			                                 signal100 = true;
-			                             } else {
-			                                 $('#signal100Status').html("");
-			                                 signal100 = false;
-			                             }
-			                         },
-			                         complete: function () {
-			                             // Schedule the next request when the current one's complete
-			                             setTimeout(loadSig100Status, 500);
-			                         }
-			                     });
-			                 })();
-			             }
-			             getLeoInfo();
-			         });
+  	                                 if (!signal100) {
+  	                                     var audio = new Audio('assets/sounds/signal100.mp3');
+  	                                     audio.play();
+  	                                     setTimeout(() => {
+  	                                         var msg = new SpeechSynthesisUtterance('Signal 100 Activated - Check CAD For Details');
+  	                                         var voices = window.speechSynthesis.getVoices();
+  	                                         window.speechSynthesis.speak(msg);
+  	                                     }, 3000);
+  	                                 }
+  	                                 signal100 = true;
+  	                             } else {
+  	                                 $('#signal100Status').html("");
+  	                                 signal100 = false;
+  	                             }
+  	                         },
+  	                         complete: function () {
+  	                             // Schedule the next request when the current one's complete
+  	                             setTimeout(loadSig100Status, 500);
+  	                         }
+  	                     });
+  	                 })();
+  	             }
+  	             getLeoInfo();
+  	         });
 			      </script>
 			      <!-- code here -->
 						<div class="row">
@@ -370,13 +384,63 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 											<div class="col">
 												<input class="form-control" type="text" required="" name="newAOP" placeholder="New AOP">
 											</div>
-											<div class="col m-t-5">
+										</div>
+                    <div class="form-group">
+                      <div class="col">
 												<button class="btn btn-warning btn-bordred btn-block waves-effect waves-light" onClick="disableClick()" type="submit">Change AOP</button>
 											</div>
-										</div>
+                    </div>
 									</form>
 								</div>
 								<?php endif; ?>
+
+                <?php if($settings['add_warrant'] === "supervisor" && $_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+                <div class="card-box">
+									<h4 class="header-title mt-0 m-b-30">Quick Warrant Creator</h4>
+									<form method="post" action="inc/backend/user/leo/addWarrant.php" id="addWarrant">
+                    <div class="form-group">
+                      <div class="col">
+                        <select class="js-example-basic-single" name="civilian" id="getAllCharacters4">
+                           <option selected="true" disabled="disabled">Loading Characters...</option>
+                        </select>
+                      </div>
+                    </div>
+										<div class="form-group">
+											<div class="col">
+												<input class="form-control" type="text" required="" name="reason" placeholder="Reason">
+											</div>
+										</div>
+                    <div class="form-group">
+                      <div class="col">
+												<button class="btn btn-info btn-bordred btn-block waves-effect waves-light" onClick="disableClick()" type="submit">Add Warrant</button>
+											</div>
+                    </div>
+									</form>
+								</div>
+              <?php elseif ($settings['add_warrant'] === "all"): ?>
+                <div class="card-box">
+									<h4 class="header-title mt-0 m-b-30">Quick Warrant Creator</h4>
+									<form method="post" action="inc/backend/user/leo/addWarrant.php" id="addWarrant">
+                    <div class="form-group">
+                      <div class="col">
+                        <select class="js-example-basic-single" name="civilian" id="getAllCharacters4">
+                           <option selected="true" disabled="disabled">Loading Characters...</option>
+                        </select>
+                      </div>
+                    </div>
+										<div class="form-group">
+											<div class="col">
+												<input class="form-control" type="text" required="" name="reason" placeholder="Reason">
+											</div>
+										</div>
+                    <div class="form-group">
+                      <div class="col">
+												<button class="btn btn-info btn-bordred btn-block waves-effect waves-light" onClick="disableClick()" type="submit">Add Warrant</button>
+											</div>
+                    </div>
+									</form>
+								</div>
+              <?php endif; ?>
 
 							</div>
 						</div>

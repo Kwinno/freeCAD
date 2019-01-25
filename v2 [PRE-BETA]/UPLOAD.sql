@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 22, 2019 at 11:28 PM
+-- Generation Time: Jan 25, 2019 at 06:42 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -223,6 +223,7 @@ CREATE TABLE `settings` (
   `discord_webhook` text,
   `timezone` varchar(128) NOT NULL DEFAULT 'America/Los_Angeles',
   `civ_side_warrants` varchar(36) NOT NULL DEFAULT 'false',
+  `add_warrant` enum('all','supervisor') NOT NULL DEFAULT 'supervisor',
   `dark_mode` enum('true','false') NOT NULL DEFAULT 'false'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -230,8 +231,8 @@ CREATE TABLE `settings` (
 -- Dumping data for table `settings`
 --
 
-INSERT INTO `settings` (`setting_id`, `site_name`, `account_validation`, `identity_validation`, `steam_required`, `discord_alerts`, `discord_webhook`, `timezone`, `civ_side_warrants`, `dark_mode`) VALUES
-(1, 'Hydrid CAD/MDT', 'no', 'no', 'false', 'false', NULL, 'America/New_York', 'false', 'false');
+INSERT INTO `settings` (`setting_id`, `site_name`, `account_validation`, `identity_validation`, `steam_required`, `discord_alerts`, `discord_webhook`, `timezone`, `civ_side_warrants`, `add_warrant`, `dark_mode`) VALUES
+(1, 'Hydrid CAD/MDT', 'no', 'no', 'false', 'false', NULL, 'America/New_York', 'false', 'supervisor', 'false');
 
 -- --------------------------------------------------------
 

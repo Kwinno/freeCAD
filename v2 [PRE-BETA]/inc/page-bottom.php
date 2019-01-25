@@ -14,7 +14,7 @@
         <script src="assets/plugins/datatables/responsive.bootstrap4.min.js"></script>
         <!-- Selection table -->
         <script src="assets/plugins/datatables/dataTables.select.min.js"></script>
-	       <script>
+         <script>
            // Default Datatable
            $('#datatable').DataTable();
            $('#datatable2').DataTable();
@@ -28,15 +28,6 @@
                 todayHighlight: true
             });
             jQuery('#datepicker-inline').datepicker();
-            jQuery('#datepicker-multiple-date').datepicker({
-                format: "mm/dd/yyyy",
-                clearBtn: true,
-                multidate: true,
-                multidateSeparator: ","
-            });
-            jQuery('#date-range').datepicker({
-                toggleActive: true
-            });
         </script>
         <script src="assets/js/custom.js"></script>
 	</body>

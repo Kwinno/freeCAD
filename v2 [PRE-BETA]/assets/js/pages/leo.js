@@ -106,6 +106,22 @@ function getAllCharacters3() {
 }
 getAllCharacters3();
 
+function getAllCharacters4() {
+    (function getAllCharacters4() {
+        $.ajax({
+            url: 'inc/backend/user/leo/getAllCharacters.php',
+            success: function(data) {
+                $('#getAllCharacters4').html(data);
+            },
+            complete: function() {
+                // Schedule the next request when the current one's complete
+                setTimeout(getAllCharacters3, 60000);
+            }
+        });
+    })();
+}
+getAllCharacters4();
+
 function getAllVehicles() {
     (function getAllVehicles() {
         $.ajax({

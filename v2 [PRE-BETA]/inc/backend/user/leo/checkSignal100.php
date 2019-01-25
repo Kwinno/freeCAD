@@ -7,13 +7,6 @@ require '../../../config.php';
 
 require '../../../backend/user/auth/userIsLoggedIn.php';
 
-// Makes sure the person actually has a character set
-
-if (!isset($_SESSION['on_duty'])) {
-	header('Location: ../../../../' . $url['leo'] . '?v=nosession');
-	exit();
-}
-
 // Page PHP
 $stmt = $pdo->prepare("SELECT * FROM servers WHERE id=:server_id");
 $stmt->bindValue(':server_id', $_SESSION['server']);

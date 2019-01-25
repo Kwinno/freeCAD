@@ -287,7 +287,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                 </div>
                 <?php break; ?>
                 <?php case "main": ?>
-                <?php 
+                <?php
                 $sql             = "SELECT * FROM characters WHERE character_id = :character_id";
                 $stmt            = $pdo->prepare($sql);
                 $stmt->bindValue(':character_id', $_SESSION['character_id']);
@@ -372,6 +372,41 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                     })();
                 }
                 getCivInfo();
+
+                $(document).ready(function () {
+                  var signal100 = false;
+                  function loadSig100Status() {
+                    $.ajax({
+                        url: 'inc/backend/user/leo/checkSignal100.php',
+                        success: function (data) {
+                            if (data === "1") {
+                                toastr.options = {
+                                 "preventDuplicates": true,
+                                 "preventOpenDuplicates": true
+                                };
+                                toastr.error('SIGNAL 100 IS IN EFFECT. DO NOT START A NEW HIGH PRIORITY', 'System:', {timeOut: 10000})
+                                $('#civSignal100Notice').html("<font color='red'><b>SIGNAL 100 IS IN EFFECT. DO NOT START A NEW HIGH PRIORITY</b></font>");
+                                if (!signal100) {
+                                    setTimeout(() => {
+                                        var msg = new SpeechSynthesisUtterance('Signal 100 Is In Effect. Do Not Start New High Priority.');
+                                        var voices = window.speechSynthesis.getVoices();
+                                        window.speechSynthesis.speak(msg);
+                                    }, 3000);
+                                }
+                                signal100 = true;
+                            } else {
+                                $('#civSignal100Notice').html("");
+                                signal100 = false;
+                            }
+                        },
+                        complete: function () {
+                            // Schedule the next request when the current one's complete
+                            setTimeout(loadSig100Status, 500);
+                        }
+                    });
+                  }
+                  loadSig100Status();
+                });
               </script>
                 <!-- Character Actions -->
                 <div class="row">
@@ -384,6 +419,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                         </div>
                     </div>
                 </div>
+                <div id="civSignal100Notice"></div>
                 <div id="isWanted"></div>
                 <div class="row">
                       <div class="col">
@@ -843,4 +879,3 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
         <!-- CONTENT END -->
         <?php include 'inc/copyright.php'; ?>
         <?php include 'inc/page-bottom.php'; ?>
-        
