@@ -12,9 +12,8 @@ $error = array();
 if (staff_access && staff_siteSettings) {
   $site_name = strip_tags($_POST['site_name']);
 
-  $stmt              = $pdo->prepare("UPDATE `settings` SET `site_name`=:q");
-  $stmt->bindValue(':q', $site_name);
-  $result = $stmt->execute();
+  $result = $pdo->prepare("UPDATE `settings` SET `site_name`= ?")->execute([$site_name]);
+
   logAction('Changed Website Setting: Name', $user['username']);
 
   if ($settings['discord_alerts'] === 'true') {

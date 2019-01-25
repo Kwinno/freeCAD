@@ -12,9 +12,8 @@ if (staff_access && staff_siteSettings) {
     $q = strip_tags($_GET['q']);
     $error = array();
 
-    $stmt              = $pdo->prepare("UPDATE `settings` SET `civ_side_warrants`=:q");
-    $stmt->bindValue(':q', $q);
-    $result = $stmt->execute();
+    $result = $pdo->prepare("UPDATE `settings` SET `civ_side_warrants`= ?")->execute([$q]);
+
     logAction('Changed Website Setting: Civ Side Warrants', $user['username']);
 
     if ($settings['discord_alerts'] === 'true') {

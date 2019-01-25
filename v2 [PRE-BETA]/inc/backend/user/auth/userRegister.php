@@ -29,10 +29,9 @@ elseif (strlen($username) > 36) {
 }
 
 // Check if email is taken
-$sql  = "SELECT COUNT(email) AS num FROM users WHERE email = :email";
+$sql  = "SELECT COUNT(email) AS num FROM users WHERE email = ?";
 $stmt = $pdo->prepare($sql);
-$stmt->bindValue(':email', $email);
-$stmt->execute();
+$stmt->execute([$email]);
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($row['num'] > 0) {
     $error['msg'] = "That email is already taken.";
@@ -40,10 +39,9 @@ if ($row['num'] > 0) {
 	exit();
 }
 
-$sql2  = "SELECT COUNT(username) AS num FROM users WHERE username = :username";
+$sql2  = "SELECT COUNT(username) AS num FROM users WHERE username = ?";
 $stmt2 = $pdo->prepare($sql2);
-$stmt2->bindValue(':username', $username);
-$stmt2->execute();
+$stmt2->execute([$username]);
 $row = $stmt2->fetch(PDO::FETCH_ASSOC);
 if ($row['num'] > 0) {
     $error['msg'] = "That username is already taken.";
@@ -62,7 +60,7 @@ $stmt3->bindValue(':join_date', $us_date);
 $stmt3->bindValue(':join_ip', $ip);
 $result = $stmt3->execute();
 if ($result) {
-    $error['msg'] = "";
+  $error['msg'] = "";
 	echo json_encode($error);
 	exit();
 }

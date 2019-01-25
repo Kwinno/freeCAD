@@ -12,14 +12,13 @@ if (staff_access && staff_siteSettings) {
     $q = strip_tags($_GET['q']);
     $error = array();
 
-    $stmt              = $pdo->prepare("UPDATE `settings` SET `steam_required`=:q");
-    $stmt->bindValue(':q', $q);
-    $result = $stmt->execute();
+    $result = $pdo->prepare("UPDATE `settings` SET `steam_required`= ?")->execute([$q]);
+
     logAction('Changed Website Setting: Steam Login', $user['username']);
 
     if ($settings['discord_alerts'] === 'true') {
     discordAlert('**Panel Settings Changed**
-	  Steam Login Settings have been updated by '. $user['username'] .'
+    Steam Login Settings have been updated by '. $user['username'] .'
       - **Hydrid CAD System**');
     }
   } else {

@@ -11,10 +11,9 @@ if (staff_access && staff_siteSettings) {
   if (isset($_GET['q'])) {
     $q = strip_tags($_GET['q']);
     $error = array();
-    
-    $stmt              = $pdo->prepare("UPDATE `settings` SET `identity_validation`=:q");
-    $stmt->bindValue(':q', $q);
-    $result = $stmt->execute();
+
+    $result = $pdo->prepare("UPDATE `settings` SET `identity_validation`= ?")->execute([$q]);
+
     logAction('Changed Website Setting: Identity Verification', $user['username']);
 
     if ($settings['discord_alerts'] === 'true') {

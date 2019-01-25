@@ -36,11 +36,9 @@ if ($user === false) {
 				exit();
 			} else {
 				$default_usergroup = "User";
-				$sql2               = "UPDATE `users` SET `usergroup`=:usergroup WHERE `user_id`=:user_id";
+				$sql2               = "UPDATE `users` SET `usergroup`= ? WHERE `user_id`= ?";
 				$stmt2              = $pdo->prepare($sql2);
-				$stmt2->bindValue(':user_id', $user['user_id']);
-				$stmt2->bindValue(':usergroup', $default_usergroup);
-				$updateUserGroup = $stmt2->execute();
+				$updateUserGroup = $stmt2->execute([$default_usergroup, $user['user_id']]);
 			}
 		}
 		$_SESSION['user_id']   = $user['user_id'];

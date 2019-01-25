@@ -12,9 +12,8 @@ if (staff_access && staff_siteSettings) {
     $q = strip_tags($_GET['q']);
     $error = array();
 
-    $stmt              = $pdo->prepare("UPDATE `settings` SET `dark_mode`=:q");
-    $stmt->bindValue(':q', $q);
-    $result = $stmt->execute();
+    $result = $pdo->prepare("UPDATE `settings` SET `dark_mode`= ?")->execute([$q]);
+
     logAction('Changed Website Setting: Dark Mode', $user['username']);
 
     if ($settings['discord_alerts'] === 'true') {

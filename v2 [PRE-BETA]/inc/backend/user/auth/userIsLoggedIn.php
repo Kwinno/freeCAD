@@ -1,24 +1,16 @@
 <?php
-
 // Check if the user is actually logged in
-
 if (!isset($_SESSION['user_id']) || !isset($_SESSION['logged_in'])) {
-
-	// The user isn't logged in, so we will redirect them
-
 	header('Location: ' . $url['login'] . '?error=access');
 	exit();
 }
 else {
-
 	// The user is logged in, so we will grab the data required
 	// Get User Data
-
 	$user_id = $_SESSION['user_id'];
-	$sql             = "SELECT * FROM users WHERE user_id = :user_id";
+	$sql             = "SELECT * FROM users WHERE user_id = ?";
 	$stmt            = $pdo->prepare($sql);
-	$stmt->bindValue(':user_id', $user_id);
-	$stmt->execute();
+	$stmt->execute([$user_id]);
 	$userRow = $stmt->fetch(PDO::FETCH_ASSOC);
 
 	if ($userRow === false) {

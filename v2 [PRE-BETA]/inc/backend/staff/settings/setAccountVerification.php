@@ -12,9 +12,8 @@ if (staff_access && staff_siteSettings) {
     $q = strip_tags($_GET['q']);
     $error = array();
 
-    $stmt              = $pdo->prepare("UPDATE `settings` SET `account_validation`=:q");
-    $stmt->bindValue(':q', $q);
-    $result = $stmt->execute();
+    $result = $pdo->prepare("UPDATE `settings` SET `account_validation`= ?")->execute([$q]);
+
     logAction('Changed Website Setting: Account Verification', $user['username']);
 
     if ($settings['discord_alerts'] === 'true') {
