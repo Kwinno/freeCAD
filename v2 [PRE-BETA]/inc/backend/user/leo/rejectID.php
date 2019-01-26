@@ -14,21 +14,20 @@ if (!isset($_SESSION['on_duty'])) {
 	exit();
 }
 
-// Supervisor Check
-// if ($_SESSION['identity_supervisor'] !== "Yes") {
-//   header('Location: ../../../../' . $url['leo'] . '?v=nosession');
-// 	exit();
-// }
+if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings) {
+	// Page PHP
 
-// Page PHP
+	$id = strip_tags($_GET['id']);
+	$stmt              = $pdo->prepare("DELETE FROM identities WHERE `identity_id`=:id");
+	$stmt->bindValue(':id', $id);
+	$result = $stmt->execute();
 
-$id = strip_tags($_GET['id']);
-$stmt              = $pdo->prepare("DELETE FROM identities WHERE `identity_id`=:id");
-$stmt->bindValue(':id', $id);
-$result = $stmt->execute();
-
-if ($settings['discord_alerts'] === 'true') {
-discordAlert('**ID Rejected**
-	  ID #'. $id .' has been Rejected for Law Enforcement
-	  - **Hydrid CAD System**');
+	if ($settings['discord_alerts'] === 'true') {
+	discordAlert('**ID Rejected**
+		  ID #'. $id .' has been Rejected for Law Enforcement
+		  - **Hydrid CAD System**');
+	}
+} else {
+	header('Location: ../../../../' . $url['leo'] . '?v=nosession');
+	exit();
 }

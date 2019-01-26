@@ -11,116 +11,148 @@
       exit();
     }
 
-    // Page PHP
-    $searchCharId = strip_tags($_GET['id']);
-    $getChar = "SELECT * FROM characters WHERE character_id='$searchCharId'";
-        $result  = $pdo->prepare($getChar);
-        $result->execute();
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            $suspect_name = $row['first_name'] . ' ' . $row['last_name'];
-            $charid       = $row['character_id'];
-            echo '<div class="float-right">';
-            echo '<div style="border: 1px solid black; overflow-y: scroll; width:500px; height:150px; margin-top:300px;">';
-            echo "<center>PREVIOUS TICKETS</center>";
-            echo "<table class='table table-borderless'>
-                          <thead>
-                            <tr>
-                            <th>Ticket_ID</th>
-                            <th>Reason</th>
-                            <th>Postal</th>
-                            <th>Timestamp</th>
-                            </tr>
-                          </thead>";
-            $getPreviousTickets = "SELECT * FROM tickets WHERE suspect_id = '$charid'";
-            $result             = $pdo->prepare($getPreviousTickets);
-            $result->execute();
-            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                echo "<tr>";
-                echo "<td>" . $row['ticket_id'] . "</td>";
-                echo "<td>" . $row['reasons'] . "</td>";
-                echo "<td>" . $row['postal'] . "</td>";
-                echo "<td>" . $row['ticket_timestamp'] . "</td>";
-                echo "</tr>";
-            }
 
-            echo "</table>";
-            echo '</div><br>';
-            echo '<div style="border: 1px solid black; overflow-y: scroll; width:500px; height:150px;">';
-            echo "<center>PREVIOUS ARRESTS</center>";
-            echo "<table class='table table-borderless'>
-                          <thead>
-                            <tr>
-                            <th>Arrest ID</th>
-                            <th>Charges</th>
-                            <th>Arresting Officer</th>
-                            <th>Timestamp</th>
-                            </tr>
-                          </thead>";
-            $getPreviousTickets = "SELECT * FROM arrest_reports WHERE suspect_id = '$charid'";
-            $result             = $pdo->prepare($getPreviousTickets);
-            $result->execute();
-            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                echo "<tr>";
-                echo "<td>" . $row['arrest_id'] . "</td>";
-                echo "<td>" . $row['summary'] . "</td>";
-                echo "<td>" . $row['arresting_officer'] . "</td>";
-                echo "<td>" . $row['timestamp'] . "</td>";
-                echo "</tr>";
-            }
+    // Gets the characters ID that should be searched
+    $charID = strip_tags($_GET['id']);
+    // Selects the Character from Character Table
+    $charTable = $pdo->prepare("SELECT * FROM characters WHERE character_id=?");
+    $charTable->execute([$charID]);
+    $character = $charTable->fetch();
 
-            echo "</table>";
-            echo '</div>';
-            echo '</div>';
+    $charTickets = $pdo->prepare("SELECT * FROM tickets WHERE suspect_id=?");
+    $charTickets->execute([$charID]);
+    $characterTickets = $charTickets->fetchAll();
+
+    $charArrests = $pdo->prepare("SELECT * FROM arrest_reports WHERE suspect_id=?");
+    $charArrests->execute([$charID]);
+    $characterArrests = $charArrests->fetchAll();
+
+    $charWanted = $pdo->prepare("SELECT * FROM warrants WHERE wanted_person_id=?");
+    $charWanted->execute([$charID]);
+    $characterWarrants = $charWanted->fetchAll();
+
+    if (!empty($characterWarrants)) {
+      echo '<div class="alert alert-danger" role="alert">This Person Is WANTED. Proceed with caution</div>';
+    }
+
+    echo '
+    <div class="row">
+      <div class="col-6">
+        <h4 class="header-title mt-0 m-b-30">Person Info</h4>
+        <hr />
+        <h5>Name: '.$character['first_name'].' '.$character['last_name'].'</h5>
+        <h5>Sex: '.$character['sex'].'</h5>
+        <h5>Race: '.$character['race'].'</h5>
+        <h5>Date of Birth: '.$character['date_of_birth'].'</h5>
+        <h5>Address: '.$character['address'].'</h5>
+
+        <h5>Height / Weight: '.$character['height'].' '.$character['weight'].'</h5>
+        <h5>Hair Color: '.$character['hair_color'].'</h5>
+        <h5>Eye Color: '.$character['eye_color'].'</h5>
+      </div>
+
+      <div class="col-6">
+        <h4 class="header-title mt-0 m-b-30">License Info</h4>
+        <hr />
+        <h5>Drivers License: '.$character['license_driver'].'</h5>
+        <h5>Firearm License: '.$character['license_firearm'].'</h5>
+      </div>
+    </div><br />
+    <div class="row">
+      <div class="col-6">
+        <h4 class="header-title mt-0 m-b-30">Ticket History</h4>
+        <hr />';
+        if (empty($characterTickets)) {
+        	echo 'No Tickets On File.';
+        } else {
+          echo '<table class="table table-borderless">
+                  <thead>
+                    <tr>
+                        <th>Reason</th>
+                        <th>Fine Amount</th>
+                        <th>Timestamp</th>
+                        <th>Officer</th>
+                    </tr>
+                  </thead>
+                  <tbody>';
+        	foreach($characterTickets as $ticket) {
+        		echo '<tr>
+                    <td>' . $ticket['reasons'] . '</td>
+                    <td>' . $ticket['amount'] . '</td>
+                    <td>' . $ticket['ticket_timestamp'] . '</td>
+                    <td>' . $ticket['officer'] . '</td>
+                </tr>';
+        	}
+        	echo '</tbody>
+              </table>';
         }
 
-        $searchCharId       = strip_tags($_GET['id']);
-        $getChar = "SELECT * FROM characters WHERE character_id='$searchCharId'";
-        $result  = $pdo->prepare($getChar);
-        $result->execute();
-        while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-            echo "<h5>Name: " . $row['first_name'] . " " . $row['last_name'] . "</h5><br-leo-name-search>";
-            echo "<h5>Date Of Birth: " . $row['date_of_birth'] . "</h5><br-leo-name-search>";
-            echo "<h5>Sex: " . $row['sex'] . "</h5><br-leo-name-search>";
-            echo "<h5>Address: " . $row['address'] . "</h5><br-leo-name-search>";
-            echo "<h5>Height / Weight: " . $row['height'] . " / " . $row['weight'] . "</h5><br-leo-name-search>";
-            echo "<h5>Eye Color / Hair Color: " . $row['eye_color'] . " / " . $row['hair_color'] . "</h5><br-leo-name-search>";
-            echo "<hr>";
-            echo '<h5>Drivers License: '; if ($row['license_driver'] === "Suspended") {
-                echo '<font color="red"><strong>Suspended</strong></font>';
-            } else {
-                echo $row['license_driver'];
-            }
-            echo '</h5><br-leo-name-search>';
-            echo '<h5>Firearms License: '; if ($row['license_firearm'] === "Suspended") {
-                echo '<font color="red"><strong>Suspended</strong></font>';
-            } else {
-                echo $row['license_firearm'];
-            }
-            echo "</h5><br-leo-name-search>";
-            if ($_SESSION['identity_supervisor'] === "Yes") {
-                echo '<input type="button" class="btn btn-danger btn-sm" name="suspendDriversLicense" value="Suspend Drivers License" id='.$searchCharId.' onclick="suspendDriversLicense(this)">';
-                echo '  <input type="button" class="btn btn-danger btn-sm" name="suspendFirearmsLicense" value="Suspend Firearms License" id='.$searchCharId.' onclick="suspendFirearmsLicense(this)">';
-            }
-            echo "<hr>";
-            echo "<div class='float-left'";
-            echo "<h5 style='color:black;'>WARRANTS</h5>";
-            echo "<table>";
-            $person        = $row['first_name'] . " " . $row['last_name'];
-            $wanted_status = "WANTED";
-            $getWanted        = "SELECT * FROM warrants WHERE wanted_person='$person' AND wanted_status='$wanted_status'";
-            $result2        = $pdo->prepare($getWanted);
-            $result2->execute();
-            while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-                echo "<tr>";
-                echo "<td><center><font color='red'><b>" . $row['reason'] . "</b></font></center></td>";
-                echo "<td><center><font color='red'><b>" . $row['issued_on'] . "</b></font></center></td>";
-                if ($_SESSION['identity_supervisor'] === "Yes") {
-                    echo '<td><a class="btn btn-danger btn-sm" href="#" data-title="Delete"><i class="fas fa-minus-circle"></i></a></td>';
-                }
+      echo '</div>
 
-                echo "</tr>";
-            }
-
-            echo "</table>";
-            echo "</div>";
+      <div class="col-6">
+        <h4 class="header-title mt-0 m-b-30">Arrest History</h4>
+        <hr />';
+        if (empty($characterArrests)) {
+        	echo 'No Arrests On File.';
+        } else {
+          echo '<table class="table table-borderless">
+                  <thead>
+                    <tr>
+                        <th>Officer</th>
+                        <th>Timestamp</th>
+                        <th>Summary</th>
+                    </tr>
+                  </thead>
+                  <tbody>';
+        	foreach($characterArrests as $arrest) {
+        		echo '<tr>
+                    <td>' . $arrest['arresting_officer'] . '</td>
+                    <td>' . $arrest['timestamp'] . '</td>
+                    <td>' . $arrest['summary'] . '</td>
+                </tr>';
+        	}
+        	echo '</tbody>
+              </table>';
         }
+
+      echo '</div>
+    </div><br />
+
+    <div class="row">
+      <div class="col-12">
+        <h4 class="header-title mt-0 m-b-30">Warrants</h4>
+        <hr />';
+        if (empty($characterWarrants)) {
+          echo '<div class="alert alert-success" role="alert">No Active Warrants</div>';
+        } else {
+          echo '<table class="table table-borderless">
+                  <thead>
+                    <tr>
+                        <th>Issued On</th>
+                        <th>Signed By</th>
+                        <th>Reason</th>';
+                        if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings) {
+                          echo '<th>Actions</th>';
+                        }
+                        echo '
+                    </tr>
+                  </thead>
+                  <tbody>';
+          foreach($characterWarrants as $warrant) {
+            echo '<tr>
+                    <td>' . $warrant['issued_on'] . '</td>
+                    <td>' . $warrant['signed_by'] . '</td>
+                    <td>' . $warrant['reason'] . '</td>';
+                    if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings) {
+                      echo '<td><input type="button" class="btn btn-danger btn-sm" name="deleteWarrant" value="Delete Warrant" id='.$warrant['warrant_id'].' onclick="deleteWarrantLEO(this)"></td>';
+                    }
+                    echo '
+                </tr>';
+          }
+          echo '</tbody>
+              </table>';
+        }
+
+      echo '</div>
+    </div>
+    ';

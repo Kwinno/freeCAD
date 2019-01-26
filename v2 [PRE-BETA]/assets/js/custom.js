@@ -1,6 +1,10 @@
 function pleaseWaitMsg() {
     toastr.warning('Please wait...')
 }
+function update10codeID(id) {
+    var i = id.id;
+    alert(i);
+}
 function changeSignal() {
     $.ajax({
         url: "inc/backend/user/dispatch/signal100.php",

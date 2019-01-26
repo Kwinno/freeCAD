@@ -347,6 +347,8 @@ $(document).ready(function () {
               </div>
             <?php break; ?>
 
+            <?php case "": ?>
+
             <?php case "users":?>
               <?php
                if (!staff_viewUsers) {

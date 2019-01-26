@@ -331,3 +331,25 @@ function suspendFirearmsLicense(str) {
         }
     });
 }
+
+function deleteWarrantLEO(str) {
+    var i = str.id;
+
+    $.ajax({
+        url: "inc/backend/user/leo/deleteWarrantLEO.php?id=" + i,
+        cache: false,
+        success: function(error) {
+            var error = JSON.parse(error);
+            if (error['msg'] === "") {
+                showName();
+                toastr.success('Warrant Deleted', 'System:', {
+                    timeOut: 10000
+                });
+            } else {
+                toastr.error(error['msg'], 'System:', {
+                    timeOut: 10000
+                });
+            }
+        }
+    });
+}

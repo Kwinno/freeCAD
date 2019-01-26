@@ -15,13 +15,13 @@ if (!isset($_SESSION['on_duty'])) {
 }
 
 // Supervisor Check
-if ($_SESSION['identity_supervisor'] !== "Yes") {
-  header('Location: ../../../../' . $url['leo'] . '?v=nosession');
+if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings) {
+	// Page PHP
+	$id = strip_tags($_GET['character']);
+	$stmt              = $pdo->prepare("UPDATE `characters` SET `license_firearm`='Suspended' WHERE `character_id`=:id");
+	$stmt->bindValue(':id', $id);
+	$result = $stmt->execute();
+} else {
+	header('Location: ../../../../' . $url['leo'] . '?v=nosession');
 	exit();
 }
-
-// Page PHP
-$id = strip_tags($_GET['character']);
-$stmt              = $pdo->prepare("UPDATE `characters` SET `license_firearm`='Suspended' WHERE `character_id`=:id");
-$stmt->bindValue(':id', $id);
-$result = $stmt->execute();
