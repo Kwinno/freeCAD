@@ -11,7 +11,7 @@ require '../../../backend/user/auth/userIsLoggedIn.php';
 
 if (isset($_SESSION['on_duty']) && $_SESSION['on_duty'] === "Dispatch") {
   // First we will check if any units are actually online
-  $countActiveCalls = $pdo->query('select count(*) from 911calls')->fetchColumn();
+  $countActiveCalls = $pdo->query('select count(*) from 911calls where call_status <> "Archived"')->fetchColumn();
   if ($countActiveCalls === 0) {
     echo 'No Active 911 Calls';
   } else {
@@ -24,15 +24,19 @@ if (isset($_SESSION['on_duty']) && $_SESSION['on_duty'] === "Dispatch") {
       <th><center>View</center></th>
     </tr>
     ';
-    $getActiveCalls = 'SELECT * FROM 911calls';
+    $getActiveCalls = 'SELECT * FROM 911calls where call_status <> "Archived"';
     $result         = $pdo->prepare($getActiveCalls);
     $result->execute();
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
-        echo "<tr>";
-        echo "<td><center>" . $row['call_location'] . " / " . $row['call_crossstreat'] . " / " . $row['call_postal'] . "</center></td>";
+        if ($row['call_status'] === "PRIORITY") {
+          echo "<tr class='table-danger'>";
+        } else {
+          echo "<tr>";
+        }
+        echo "<td><center>" . $row['call_location'] . " / " . $row['call_postal'] . "</center></td>";
         echo "<td><center>" . $row['call_status'] . "</center></td>";
         echo "<td><center>" . truncate_string($row['call_description'], 100, ' .....') . "</center></td>";
-        echo '<td><center><a href="javascript:void(0);" data-href="inc/backend/user/dispatch/getCallInfo.php?id='.$row['call_id'].'" class="openCallInfoModal">View</a></center></td>';
+        echo '<td><center><a href="javascript:void(0);" data-href="inc/backend/user/dispatch/getCallInfo.php?id='.$row['call_id'].'" id="openCallInfoModal">View</a></center></td>';
         echo "</tr>";
   }
   echo '</table>';
@@ -47,9 +51,9 @@ if (isset($_SESSION['on_duty']) && $_SESSION['on_duty'] === "Dispatch") {
     <meta charset="utf-8">
     <script type="text/javascript">
     $(document).ready(function() {
-      $('.openCallInfoModal').on('click',function(){
+      $('#openCallInfoModal').on('click',function(){
           var dataURL = $(this).attr('data-href');
-          $('.modal-body').load(dataURL,function(){
+          $('#callModalBody.modal-body').load(dataURL,function(){
               $('#callInfoModal').modal({show:true});
           });
       });

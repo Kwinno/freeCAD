@@ -665,12 +665,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                                      </div>
                                      <div class="col">
                                         <div class="form-group">
-                                           <input type="text" name="call_crossstreat" class="form-control" placeholder="Nearest Cross Street" data-lpignore="true" required />
-                                        </div>
-                                     </div>
-                                     <div class="col">
-                                        <div class="form-group">
-                                           <input type="text" name="call_postal" class="form-control" pattern="\d*" placeholder="Postal" data-lpignore="true" required />
+                                           <input type="text" name="call_postal" class="form-control" pattern="\d*" placeholder="Postal" data-lpignore="true" />
                                         </div>
                                      </div>
                                   </div>

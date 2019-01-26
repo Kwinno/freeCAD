@@ -364,3 +364,22 @@ function unassignUnit(str) {
         xmlhttp.send();
     }
 }
+
+function clear911Call() {
+    toastr.warning('Please Wait...')
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            $('#callInfoModal').modal('hide');
+            toastr.success('Call Archived.')
+        }
+    };
+    xmlhttp.open("GET", "inc/backend/user/dispatch/archiveCall.php", true);
+    xmlhttp.send();
+}

@@ -137,6 +137,18 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 									return i;
 								}
 
+								$('#new911call').ajaxForm(function (error) {
+				            var error = JSON.parse(error);
+				            if (error['msg'] === "") {
+				                $('#new911callModal').modal('hide');
+				                toastr.success('Call Added', 'System:', {timeOut: 10000});
+				            } else {
+				                toastr.error(error['msg'], 'System:', {
+				                    timeOut: 10000
+				                });
+				            }
+				        });
+
 								$('#changeAOP').ajaxForm(function (error) {
 									console.log(error);
 									error = JSON.parse(error);
@@ -242,6 +254,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openVehicleSearch">Vehicle Database</button>
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openFirearmSearch">Weapon Database</button>
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#notepadModal">Notepad</button>
+									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#new911callModal">Create Call</button>
 									<button class="btn btn-danger btn-sm" onclick="changeSignal();">Signal 100</button>
 									<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
 										<a href="dispatch.php?v=supervisor"><button class="btn btn-darkred btn-sm">Supervisor Panel</button></a>
@@ -267,6 +280,44 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 						</div>
 
 						<!-- MODALS -->
+							<!-- New Call Modal -->
+							<div class="modal fade" id="new911callModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							 <div class="modal-dialog modal-lg modal-dialog-centered ui-front" role="document">
+									<div class="modal-content">
+										 <div class="modal-header">
+												<h5 class="modal-title" id="exampleModalLabel">New 911 Call</h5>
+												<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+												<span aria-hidden="true">&times;</span>
+												</button>
+										 </div>
+										 <div class="modal-body">
+												<form id="new911call" action="inc/backend/user/civ/new911call.php" method="post">
+													<div class="form-group">
+														 <input type="text" name="call_description" class="form-control" placeholder="Call Desc" data-lpignore="true" required />
+													</div>
+													 <div class="row">
+															<div class="col">
+																 <div class="form-group">
+																		<input type="text" id="street_ac" name="call_location" class="form-control" placeholder="Street" data-lpignore="true" required />
+																 </div>
+															</div>
+															<div class="col">
+																 <div class="form-group">
+																		<input type="text" name="call_postal" class="form-control" pattern="\d*" placeholder="Postal" data-lpignore="true" />
+																 </div>
+															</div>
+													 </div>
+										 </div>
+										 <div class="modal-footer">
+											 <div class="form-group">
+													<input class="btn btn-primary" onClick="disableClick()" type="submit" value="Create New Call">
+											 </div>
+										 </div>
+										 </form>
+									</div>
+							 </div>
+						</div>
+						<!-- // -->
 						<!-- Call Info Modal -->
 				    <div class="modal fade" id="callInfoModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 				       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
@@ -277,7 +328,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 				                <span aria-hidden="true">&times;</span>
 				                </button>
 				             </div>
-				             <div class="modal-body">
+				             <div id="callModalBody" class="modal-body">
 
 				             </div>
 				          </div>

@@ -30,7 +30,7 @@ if (isset($_SESSION['on_duty']) && $_SESSION['on_duty'] === "Dispatch") {
       <div class="col-6">
         <div class="form-group">
           <label for="callLocation">Call Location</label>
-          <input class="form-control" type="text" readonly="" value="<?php echo $callInfo['call_location'] .' / '. $callInfo['call_crossstreat'] .' / '. $callInfo['call_postal']; ?>">
+          <input class="form-control" type="text" readonly="" value="<?php echo $callInfo['call_location'] .' / '. $callInfo['call_postal']; ?>">
         </div>
       </div>
       <div class="col-6">
@@ -59,6 +59,11 @@ if (isset($_SESSION['on_duty']) && $_SESSION['on_duty'] === "Dispatch") {
       </div>
       <div class="col-6">
         <div id="getAttchedUnits"></div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        <input type="button" class="btn btn-danger btn-block" name="clearCall" value="Clear Call" onclick="clear911Call()">
       </div>
     </div>
   </body>
