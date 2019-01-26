@@ -45,8 +45,8 @@ if (isset($_SESSION['on_duty']) && $_SESSION['on_duty'] === "Dispatch") {
 
         "</select></center></td>";
         echo "</tr>";
-    echo '</table>';
   }
+  echo '</table>';
 
 }
 }

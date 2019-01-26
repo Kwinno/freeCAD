@@ -90,7 +90,7 @@ function($) {
         	e.preventDefault();
         });
     },
-    // This file is used for Hydrid CAD/MDT - Discord: https://discordapp.com/invite/NeRrWZC
+
     //initializing nicescroll
     Components.prototype.initNiceScrollPlugin = function() {
         //You can change the color of scroll bar here

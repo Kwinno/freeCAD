@@ -32,12 +32,8 @@ $(document).ready(function() {
     getUserIdentitys();
     getLEODivisions();
 
-    $('.js-example-basic-single').select2({
-        // theme: "bootstrap4",
-        minimumInputLength: 1,
-    });
-    $('.js-example-basic-multiple').select2({
-        theme: "bootstrap4"
+    $('.select2').select2({
+        minimumInputLength: 3
     });
 });
 

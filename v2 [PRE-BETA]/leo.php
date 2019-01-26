@@ -400,7 +400,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 									<form method="post" action="inc/backend/user/leo/addWarrant.php" id="addWarrant">
                     <div class="form-group">
                       <div class="col">
-                        <select class="js-example-basic-single" name="civilian" id="getAllCharacters4">
+                        <select class="form-control select2" name="civilian" id="getAllCharacters4">
                            <option selected="true" disabled="disabled">Loading Characters...</option>
                         </select>
                       </div>
@@ -423,7 +423,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 									<form method="post" action="inc/backend/user/leo/addWarrant.php" id="addWarrant">
                     <div class="form-group">
                       <div class="col">
-                        <select class="js-example-basic-single" name="civilian" id="getAllCharacters4">
+                        <select class="select2" name="civilian" id="getAllCharacters4">
                            <option selected="true" disabled="disabled">Loading Characters...</option>
                         </select>
                       </div>
@@ -457,7 +457,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 										 </div>
 										 <div class="modal-body">
 												<form>
-													 <select class="js-example-basic-single" name="nameSearch" id="getAllCharacters" onchange="showName(this.value)">
+													 <select class="select2" name="nameSearch" id="getAllCharacters" onchange="showName(this.value)">
 															<option selected="true" disabled="disabled">Loading Characters...</option>
 													 </select>
 												</form>
@@ -480,7 +480,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 										 </div>
 										 <div class="modal-body">
 												<form>
-													 <select class="js-example-basic-single" name="vehicleSearch" id="getAllVehicles" onchange="showVehicle(this.value)">
+													 <select class="select2" name="vehicleSearch" id="getAllVehicles" onchange="showVehicle(this.value)">
 															<option selected="true" disabled="disabled">Loading Vehicles...</option>
 													 </select>
 												</form>
@@ -503,7 +503,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 										 </div>
 										 <div class="modal-body">
 												<form>
-													 <select class="js-example-basic-single" name="firearmSearch" id="getAllFirearms" onchange="showFirearm(this.value)">
+													 <select class="select2" name="firearmSearch" id="getAllFirearms" onchange="showFirearm(this.value)">
 															<option selected="true" disabled="disabled">Loading Firearms...</option>
 													 </select>
 												</form>
@@ -543,11 +543,11 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 						               </button>
 						            </div>
 						            <div class="modal-body">
-							            <form method="post" action="leo-index.php">
-											<div class="form-group">
-												<textarea class="form-control" name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="104"><?php echo $_SESSION['notepad']; ?></textarea>
-											</div>
-										</form>
+						            <form method="post" action="leo-index.php">
+    											<div class="form-group">
+    												<textarea class="form-control" name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="104"><?php echo $_SESSION['notepad']; ?></textarea>
+    											</div>
+						            </form>
 						           </div>
 						         </div>
 						      </div>
@@ -566,7 +566,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 	 					            <div class="modal-body">
 										<form id="newTicket" action="inc/backend/user/leo/newTicket.php" method="post">
 											<div class="form-group">
-												<select class="js-example-basic-single" name="suspect" id="getAllCharacters2" required>
+												<select class="select2" name="suspect" id="getAllCharacters2" required>
 														<option selected="true" disabled="disabled">Loading Characters...</option>
 												</select>
 											</div>
@@ -606,7 +606,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 	 					            <div class="modal-body">
 										<form id="newArrestReport" action="inc/backend/user/leo/newArrestReport.php" method="post">
 											<div class="form-group">
-												<select class="js-example-basic-single" name="suspect" id="getAllCharacters3" required>
+												<select class="select2" name="suspect" id="getAllCharacters3" required>
 														<option selected="true" disabled="disabled">Loading Characters...</option>
 												</select>
 											</div>

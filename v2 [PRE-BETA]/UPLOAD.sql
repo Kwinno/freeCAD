@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 25, 2019 at 06:42 PM
+-- Generation Time: Jan 26, 2019 at 10:10 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -80,6 +80,18 @@ CREATE TABLE `arrest_reports` (
   `suspect` varchar(126) NOT NULL,
   `suspect_id` int(11) NOT NULL,
   `summary` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `assigned_callunits`
+--
+
+CREATE TABLE `assigned_callunits` (
+  `id` int(11) NOT NULL,
+  `call_id` int(11) NOT NULL,
+  `unit_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -223,16 +235,15 @@ CREATE TABLE `settings` (
   `discord_webhook` text,
   `timezone` varchar(128) NOT NULL DEFAULT 'America/Los_Angeles',
   `civ_side_warrants` varchar(36) NOT NULL DEFAULT 'false',
-  `add_warrant` enum('all','supervisor') NOT NULL DEFAULT 'supervisor',
-  `dark_mode` enum('true','false') NOT NULL DEFAULT 'false'
+  `add_warrant` enum('all','supervisor') NOT NULL DEFAULT 'supervisor'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `settings`
 --
 
-INSERT INTO `settings` (`setting_id`, `site_name`, `account_validation`, `identity_validation`, `steam_required`, `discord_alerts`, `discord_webhook`, `timezone`, `civ_side_warrants`, `add_warrant`, `dark_mode`) VALUES
-(1, 'Hydrid CAD/MDT', 'no', 'no', 'false', 'false', NULL, 'America/New_York', 'false', 'supervisor', 'false');
+INSERT INTO `settings` (`setting_id`, `site_name`, `account_validation`, `identity_validation`, `steam_required`, `discord_alerts`, `discord_webhook`, `timezone`, `civ_side_warrants`, `add_warrant`) VALUES
+(1, 'Hydrid CAD/MDT', 'no', 'no', 'false', 'false', NULL, 'America/New_York', 'false', 'supervisor');
 
 -- --------------------------------------------------------
 
@@ -347,6 +358,12 @@ ALTER TABLE `arrest_reports`
   ADD PRIMARY KEY (`arrest_id`);
 
 --
+-- Indexes for table `assigned_callunits`
+--
+ALTER TABLE `assigned_callunits`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `bolos`
 --
 ALTER TABLE `bolos`
@@ -446,6 +463,12 @@ ALTER TABLE `911calls`
 --
 ALTER TABLE `arrest_reports`
   MODIFY `arrest_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `assigned_callunits`
+--
+ALTER TABLE `assigned_callunits`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `bolos`

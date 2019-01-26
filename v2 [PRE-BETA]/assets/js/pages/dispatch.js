@@ -16,13 +16,10 @@ $(document).ready(function() {
 
     getUserIdentitys();
 
-    $('.js-example-basic-single').select2({
-        // theme: "bootstrap4",
-        minimumInputLength: 1,
+    $('.select2').select2({
+        minimumInputLength: 3
     });
-    $('.js-example-basic-multiple').select2({
-        theme: "bootstrap4"
-    });
+    $('.select2_assignUnit').select2();
 });
 
 function getAllCharacters() {
@@ -234,6 +231,22 @@ function getActiveUnits() {
 
 getActiveUnits();
 
+function get911Calls() {
+  (function worker() {
+      $.ajax({
+          url: 'inc/backend/user/dispatch/get911Calls.php',
+          success: function(data) {
+              $('#get911Calls').html(data);
+          },
+          complete: function() {
+              setTimeout(worker, 5000);
+          }
+      });
+  })();
+}
+
+get911Calls();
+
 function updateUnitStatus(selectObject) {
   var i = selectObject.id;
   var str = selectObject.value;
@@ -254,4 +267,100 @@ function updateUnitStatus(selectObject) {
   // alert(str + " " + uid);
   $(".select-units").blur();
   isFocused = false;
+}
+
+function updatingCallDesc(str) {
+    toastr.warning('Please wait while the system updates the Call Description...')
+    if (str == "") {
+        return;
+    } else {
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                toastr.success('Call Description Updated.')
+            }
+        };
+        xmlhttp.open("GET", "inc/backend/user/dispatch/updateCallDesc.php?desc=" + str, true);
+        xmlhttp.send();
+    }
+}
+
+function getAllActiveUnitsForCall() {
+    (function getAllActiveUnitsForCall() {
+        $.ajax({
+            url: 'inc/backend/user/dispatch/getAllActiveUnitsForCall.php',
+            success: function(data) {
+                $('#getAllActiveUnitsForCall').html(data);
+            },
+            complete: function() {
+                // Schedule the next request when the current one's complete
+                setTimeout(getAllActiveUnitsForCall, 5000);
+            }
+        });
+    })();
+}
+getAllActiveUnitsForCall();
+
+function getAttchedUnits() {
+  (function worker() {
+      $.ajax({
+          url: 'inc/backend/user/dispatch/getAttchedUnits.php',
+          success: function(data) {
+              $('#getAttchedUnits').html(data);
+          },
+          complete: function() {
+              setTimeout(worker, 1000);
+          }
+      });
+  })();
+}
+getAttchedUnits();
+
+function assignUnit(str) {
+    toastr.warning('Please Wait...')
+    if (str == "") {
+        return;
+    } else {
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                toastr.success('Unit Assigned To Call.')
+            }
+        };
+        xmlhttp.open("GET", "inc/backend/user/dispatch/assignUnit.php?unit=" + str, true);
+        xmlhttp.send();
+    }
+}
+function unassignUnit(str) {
+    toastr.warning('Please Wait...')
+    if (str == "") {
+        return;
+    } else {
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                toastr.success('Unit Detached From Call.')
+            }
+        };
+        xmlhttp.open("GET", "inc/backend/user/dispatch/unassignUnit.php?unit=" + str, true);
+        xmlhttp.send();
+    }
 }

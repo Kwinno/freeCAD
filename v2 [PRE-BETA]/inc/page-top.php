@@ -18,17 +18,11 @@
         <link href="assets/plugins/datatables/select.bootstrap4.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
-        <?php
-            if($settings['dark_mode'] === "true") {
-                echo '<link href="assets/css/style-dark.css" rel="stylesheet" type="text/css" />';
-            } else {
-                echo '<link href="assets/css/style.css" rel="stylesheet" type="text/css" />';
-            }
-        ?>
+        <link href="assets/css/style.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
         <script src="//code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
         <script src="assets/js/modernizr.min.js"></script>
         <script src="assets/js/ajaxform.js"></script>
-        <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
-        <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+        <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+        <script src="assets/plugins/select2/js/select2.min.js" type="text/javascript"></script>
     </head>

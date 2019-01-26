@@ -28,6 +28,7 @@
                 todayHighlight: true
             });
             jQuery('#datepicker-inline').datepicker();
+            
         </script>
         <script src="assets/js/custom.js"></script>
 	</body>

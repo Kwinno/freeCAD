@@ -34,7 +34,6 @@ $settings['steam_required'] = $settingsRow['steam_required'];
 $settings['timezone'] = $settingsRow['timezone'];
 $settings['civ_side_warrants'] = $settingsRow['civ_side_warrants'];
 $settings['add_warrant'] = $settingsRow['add_warrant'];
-$settings['dark_mode'] = $settingsRow['dark_mode'];
 $settings['discord_alerts'] = $settingsRow['discord_alerts'];
 $discord_webhook = $settingsRow['discord_webhook'];
 

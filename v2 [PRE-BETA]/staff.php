@@ -198,22 +198,6 @@ $(document).ready(function () {
                           </select>
                         </div>
                       </div>
-                      <div class="col">
-                        <div class="form-group">
-                          <label for="darkmode">Dark Mode</label>
-                          <select class="form-control" id="darkmode" onchange="setDarkTheme(this.value)">
-                            <option selected="true" disabled="disabled"><?php
-                            if ($settings['dark_mode'] === "true") {
-                              echo 'On';
-                            } elseif ($settings['dark_mode'] === "false") {
-                              echo 'Off';
-                            }?>
-                            </option>
-                            <option value="true">On</option>
-                            <option value="false">Off</option>
-                          </select>
-                        </div>
-                      </div>
                     </div>
                     <div class="row">
                       <div class="col">

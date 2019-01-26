@@ -249,9 +249,16 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 								</div>
 							</div>
 						</div>
-
 						<div class="row">
-							<div class="col-6">
+							<div class="col-12">
+								<div class="card-box">
+									<h4 class="header-title mt-0 m-b-30">911 Calls</h4>
+									<div id="get911Calls"></div>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-12">
 								<div class="card-box">
 									<h4 class="header-title mt-0 m-b-30">Active Units</h4>
 									<div id="getActiveUnits"></div>
@@ -260,6 +267,23 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 						</div>
 
 						<!-- MODALS -->
+						<!-- Call Info Modal -->
+				    <div class="modal fade" id="callInfoModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+				          <div class="modal-content">
+				             <div class="modal-header">
+				                <h5 class="modal-title" id="exampleModalLabel">Call Info</h5>
+				                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				                <span aria-hidden="true">&times;</span>
+				                </button>
+				             </div>
+				             <div class="modal-body">
+
+				             </div>
+				          </div>
+				       </div>
+				    </div>
+				    <!-- // -->
 						<!-- search name modal -->
 						<div class="modal fade" id="openNameSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							 <div class="modal-dialog modal-full" role="document">
@@ -272,7 +296,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 										 </div>
 										 <div class="modal-body">
 												<form>
-													 <select class="js-example-basic-single" name="nameSearch" id="getAllCharacters" onchange="showName(this.value)">
+													 <select class="select2" name="nameSearch" id="getAllCharacters" onchange="showName(this.value)">
 															<option selected="true" disabled="disabled">Loading Characters...</option>
 													 </select>
 												</form>
@@ -295,7 +319,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 										 </div>
 										 <div class="modal-body">
 												<form>
-													 <select class="js-example-basic-single" name="vehicleSearch" id="getAllVehicles" onchange="showVehicle(this.value)">
+													 <select class="select2" name="vehicleSearch" id="getAllVehicles" onchange="showVehicle(this.value)">
 															<option selected="true" disabled="disabled">Loading Vehicles...</option>
 													 </select>
 												</form>
@@ -318,7 +342,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 										 </div>
 										 <div class="modal-body">
 												<form>
-													 <select class="js-example-basic-single" name="firearmSearch" id="getAllFirearms" onchange="showFirearm(this.value)">
+													 <select class="select2" name="firearmSearch" id="getAllFirearms" onchange="showFirearm(this.value)">
 															<option selected="true" disabled="disabled">Loading Firearms...</option>
 													 </select>
 												</form>
