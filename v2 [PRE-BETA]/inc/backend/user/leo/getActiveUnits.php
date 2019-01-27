@@ -18,15 +18,15 @@ $stmt            = $pdo->prepare($sql);
 $stmt->execute();
 $ondutyDBcall = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+echo "<table style='width:100%'>
+<tr>
+	<th>Unit</th>
+	<th>Status</th>
+</tr>";
 foreach($ondutyDBcall as $on_duty ) {
-  echo "<table style='width:100%'>
-  <tr>
-    <th>Unit</th>
-    <th>Status</th>
-  </tr>";
   echo "<tr>";
   echo "<td>" . $on_duty['name'] . "</td>";
   echo "<td>" . $on_duty['status'] . "</td>";
   echo "</tr>";
-  echo "</table>";
 }
+echo "</table>";

@@ -8,6 +8,7 @@
         <meta content="HydridSystems" name="author" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <!-- <link rel="shortcut icon" href="assets/images/favicon.ico"> -->
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.css" integrity="sha256-2kJr1Z0C1y5z0jnhr/mCu46J3R6Uud+qCQHA39i1eYo=" crossorigin="anonymous" />
         <link href="assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
         <!-- DataTables -->
         <link href="assets/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />

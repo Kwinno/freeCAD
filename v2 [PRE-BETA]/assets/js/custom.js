@@ -16,6 +16,7 @@ function changeSignal() {
         }
     });
 }
+
 $(document).ready(function () {
     document.oncontextmenu = document.body.oncontextmenu = function () { return false; }
 });

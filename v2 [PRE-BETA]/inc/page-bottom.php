@@ -7,6 +7,7 @@
         <script src="assets/plugins/jquery-knob/jquery.knob.js"></script>
         <script src="assets/plugins/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
         <!-- Required datatable js -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js" integrity="sha256-CgrKEb54KXipsoTitWV+7z/CVYrQ0ZagFB3JOvq2yjo=" crossorigin="anonymous"></script>
         <script src="assets/plugins/datatables/jquery.dataTables.min.js"></script>
         <script src="assets/plugins/datatables/dataTables.bootstrap4.min.js"></script>
         <!-- Responsive examples -->
@@ -28,7 +29,6 @@
                 todayHighlight: true
             });
             jQuery('#datepicker-inline').datepicker();
-
         </script>
         <script src="assets/js/custom.js"></script>
 	</body>

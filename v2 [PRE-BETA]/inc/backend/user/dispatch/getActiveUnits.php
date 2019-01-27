@@ -9,7 +9,7 @@ require '../../../backend/user/auth/userIsLoggedIn.php';
 
 // Makes sure the person actually has a character set
 
-if (isset($_SESSION['on_duty']) && $_SESSION['on_duty'] === "Dispatch") {
+if ($_SESSION['on_duty'] === "Dispatch") {
   // First we will check if any units are actually online
   $countUnits = $pdo->query('select count(*) from on_duty WHERE status <> "Off-Duty"')->fetchColumn();
   if ($countUnits === 0) {

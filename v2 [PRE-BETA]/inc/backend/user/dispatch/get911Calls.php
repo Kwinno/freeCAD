@@ -9,14 +9,14 @@ require '../../../backend/user/auth/userIsLoggedIn.php';
 
 // Makes sure the person actually has a character set
 
-if (isset($_SESSION['on_duty']) && $_SESSION['on_duty'] === "Dispatch") {
+if ($_SESSION['on_duty'] === "Dispatch") {
   // First we will check if any units are actually online
   $countActiveCalls = $pdo->query('select count(*) from 911calls where call_status <> "Archived"')->fetchColumn();
   if ($countActiveCalls === 0) {
     echo 'No Active 911 Calls';
   } else {
     echo '
-    <table id="datatable" class="table table-borderless">
+    <table class="table table-borderless">
     <tr>
       <th><center>Location</center></th>
       <th><center>Status</center></th>

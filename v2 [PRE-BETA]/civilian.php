@@ -80,6 +80,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
             console.log(error);
             var error = JSON.parse(error);
             if (error['msg'] === "") {
+                $("#createCharacter")[0].reset();
                 toastr.success('Character Created', 'System:', {timeOut: 10000});
             } else {
                 toastr.error(error['msg'], 'System:', {
@@ -91,6 +92,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
             console.log(error);
             var error = JSON.parse(error);
             if (error['msg'] === "") {
+                $("#new911call")[0].reset();
                 $('#new911callModal').modal('hide');
                 toastr.success('911 Call Created', 'System:', {timeOut: 10000});
             } else {
@@ -102,6 +104,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
         $('#createVehicle').ajaxForm(function (error) {
             var error = JSON.parse(error);
             if (error['msg'] === "") {
+                $("#createVehicle")[0].reset();
                 $('#newVehicleModal').modal('hide');
                 toastr.success('Vehicle Added To System', 'System:', {timeOut: 10000});
             } else {
@@ -113,6 +116,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
         $('#createFirearm').ajaxForm(function (error) {
             var error = JSON.parse(error);
             if (error['msg'] === "") {
+                $("#createFirearm")[0].reset();
                 $('#newFirearmModel').modal('hide');
                 toastr.success('Firearm Added To System', 'System:', {timeOut: 10000});
             } else {
@@ -124,6 +128,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
         $('#createWarrant').ajaxForm(function (error) {
             var error = JSON.parse(error);
             if (error['msg'] === "") {
+                $("#createWarrant")[0].reset();
                 $('#newSelfWarrantModal').modal('hide');
                 toastr.success('Warrant Created.', 'System:', {timeOut: 10000});
             } else {

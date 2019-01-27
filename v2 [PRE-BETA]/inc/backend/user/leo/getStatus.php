@@ -22,6 +22,8 @@ $stmt->execute();
 $status_row = $stmt->fetch(PDO::FETCH_ASSOC);
 echo $status_row['status'];
 
+$_SESSION['duty_id'] = $status_row['id'];
+
 if (empty($status_row)) {
 	echo 'Off-Duty';
 }

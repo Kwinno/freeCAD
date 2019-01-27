@@ -10,7 +10,7 @@ require '../../../backend/user/auth/userIsLoggedIn.php';
 // Makes sure the person actually has a character set
 
 if ($_SESSION['on_duty'] === "Dispatch" || $_SESSION['on_duty'] === "LEO") {
-  $sql = "UPDATE 911calls SET call_status=?, call_isPriority=? WHERE call_id=?";
-  $stmt= $pdo->prepare($sql);
-  $stmt->execute(['Archived', 'false', $_SESSION['viewingCallID']]);
+  $stmt              = $pdo->prepare("DELETE FROM bolos WHERE `id`=:id");
+	$stmt->bindValue(':id', $_SESSION['viewingBoloID']);
+	$result = $stmt->execute();
 }

@@ -51,17 +51,17 @@ if ($row['num'] > 0) {
 }
 
 $sql2          = "INSERT INTO vehicles (vehicle_plate, vehicle_color, vehicle_model, vehicle_is, vehicle_rs, vehicle_vin, vehicle_owner, vehicle_ownername) VALUES (
-    :vehicle_plate, 
-    :vehicle_color, 
-    :vehicle_model, 
-    :vehicle_is, 
+    :vehicle_plate,
+    :vehicle_color,
+    :vehicle_model,
+    :vehicle_is,
     :vehicle_rs,
     :vehicle_vin,
     :vehicle_owner,
     :vehicle_ownername
     )";
 $stmt2         = $pdo->prepare($sql2);
-$stmt2->bindValue(':vehicle_plate', $newVeh['plate']);
+$stmt2->bindValue(':vehicle_plate', strtoupper($newVeh['plate']));
 $stmt2->bindValue(':vehicle_color', $newVeh['color']);
 $stmt2->bindValue(':vehicle_model', $newVeh['model']);
 $stmt2->bindValue(':vehicle_is', $newVeh['insurance_status']);

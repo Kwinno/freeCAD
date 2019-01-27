@@ -349,3 +349,79 @@ function deleteWarrantLEO(str) {
         }
     });
 }
+
+function getBolos() {
+  (function worker() {
+      $.ajax({
+          url: 'inc/backend/user/leo/getBolos.php',
+          success: function(data) {
+              $('#getBolos').html(data);
+          },
+          complete: function() {
+              setTimeout(worker, 5000);
+          }
+      });
+  })();
+}
+
+getBolos();
+
+function getMyCalls() {
+  (function worker() {
+      $.ajax({
+          url: 'inc/backend/user/leo/getMyCalls.php',
+          success: function(data) {
+              $('#getMyCalls').html(data);
+          },
+          complete: function() {
+              setTimeout(worker, 5000);
+          }
+      });
+  })();
+}
+
+getMyCalls();
+
+function getAttchedUnits() {
+  (function worker() {
+      $.ajax({
+          url: 'inc/backend/user/dispatch/getAttchedUnits.php',
+          success: function(data) {
+              $('#getAttchedUnits').html(data);
+          },
+          complete: function() {
+              setTimeout(worker, 1000);
+          }
+      });
+  })();
+}
+getAttchedUnits();
+
+function clear911Call() {
+    toastr.warning('Please Wait...')
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            $('#callInfoModal').modal('hide');
+            toastr.success('Call Archived.')
+        }
+    };
+    xmlhttp.open("GET", "inc/backend/user/dispatch/archiveCall.php", true);
+    xmlhttp.send();
+}
+
+function officerPanicBtn() {
+  $.ajax({
+      url: 'inc/backend/user/leo/officerPanicButton.php',
+      success: function(data) {
+          changeSignal();
+          toastr.error('PANIC BUTTON PUSHED.')
+      },
+  });
+}

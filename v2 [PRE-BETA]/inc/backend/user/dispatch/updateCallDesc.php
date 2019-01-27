@@ -8,11 +8,15 @@ require '../../../config.php';
 require '../../../backend/user/auth/userIsLoggedIn.php';
 
 // Makes sure the person actually has a character set
-
-if (isset($_SESSION['on_duty']) && $_SESSION['on_duty'] === "Dispatch") {
-  $newCallDesc = htmlspecialchars($_GET['desc']);
+$error = array();
+if ($_SESSION['on_duty'] === "Dispatch" || $_SESSION['on_duty'] === "LEO") {
+  $updated_desc = htmlspecialchars($_POST['callDesc']);
 
   $sql = "UPDATE 911calls SET call_description=? WHERE call_id=?";
   $stmt= $pdo->prepare($sql);
-  $stmt->execute([$newCallDesc, $_SESSION['viewingCallID']]);
+  $stmt->execute([$updated_desc, $_SESSION['viewingCallID']]);
+
+  $error['msg'] = "";
+  echo json_encode($error);
+  exit();
 }

@@ -73,6 +73,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
         $('#createIdentity').ajaxForm(function (error) {
             error = JSON.parse(error);
             if (error['msg'] === "") {
+                $("#createIdentity")[0].reset();
                 toastr.success('Identity Created! You can now select it.', 'System:', {timeOut: 10000})
             } else {
                 toastr.error(error['msg'], 'System:', {
@@ -83,6 +84,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			$('#newTicket').ajaxForm(function (error) {
 					error = JSON.parse(error);
 					if (error['msg'] === "") {
+              $("#newTicket")[0].reset();
 							$('#newTicketModal').modal('hide');
 							toastr.success('Ticket Created!', 'System:', {timeOut: 10000})
 					} else {
@@ -94,6 +96,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			$('#newArrestReport').ajaxForm(function (error) {
 					error = JSON.parse(error);
 					if (error['msg'] === "") {
+              $("#newArrestReportModal")[0].reset();
 							$('#newArrestReportModal').modal('hide');
 							toastr.success('Arrest Report Created!', 'System:', {timeOut: 10000})
 					} else {
@@ -168,15 +171,6 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			      </div>
 			      <?php break; ?>
 			      <?php case "main": ?>
-				  <?php
-				 // Fix bug that casuses AOP changer to fuck itself, should be a better way to do this
-				 $sql_aopfix = "SELECT * FROM servers WHERE id=:server_id";
-				 $stmt_aopfix = $pdo->prepare($sql_aopfix);
-				 $stmt_aopfix->bindValue(':server_id', $_SESSION['server']);
-				 $stmt_aopfix->execute();
-				 $getAOP = $stmt->fetch(PDO::FETCH_ASSOC);
-				 $_SESSION['current_aop'] = $getAOP['aop'];
-				  ?>
 			      <!-- js is put here to prevent issues on other parts of leo -->
 			      <script type="text/javascript">
     			         $(document).ready(function () {
@@ -188,10 +182,18 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
     			                 return i;
     							 }
 
+                   $('textarea').keypress(function(event) {
+   									  if (event.which == 13) {
+   									    event.preventDefault();
+   									    this.value = this.value + "\n";
+   									  }
+   									});
+
       							 $('#changeAOP').ajaxForm(function (error) {
       									console.log(error);
       									error = JSON.parse(error);
       									if (error['msg'] === "") {
+                          $("#changeAOP")[0].reset();
       										toastr.success('New AOP Set - Please allow a minute for changes to display.', 'System:', {
       												timeOut: 10000
       										})
@@ -311,7 +313,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#newArrestReportModal">Arrest Report</button>
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#notepadModal">Notepad</button>
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#activeUnitsModal">Active Units</button>
-									<button class="btn btn-danger btn-sm" onclick="signal100();">PANIC BUTTON</button>
+									<button class="btn btn-danger btn-sm" onclick="officerPanicBtn();">PANIC BUTTON</button>
 									<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
 										<a href="leo.php?v=supervisor"><button class="btn btn-darkred btn-sm">Supervisor Panel</button></a>
 									<?php endif; ?>
@@ -322,40 +324,12 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 							<div class="col-9">
 								<div class="card-box">
 									<h4 class="header-title mt-0 m-b-30">My Calls</h4>
-									<table class="table table-borderless">
-										<thead>
-											<tr>
-												<th>Info</th>
-												<th>Location</th>
-												<th>Other Units Assigned</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td width="50%">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, neque optio. Ea adipisci harum vel quibusdam aperiam molestiae. Dolorem sapiente totam mollitia facilis recusandae explicabo veniam vero, quos soluta velit!</td>
-												<td>Sandy Shores RD / Joshua RD</td>
-												<td>[1A-99] John Doe</td>
-											</tr>
-										</tbody>
-									</table>
+                  <div id="getMyCalls"></div>
 								</div>
 
 								<div class="card-box">
 									<h4 class="header-title mt-0 m-b-30">Active Bolos</h4>
-									<table class="table table-borderless">
-										<thead>
-											<tr>
-												<th>Description</th>
-												<th>Created On</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td width="75%">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum, neque optio. Ea adipisci harum vel quibusdam aperiam molestiae. Dolorem sapiente totam mollitia facilis recusandae explicabo veniam vero, quos soluta velit!</td>
-												<td>11/24/2018 6:52:04PM</td>
-											</tr>
-										</tbody>
-									</table>
+                  <div id="getBolos"></div>
 								</div>
 							</div>
 							<div class="col-3">
@@ -445,6 +419,23 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 							</div>
 						</div>
 						<!-- MODALS -->
+            <!-- Call Info Modal -->
+				    <div class="modal fade" id="callInfoModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+				          <div class="modal-content">
+				             <div class="modal-header">
+				                <h5 class="modal-title" id="exampleModalLabel">Call Info</h5>
+				                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				                <span aria-hidden="true">&times;</span>
+				                </button>
+				             </div>
+				             <div id="callModalBody" class="modal-body">
+
+				             </div>
+				          </div>
+				       </div>
+				    </div>
+				    <!-- // -->
 						<!-- search name modal -->
 						<div class="modal fade" id="openNameSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							 <div class="modal-dialog modal-full" role="document">

@@ -18,32 +18,63 @@ if ($_SESSION['on_duty'] === "Dispatch") {
 	$call_location = strip_tags($_POST['call_location']);
 	$call_postal = strip_tags($_POST['call_postal']);
 
-
 	$error = array();
-	$sql          = "INSERT INTO 911calls (caller_id, call_description, call_location, call_postal, call_timestamp) VALUES (
-		:caller_id,
-		:call_description,
-		:call_location,
-		:call_postal,
-		:call_timestamp
-		)";
-	$stmt         = $pdo->prepare($sql);
-	$stmt->bindValue(':caller_id', 'Dispatch');
-	$stmt->bindValue(':call_description', $call_description);
-	$stmt->bindValue(':call_location', $call_location);
-	$stmt->bindValue(':call_postal', $call_postal);
-	$stmt->bindValue(':call_timestamp', $us_date . ' ' . $time);
-	$result = $stmt->execute();
-	if ($result) {
-		if ($settings['discord_alerts'] === 'true') {
-		discordAlert('**NEW 911 CALL**
-		**Description:** '. $call_description .'
-		**Location:** '. $call_location .' / '. $call_crossstreat .' / '. $call_postal .'
-		**Called On:** '. $datetime .'
-			- **Hydrid CAD System**');
+
+	if (isset($_POST['allCall'])) {
+		$sql          = "INSERT INTO 911calls (call_description, call_location, call_postal, call_timestamp, call_isPriority, call_status) VALUES (
+			:call_description,
+			:call_location,
+			:call_postal,
+			:call_timestamp,
+			:call_isPriority,
+			:call_status
+			)";
+		$stmt         = $pdo->prepare($sql);
+		$stmt->bindValue(':call_description', $call_description);
+		$stmt->bindValue(':call_location', $call_location);
+		$stmt->bindValue(':call_postal', $call_postal);
+		$stmt->bindValue(':call_timestamp', $us_date . ' ' . $time);
+		$stmt->bindValue(':call_isPriority', 'true');
+		$stmt->bindValue(':call_status', 'PRIORITY');
+		$result = $stmt->execute();
+		if ($result) {
+			if ($settings['discord_alerts'] === 'true') {
+			discordAlert('**NEW 911 CALL**
+			**Description:** '. $call_description .'
+			**Location:** '. $call_location .' / '. $call_crossstreat .' / '. $call_postal .'
+			**Called On:** '. $datetime .'
+				- **Hydrid CAD System**');
+			}
+			$error['msg'] = "allCall";
+			echo json_encode($error);
+			exit();
 		}
+	} else {
+		$sql          = "INSERT INTO 911calls (caller_id, call_description, call_location, call_postal, call_timestamp) VALUES (
+			:caller_id,
+			:call_description,
+			:call_location,
+			:call_postal,
+			:call_timestamp
+			)";
+		$stmt         = $pdo->prepare($sql);
+		$stmt->bindValue(':caller_id', 'Dispatch');
+		$stmt->bindValue(':call_description', $call_description);
+		$stmt->bindValue(':call_location', $call_location);
+		$stmt->bindValue(':call_postal', $call_postal);
+		$stmt->bindValue(':call_timestamp', $us_date . ' ' . $time);
+		$result = $stmt->execute();
+		if ($result) {
+			if ($settings['discord_alerts'] === 'true') {
+			discordAlert('**NEW 911 CALL**
+			**Description:** '. $call_description .'
+			**Location:** '. $call_location .' / '. $call_crossstreat .' / '. $call_postal .'
+			**Called On:** '. $datetime .'
+				- **Hydrid CAD System**');
+			}
 			$error['msg'] = "";
-		echo json_encode($error);
-		exit();
+			echo json_encode($error);
+			exit();
+		}
 	}
 }

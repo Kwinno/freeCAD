@@ -72,6 +72,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			$('#createIdentity').ajaxForm(function (error) {
 					error = JSON.parse(error);
 					if (error['msg'] === "") {
+						$("#createIdentity")[0].reset();
 						toastr.success('Identity Created! You can now select it.', 'System:', {timeOut: 10000})
 					} else {
 						toastr.error(error['msg'], 'System:', {
@@ -129,7 +130,17 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			      <?php case "main": ?>
 						<script type="text/javascript">
 							$(document).ready(function () {
-								var priority = false;
+								var elem = document.querySelector('.allcallCheckbox'); // referred checkbox class is here
+								var init = new Switchery(elem, { size: 'small' }); // put option after elem attribute
+
+								$('textarea').keypress(function(event) {
+									  if (event.which == 13) {
+									    event.preventDefault();
+									    this.value = this.value + "\n";
+									  }
+									});
+
+								var signal100 = false;
 								function checkTime(i) {
 									if (i < 10) {
 											i = "0" + i;
@@ -138,30 +149,37 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 								}
 
 								$('#new911call').ajaxForm(function (error) {
+									console.log(error);
 				            var error = JSON.parse(error);
 				            if (error['msg'] === "") {
+												$("#new911call")[0].reset();
 				                $('#new911callModal').modal('hide');
 				                toastr.success('Call Added', 'System:', {timeOut: 10000});
-				            } else {
+										} else if (error['msg'] === "allCall") {
+											$("#new911call")[0].reset();
+											$('#new911callModal').modal('hide');
+											changeSignal();
+											toastr.success('Call Added', 'System:', {timeOut: 10000});
+										} else {
 				                toastr.error(error['msg'], 'System:', {
 				                    timeOut: 10000
 				                });
 				            }
 				        });
 
-								$('#changeAOP').ajaxForm(function (error) {
+								$('#newBolo').ajaxForm(function (error) {
 									console.log(error);
-									error = JSON.parse(error);
-									if (error['msg'] === "") {
-										toastr.success('New AOP Set - Please allow a minute for changes to display.', 'System:', {
-												timeOut: 10000
-										})
-									} else {
-										toastr.error(error['msg'], 'System:', {
-												timeOut: 10000
-										})
-									}
-								});
+				            var error = JSON.parse(error);
+				            if (error['msg'] === "") {
+												$("#newBolo")[0].reset();
+				                $('#newBoloModel').modal('hide');
+				                toastr.success('BOLO Added', 'System:', {timeOut: 10000});
+										} else {
+				                toastr.error(error['msg'], 'System:', {
+				                    timeOut: 10000
+				                });
+				            }
+				        });
 
 								function startTime() {
 									var today = new Date();
@@ -178,6 +196,21 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 								}
 
 								startTime();
+
+								$('#changeAOP').ajaxForm(function (error) {
+									 console.log(error);
+									 error = JSON.parse(error);
+									 if (error['msg'] === "") {
+										 $("#changeAOP")[0].reset();
+										 toastr.success('New AOP Set - Please allow a minute for changes to display.', 'System:', {
+												 timeOut: 10000
+										 })
+									 } else {
+										 toastr.error(error['msg'], 'System:', {
+												 timeOut: 10000
+										 })
+									 }
+								 });
 
 								function getLeoInfo() {
 									(function loadStatus() {
@@ -255,6 +288,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openFirearmSearch">Weapon Database</button>
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#notepadModal">Notepad</button>
 									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#new911callModal">Create Call</button>
+									<button class="btn btn-info btn-sm" data-toggle="modal" data-target="#newBoloModel">Create BOLO</button>
 									<button class="btn btn-danger btn-sm" onclick="changeSignal();">Signal 100</button>
 									<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
 										<a href="dispatch.php?v=supervisor"><button class="btn btn-darkred btn-sm">Supervisor Panel</button></a>
@@ -263,23 +297,74 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-12">
+							<div class="col-6">
 								<div class="card-box">
 									<h4 class="header-title mt-0 m-b-30">911 Calls</h4>
 									<div id="get911Calls"></div>
 								</div>
 							</div>
+							<div class="col-6">
+								<div class="card-box">
+									<h4 class="header-title mt-0 m-b-30">BOLOs</h4>
+									<div id="getBolos"></div>
+								</div>
+							</div>
 						</div>
 						<div class="row">
-							<div class="col-12">
+							<div class="col-8">
 								<div class="card-box">
 									<h4 class="header-title mt-0 m-b-30">Active Units</h4>
 									<div id="getActiveUnits"></div>
 								</div>
 							</div>
+							<?php if($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+							<div class="col-4">
+								<div class="card-box">
+									<h4 class="header-title mt-0 m-b-30">AOP Editor</h4>
+									<form method="post" action="inc/backend/user/leo/setAOP.php" id="changeAOP">
+										<div class="form-group">
+											<div class="col">
+												<input class="form-control" type="text" required="" name="newAOP" placeholder="New AOP">
+											</div>
+										</div>
+                    <div class="form-group">
+                      <div class="col">
+												<button class="btn btn-warning btn-bordred btn-block waves-effect waves-light" onClick="disableClick()" type="submit">Change AOP</button>
+											</div>
+                    </div>
+									</form>
+								</div>
+							</div>
+							<?php endif; ?>
 						</div>
 
 						<!-- MODALS -->
+						<!-- New Bolo Modal -->
+						<div class="modal fade" id="newBoloModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+								<div class="modal-content">
+									 <div class="modal-header">
+											<h5 class="modal-title" id="exampleModalLabel">New BOLO</h5>
+											<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+											</button>
+									 </div>
+									 <div class="modal-body">
+											<form id="newBolo" action="inc/backend/user/dispatch/newBolo.php" method="post">
+												<div class="form-group">
+													 <textarea class="form-control" placeholder="Description (Please include as much detail as possible)" id="description" name="description" style="white-space: pre-line;" wrap="hard" rows="6" required></textarea>
+												</div>
+									 </div>
+									 <div class="modal-footer">
+										 <div class="form-group">
+												<input class="btn btn-primary" onClick="disableClick()" type="submit" value="Create New BOLO">
+										 </div>
+									 </div>
+									 </form>
+								</div>
+						 </div>
+						</div>
+						<!-- // -->
 						<!-- New Call Modal -->
 						<div class="modal fade" id="new911callModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 						 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
@@ -291,7 +376,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 											</button>
 									 </div>
 									 <div class="modal-body">
-											<form id="new911call" action="inc/backend/user/civ/new911call.php" method="post">
+											<form id="new911call" action="inc/backend/user/dispatch/new911call.php" method="post">
 												<div class="form-group">
 													 <input type="text" name="call_description" class="form-control" placeholder="Call Desc" data-lpignore="true" required />
 												</div>
@@ -307,6 +392,12 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 															 </div>
 														</div>
 												 </div>
+												 <div class="row">
+													 <div class="col-6">
+														 <label>All Call</label>
+														 <input type="checkbox" class="allcallCheckbox" name="allCall" value="1" />
+													 </div>
+												 </div>
 									 </div>
 									 <div class="modal-footer">
 										 <div class="form-group">
@@ -316,7 +407,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 									 </form>
 								</div>
 						 </div>
-					</div>
+						</div>
 						<!-- // -->
 						<!-- Call Info Modal -->
 				    <div class="modal fade" id="callInfoModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -329,6 +420,23 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 				                </button>
 				             </div>
 				             <div id="callModalBody" class="modal-body">
+
+				             </div>
+				          </div>
+				       </div>
+				    </div>
+				    <!-- // -->
+						<!-- BOLO Info Modal -->
+				    <div class="modal fade" id="boloInfoModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+				          <div class="modal-content">
+				             <div class="modal-header">
+				                <h5 class="modal-title" id="exampleModalLabel">Bolo Info</h5>
+				                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				                <span aria-hidden="true">&times;</span>
+				                </button>
+				             </div>
+				             <div id="boloModalBody" class="modal-body">
 
 				             </div>
 				          </div>

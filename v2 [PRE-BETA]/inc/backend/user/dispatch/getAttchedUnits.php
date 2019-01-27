@@ -9,13 +9,16 @@ require '../../../backend/user/auth/userIsLoggedIn.php';
 
 // Makes sure the person actually has a character set
 
-if (isset($_SESSION['on_duty']) && $_SESSION['on_duty'] === "Dispatch") {
+if ($_SESSION['on_duty'] === "Dispatch" || $_SESSION['on_duty'] === "LEO") {
   echo '
   <table class="table table-borderless">
   <tr>
     <th><center>Unit</center></th>
-    <th><center>Status</center></th>
-    <th><center>Actions</center></th>
+    <th><center>Status</center></th>';
+    if ($_SESSION['on_duty'] === "Dispatch") {
+      echo '<th><center>Actions</center></th>';
+    }
+    echo '
   </tr>';
   $getAttachedUnits = 'SELECT * FROM assigned_callunits where call_id = :call_id';
   $stmt         = $pdo->prepare($getAttachedUnits);
@@ -30,7 +33,9 @@ if (isset($_SESSION['on_duty']) && $_SESSION['on_duty'] === "Dispatch") {
       echo "<tr>";
       echo '<td><center>'.$unitInfo['name'].'</center></td>';
       echo '<td><center>'.$unitInfo['status'].'</center></td>';
-      echo '<td><center><input type="button" class="btn btn-danger btn-sm" name="unassignUnit" value="Unassign" id='.$unitInfo['id'].' onclick="unassignUnit(this.id)"></center></td>';
+      if ($_SESSION['on_duty'] === "Dispatch") {
+        echo '<td><center><input type="button" class="btn btn-danger btn-sm" name="unassignUnit" value="Unassign" id='.$unitInfo['id'].' onclick="unassignUnit(this.id)"></center></td>';
+      }
       echo "</tr>";
 }
 

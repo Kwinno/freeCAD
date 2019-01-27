@@ -19,6 +19,7 @@ $(document).ready(function() {
     $('.select2').select2({
         minimumInputLength: 3
     });
+    $('.select2multi').select2();
     $('.select2_assignUnit').select2();
 });
 
@@ -269,32 +270,10 @@ function updateUnitStatus(selectObject) {
   isFocused = false;
 }
 
-function updatingCallDesc(str) {
-    toastr.warning('Please wait while the system updates the Call Description...')
-    if (str == "") {
-        return;
-    } else {
-        if (window.XMLHttpRequest) {
-            // code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        } else {
-            // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                toastr.success('Call Description Updated.')
-            }
-        };
-        xmlhttp.open("GET", "inc/backend/user/dispatch/updateCallDesc.php?desc=" + str, true);
-        xmlhttp.send();
-    }
-}
-
 function getAllActiveUnitsForCall() {
     (function getAllActiveUnitsForCall() {
         $.ajax({
-            url: 'inc/backend/user/dispatch/getAllActiveUnitsForCall.php',
+            url: 'inc/backend/user/dispatch/getAllActiveUnitsForCall.php?opt=1',
             success: function(data) {
                 $('#getAllActiveUnitsForCall').html(data);
             },
@@ -306,6 +285,25 @@ function getAllActiveUnitsForCall() {
     })();
 }
 getAllActiveUnitsForCall();
+
+function getAllActiveUnitsForNewCall() {
+    (function getAllActiveUnitsForNewCall() {
+        $.ajax({
+            url: 'inc/backend/user/dispatch/getAllActiveUnitsForCall.php?opt=2',
+            success: function(data) {
+                $('#attachUnits').html(data);
+            },
+            complete: function() {
+              if ('#attachUnits' === "") {
+                setTimeout(getAllActiveUnitsForNewCall, 5000);
+              } else {
+                setTimeout(getAllActiveUnitsForNewCall, 60000);
+              }
+            }
+        });
+    })();
+}
+getAllActiveUnitsForNewCall();
 
 function getAttchedUnits() {
   (function worker() {
@@ -381,5 +379,40 @@ function clear911Call() {
         }
     };
     xmlhttp.open("GET", "inc/backend/user/dispatch/archiveCall.php", true);
+    xmlhttp.send();
+}
+
+function getBolos() {
+  (function worker() {
+      $.ajax({
+          url: 'inc/backend/user/dispatch/getBolos.php',
+          success: function(data) {
+              $('#getBolos').html(data);
+          },
+          complete: function() {
+              setTimeout(worker, 5000);
+          }
+      });
+  })();
+}
+
+getBolos();
+
+function clearBOLO() {
+    toastr.warning('Please Wait...')
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            $('#boloInfoModal').modal('hide');
+            toastr.success('BOLO Cleared.')
+        }
+    };
+    xmlhttp.open("GET", "inc/backend/user/dispatch/clearBolo.php", true);
     xmlhttp.send();
 }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2019 at 02:31 AM
+-- Generation Time: Jan 27, 2019 at 04:40 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -100,13 +100,10 @@ CREATE TABLE `assigned_callunits` (
 --
 
 CREATE TABLE `bolos` (
-  `bolo_id` int(11) NOT NULL,
-  `vehicle_plate` varchar(8) NOT NULL,
-  `vehicle_color` varchar(126) NOT NULL,
-  `vehicle_model` varchar(126) NOT NULL,
-  `bolo_created_on` varchar(128) NOT NULL,
-  `bolo_reason` varchar(255) NOT NULL,
-  `bolo_created_by` varchar(126) NOT NULL
+  `id` int(11) NOT NULL,
+  `created_on` varchar(128) NOT NULL,
+  `description` text NOT NULL,
+  `created_by` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -216,7 +213,7 @@ CREATE TABLE `servers` (
 --
 
 INSERT INTO `servers` (`id`, `name`, `aop`, `priority`) VALUES
-(1, 'Server 1', 'Statewide', 0);
+(1, 'Server 1', 'Blaine County', 0);
 
 -- --------------------------------------------------------
 
@@ -366,7 +363,7 @@ ALTER TABLE `assigned_callunits`
 -- Indexes for table `bolos`
 --
 ALTER TABLE `bolos`
-  ADD PRIMARY KEY (`bolo_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `characters`
@@ -473,7 +470,7 @@ ALTER TABLE `assigned_callunits`
 -- AUTO_INCREMENT for table `bolos`
 --
 ALTER TABLE `bolos`
-  MODIFY `bolo_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `characters`

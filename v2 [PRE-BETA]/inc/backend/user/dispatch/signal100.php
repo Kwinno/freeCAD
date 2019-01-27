@@ -9,7 +9,7 @@ require '../../../backend/user/auth/userIsLoggedIn.php';
 
 // Makes sure the person actually has a character set
 
-if (isset($_SESSION['on_duty']) && $_SESSION['on_duty'] === "Dispatch") {
+if ($_SESSION['on_duty'] === "Dispatch" || $_SESSION['on_duty'] === "LEO") {
     $stmt = $pdo->prepare("SELECT * FROM servers WHERE id=:server_id");
     $stmt->bindValue(':server_id', $_SESSION['server']);
     $stmt->execute();
