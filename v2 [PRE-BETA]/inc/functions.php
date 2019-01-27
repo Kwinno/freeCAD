@@ -1,10 +1,8 @@
 <?php
 // Throw Visual Error (Only works after Header is loaded)
-function throwError($error, $log = false)
-{
-	// Load Toastr JavaScript and CSS
-
-	echo '
+function throwError($error, $log = false) {
+    // Load Toastr JavaScript and CSS
+    echo '
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
         <script type="text/javascript">
@@ -22,10 +20,8 @@ function throwError($error, $log = false)
 }
 
 // Throw Notification (Only works after Header is loaded)
-
-function clientNotify($type, $error)
-{
-	echo '
+function clientNotify($type, $error) {
+    echo '
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
         <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
         <script type="text/javascript">
@@ -42,8 +38,7 @@ function clientNotify($type, $error)
     ';
 }
 
-function hydridErrors($errno, $errstr, $errfile, $errline, $errcontext)
-{
+function hydridErrors($errno, $errstr, $errfile, $errline, $errcontext) {
     global $debug;
     if ($debug) {
         echo "<br>
@@ -51,7 +46,7 @@ function hydridErrors($errno, $errstr, $errfile, $errline, $errcontext)
         You are seeing this message because an error has occured and Hydrid has stopped working.<br>
         <br>
         Error Information: <br><hr>
-        Page: <b>". $_SERVER['REQUEST_URI'] ."</b><br>
+        Page: <b>" . $_SERVER['REQUEST_URI'] . "</b><br>
         Error: <b> $errstr </b><br>
         Broken File: <b> $errfile </b><br>
         Line: <b> $errline </b><br>
@@ -60,7 +55,8 @@ function hydridErrors($errno, $errstr, $errfile, $errline, $errcontext)
         If you are not the owner, please try again later!
         ";
         die();
-    } else {
+    }
+    else {
         echo "<br>
         Hello - <br>
         You are seeing this message because an error has occured and Hydrid has stopped working.<br>
@@ -84,35 +80,36 @@ function discordAlert($message) {
     //=======================================================================
     // Compose message. You can use Markdown
     //=======================================================================
-    $json_data = array ('content'=>"$message");
+    $json_data = array(
+        'content' => "$message"
+    );
     $make_json = json_encode($json_data);
-    $ch = curl_init( $webhookurl );
-    curl_setopt( $ch, CURLOPT_POST, 1);
-    curl_setopt( $ch, CURLOPT_POSTFIELDS, $make_json);
-    curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1);
-    curl_setopt( $ch, CURLOPT_HEADER, 0);
-    curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1);
-    $response = curl_exec( $ch );
+    $ch = curl_init($webhookurl);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $make_json);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+    curl_setopt($ch, CURLOPT_HEADER, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $response = curl_exec($ch);
 
     return $response;
 }
 
 // Log Function
-function logAction($action, $user)
-{
+function logAction($action, $user) {
     global $pdo;
     global $time;
     global $us_date;
 
-    $sql_log          = "INSERT INTO logs (action, username, timestamp) VALUES (:action, :username, :timestamp)";
-    $stmt_log         = $pdo->prepare($sql_log);
+    $sql_log = "INSERT INTO logs (action, username, timestamp) VALUES (:action, :username, :timestamp)";
+    $stmt_log = $pdo->prepare($sql_log);
     $stmt_log->bindValue(':action', $action);
     $stmt_log->bindValue(':username', $user);
-    $stmt_log->bindValue(':timestamp', $us_date .' '. $time);
+    $stmt_log->bindValue(':timestamp', $us_date . ' ' . $time);
     $result_log = $stmt_log->execute();
 }
 
-function truncate_string ($string, $maxlength, $extension) {
+function truncate_string($string, $maxlength, $extension) {
 
     // Set the replacement for the "string break" in the wordwrap function
     $cutmarker = "**cut_here**";
@@ -120,15 +117,15 @@ function truncate_string ($string, $maxlength, $extension) {
     // Checking if the given string is longer than $maxlength
     if (strlen($string) > $maxlength) {
 
-	    // Using wordwrap() to set the cutmarker
-	    // NOTE: wordwrap (PHP 4 >= 4.0.2, PHP 5)
-	    $string = wordwrap($string, $maxlength, $cutmarker);
+        // Using wordwrap() to set the cutmarker
+        // NOTE: wordwrap (PHP 4 >= 4.0.2, PHP 5)
+        $string = wordwrap($string, $maxlength, $cutmarker);
 
-	    // Exploding the string at the cutmarker, set by wordwrap()
-	    $string = explode($cutmarker, $string);
+        // Exploding the string at the cutmarker, set by wordwrap()
+        $string = explode($cutmarker, $string);
 
-	    // Adding $extension to the first value of the array $string, returned by explode()
-	    $string = $string[0] . $extension;
+        // Adding $extension to the first value of the array $string, returned by explode()
+        $string = $string[0] . $extension;
     }
 
     // returning $string

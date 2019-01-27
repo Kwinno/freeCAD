@@ -7,16 +7,16 @@ require '../../../config.php';
 
 require '../../../backend/user/auth/userIsLoggedIn.php';
 
-$newChar['first_name']       	    = !empty($_POST['firstname']) ? trim($_POST['firstname']) : null;
-$newChar['last_name']       	        = !empty($_POST['lastname']) ? trim($_POST['lastname']) : null;
-$newChar['gender']                   = !empty($_POST['gender']) ? trim($_POST['gender']) : null;
-$newChar['race']                   = !empty($_POST['race']) ? trim($_POST['race']) : null;
-$newChar['address']                   = !empty($_POST['address']) ? trim($_POST['address']) : null;
-$newChar['date_of_birth']                   = !empty($_POST['date_of_birth']) ? trim($_POST['date_of_birth']) : null;
-$newChar['height']                   = !empty($_POST['height']) ? trim($_POST['height']) : null;
-$newChar['weight']                   = !empty($_POST['weight']) ? trim($_POST['weight']) : null;
-$newChar['eye_color']                   = !empty($_POST['eye_color']) ? trim($_POST['eye_color']) : null;
-$newChar['hair_color']                   = !empty($_POST['hair_color']) ? trim($_POST['hair_color']) : null;
+$newChar['first_name'] = !empty($_POST['firstname']) ? trim($_POST['firstname']) : null;
+$newChar['last_name'] = !empty($_POST['lastname']) ? trim($_POST['lastname']) : null;
+$newChar['gender'] = !empty($_POST['gender']) ? trim($_POST['gender']) : null;
+$newChar['race'] = !empty($_POST['race']) ? trim($_POST['race']) : null;
+$newChar['address'] = !empty($_POST['address']) ? trim($_POST['address']) : null;
+$newChar['date_of_birth'] = !empty($_POST['date_of_birth']) ? trim($_POST['date_of_birth']) : null;
+$newChar['height'] = !empty($_POST['height']) ? trim($_POST['height']) : null;
+$newChar['weight'] = !empty($_POST['weight']) ? trim($_POST['weight']) : null;
+$newChar['eye_color'] = !empty($_POST['eye_color']) ? trim($_POST['eye_color']) : null;
+$newChar['hair_color'] = !empty($_POST['hair_color']) ? trim($_POST['hair_color']) : null;
 
 $newChar['first_name'] = strip_tags($_POST['firstname']);
 $newChar['last_name'] = strip_tags($_POST['lastname']);
@@ -32,52 +32,51 @@ $newChar['hair_color'] = strip_tags($_POST['hair_color']);
 $error = array();
 
 // Length Checks
-
 if (strlen($newChar['first_name']) < 2) {
-	$error['msg'] = "Your first name must be longer than 2 characters.";
-	echo json_encode($error);
-	exit();
+    $error['msg'] = "Your first name must be longer than 2 characters.";
+    echo json_encode($error);
+    exit();
 }
 elseif (strlen($newChar['last_name']) > 120) {
-	$error['msg'] = "Your last name must be longer than 2 characters.";
-	echo json_encode($error);
-	exit();
+    $error['msg'] = "Your last name must be longer than 2 characters.";
+    echo json_encode($error);
+    exit();
 }
 
 // Check if name is taken
-$sql  = "SELECT COUNT(first_name) AS num FROM characters WHERE first_name = :first_name";
+$sql = "SELECT COUNT(first_name) AS num FROM characters WHERE first_name = :first_name";
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':first_name', $newChar['first_name']);
 $stmt->execute();
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($row['num'] > 0) {
-	$sql3  = "SELECT COUNT(last_name) AS num FROM characters WHERE last_name = :last_name";
-	$stmt3 = $pdo->prepare($sql3);
-	$stmt3->bindValue(':last_name', $newChar['last_name']);
-	$stmt3->execute();
-	$row3 = $stmt3->fetch(PDO::FETCH_ASSOC);
-	if ($row3['num'] > 0) {
-		$error['msg'] = "Please use a different name.";
-		echo json_encode($error);
-		exit();
-	}
+    $sql3 = "SELECT COUNT(last_name) AS num FROM characters WHERE last_name = :last_name";
+    $stmt3 = $pdo->prepare($sql3);
+    $stmt3->bindValue(':last_name', $newChar['last_name']);
+    $stmt3->execute();
+    $row3 = $stmt3->fetch(PDO::FETCH_ASSOC);
+    if ($row3['num'] > 0) {
+        $error['msg'] = "Please use a different name.";
+        echo json_encode($error);
+        exit();
+    }
 }
 
-$sql2          = "INSERT INTO characters (first_name, last_name, date_of_birth, address, height, eye_color, hair_color, sex, race, weight, owner_id, owner_name) VALUES (
-	:first_name, 
-	:last_name, 
-	:date_of_birth, 
-	:address, 
-	:height, 
-	:eye_color, 
-	:hair_color, 
-	:gender, 
-	:race, 
-	:weight, 
-	:owner_id, 
+$sql2 = "INSERT INTO characters (first_name, last_name, date_of_birth, address, height, eye_color, hair_color, sex, race, weight, owner_id, owner_name) VALUES (
+	:first_name,
+	:last_name,
+	:date_of_birth,
+	:address,
+	:height,
+	:eye_color,
+	:hair_color,
+	:gender,
+	:race,
+	:weight,
+	:owner_id,
 	:owner_name
 	)";
-$stmt2         = $pdo->prepare($sql2);
+$stmt2 = $pdo->prepare($sql2);
 $stmt2->bindValue(':first_name', $newChar['first_name']);
 $stmt2->bindValue(':last_name', $newChar['last_name']);
 $stmt2->bindValue(':date_of_birth', $newChar['date_of_birth']);
@@ -93,6 +92,6 @@ $stmt2->bindValue(':owner_name', $user['username']);
 $result = $stmt2->execute();
 if ($result) {
     $error['msg'] = "";
-	echo json_encode($error);
-	exit();
+    echo json_encode($error);
+    exit();
 }

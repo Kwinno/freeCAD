@@ -11,7 +11,7 @@ $newIdentity['name'] = strip_tags($_POST['name']);
 $error = array();
 
 // Check if name is taken
-$sql  = "SELECT COUNT(name) AS num FROM identities WHERE name = :name";
+$sql = "SELECT COUNT(name) AS num FROM identities WHERE name = :name";
 $stmt = $pdo->prepare($sql);
 $stmt->bindValue(':name', $newIdentity['name']);
 $stmt->execute();
@@ -23,14 +23,14 @@ if ($row['num'] > 0) {
 }
 
 if ($settings['identity_validation'] === "no") {
-    $sql2          = "INSERT INTO identities (name, department, created_on, user, user_name) VALUES (
-        :name, 
+    $sql2 = "INSERT INTO identities (name, department, created_on, user, user_name) VALUES (
+        :name,
         'Dispatch',
         :created_on,
         :user,
-        :user_name 
+        :user_name
         )";
-    $stmt2         = $pdo->prepare($sql2);
+    $stmt2 = $pdo->prepare($sql2);
     $stmt2->bindValue(':name', $newIdentity['name']);
     $stmt2->bindValue(':created_on', $us_date . ' ' . $time);
     $stmt2->bindValue(':user', $user_id);
@@ -41,16 +41,17 @@ if ($settings['identity_validation'] === "no") {
         echo json_encode($error);
         exit();
     }
-} elseif ($settings['identity_validation'] === "yes") {
-    $sql2          = "INSERT INTO identities (name, department, created_on, user, user_name, status) VALUES (
-        :name, 
+}
+elseif ($settings['identity_validation'] === "yes") {
+    $sql2 = "INSERT INTO identities (name, department, created_on, user, user_name, status) VALUES (
+        :name,
         'Dispatch',
         :created_on,
         :user,
         :user_name,
         'Approval Needed'
         )";
-    $stmt2         = $pdo->prepare($sql2);
+    $stmt2 = $pdo->prepare($sql2);
     $stmt2->bindValue(':name', $newIdentity['name']);
     $stmt2->bindValue(':created_on', $us_date . ' ' . $time);
     $stmt2->bindValue(':user', $user_id);
@@ -61,7 +62,8 @@ if ($settings['identity_validation'] === "no") {
         echo json_encode($error);
         exit();
     }
-} else {
+}
+else {
     $error['msg'] = "Fatal System Error - Contact Hydrid Support";
     echo json_encode($error);
     exit();

@@ -8,26 +8,25 @@ require '../../../config.php';
 require '../../../backend/user/auth/userIsLoggedIn.php';
 
 // Makes sure the person actually has a character set
-
 if (!isset($_SESSION['character_full_name'])) {
-	header('Location: ../../../../' . $url['civilian'] . '?v=nosession');
-	exit();
+    header('Location: ../../../../' . $url['civilian'] . '?v=nosession');
+    exit();
 }
 
 // Page PHP
-$sql             = "SELECT * FROM warrants WHERE wanted_person_id=:character_id";
-$stmt            = $pdo->prepare($sql);
+$sql = "SELECT * FROM warrants WHERE wanted_person_id=:character_id";
+$stmt = $pdo->prepare($sql);
 $stmt->bindValue(':character_id', $_SESSION['character_id']);
 $stmt->execute();
 $warrantDBcall = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (empty($warrantDBcall)) {
-	echo '
+    echo '
       You have no Warrants.
       ';
 }
 else {
-	echo '
+    echo '
       <table class="table table-borderless">
           <thead>
             <tr>
@@ -38,17 +37,17 @@ else {
           </thead>
             <tbody>
               ';
-	foreach($warrantDBcall as $displayWarrants) {
-		echo '
+    foreach ($warrantDBcall as $displayWarrants) {
+        echo '
         <tr>
             <td>' . $displayWarrants['reason'] . '</td>
             <td>' . $displayWarrants['signed_by'] . '</td>
             <td>' . $displayWarrants['issued_on'] . '</td>
         </tr>
         ';
-	}
+    }
 
-	echo '
+    echo '
             </tbody>
       </table>';
 }

@@ -8,17 +8,17 @@ require '../../../config.php';
 require '../../../backend/user/auth/userIsLoggedIn.php';
 
 // Makes sure the person actually has a character set
-
 if ($_SESSION['on_duty'] === "Dispatch" || $_SESSION['on_duty'] === "LEO") {
-  $call_id = strip_tags($_GET['id']);
-  $sql             = "SELECT * FROM 911calls WHERE call_id= ?";
-  $stmt            = $pdo->prepare($sql);
-  $stmt->execute([$call_id]);
-  $callInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+    $call_id = strip_tags($_GET['id']);
+    $sql = "SELECT * FROM 911calls WHERE call_id= ?";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$call_id]);
+    $callInfo = $stmt->fetch(PDO::FETCH_ASSOC);
 
-  $_SESSION['viewingCallID'] = $call_id;
+    $_SESSION['viewingCallID'] = $call_id;
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>

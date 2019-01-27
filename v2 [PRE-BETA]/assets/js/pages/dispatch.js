@@ -206,68 +206,68 @@ function suspendFirearmsLicense(str) {
 }
 
 function getActiveUnits() {
-  var isFocusedDispatch = false;
-  (function worker() {
-      $.ajax({
-          url: 'inc/backend/user/dispatch/getActiveUnits.php',
-          success: function(data) {
-              $(document).ajaxComplete(function() {
-                  $('.select-units').focus(function() {
-                      isFocusedDispatch = true;
-                  });
-                  $('.select-units').blur(function() {
-                      isFocusedDispatch = false;
-                  });
-              });
-              if (!isFocusedDispatch) {
-                  $('#getActiveUnits').html(data);
-              }
-          },
-          complete: function() {
-              setTimeout(worker, 1000);
-          }
-      });
-  })();
+    var isFocusedDispatch = false;
+    (function worker() {
+        $.ajax({
+            url: 'inc/backend/user/dispatch/getActiveUnits.php',
+            success: function(data) {
+                $(document).ajaxComplete(function() {
+                    $('.select-units').focus(function() {
+                        isFocusedDispatch = true;
+                    });
+                    $('.select-units').blur(function() {
+                        isFocusedDispatch = false;
+                    });
+                });
+                if (!isFocusedDispatch) {
+                    $('#getActiveUnits').html(data);
+                }
+            },
+            complete: function() {
+                setTimeout(worker, 1000);
+            }
+        });
+    })();
 }
 
 getActiveUnits();
 
 function get911Calls() {
-  (function worker() {
-      $.ajax({
-          url: 'inc/backend/user/dispatch/get911Calls.php',
-          success: function(data) {
-              $('#get911Calls').html(data);
-          },
-          complete: function() {
-              setTimeout(worker, 5000);
-          }
-      });
-  })();
+    (function worker() {
+        $.ajax({
+            url: 'inc/backend/user/dispatch/get911Calls.php',
+            success: function(data) {
+                $('#get911Calls').html(data);
+            },
+            complete: function() {
+                setTimeout(worker, 5000);
+            }
+        });
+    })();
 }
 
 get911Calls();
 
 function updateUnitStatus(selectObject) {
-  var i = selectObject.id;
-  var str = selectObject.value;
-  if (window.XMLHttpRequest) {
-      // code for IE7+, Firefox, Chrome, Opera, Safari
-      xmlhttp = new XMLHttpRequest();
-  } else {
-      // code for IE6, IE5
-      xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-  }
-  xmlhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-          //hmmmzz
-      }
-  };
-  xmlhttp.open("GET", "inc/backend/user/dispatch/updateUnitStatus.php?unit=" + i + "&status=" + str, true);
-  xmlhttp.send();
-  // alert(str + " " + uid);
-  $(".select-units").blur();
-  isFocused = false;
+    var i = selectObject.id;
+    var str = selectObject.value;
+    if (window.XMLHttpRequest) {
+        // code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            //hmmmzz
+        }
+    };
+    xmlhttp.open("GET", "inc/backend/user/dispatch/updateUnitStatus.php?unit=" + i + "&status=" + str, true);
+    xmlhttp.send();
+    // alert(str + " " + uid);
+    $(".select-units").blur();
+    isFocused = false;
 }
 
 function getAllActiveUnitsForCall() {
@@ -294,11 +294,11 @@ function getAllActiveUnitsForNewCall() {
                 $('#attachUnits').html(data);
             },
             complete: function() {
-              if ('#attachUnits' === "") {
-                setTimeout(getAllActiveUnitsForNewCall, 5000);
-              } else {
-                setTimeout(getAllActiveUnitsForNewCall, 60000);
-              }
+                if ('#attachUnits' === "") {
+                    setTimeout(getAllActiveUnitsForNewCall, 5000);
+                } else {
+                    setTimeout(getAllActiveUnitsForNewCall, 60000);
+                }
             }
         });
     })();
@@ -306,17 +306,17 @@ function getAllActiveUnitsForNewCall() {
 getAllActiveUnitsForNewCall();
 
 function getAttchedUnits() {
-  (function worker() {
-      $.ajax({
-          url: 'inc/backend/user/dispatch/getAttchedUnits.php',
-          success: function(data) {
-              $('#getAttchedUnits').html(data);
-          },
-          complete: function() {
-              setTimeout(worker, 1000);
-          }
-      });
-  })();
+    (function worker() {
+        $.ajax({
+            url: 'inc/backend/user/dispatch/getAttchedUnits.php',
+            success: function(data) {
+                $('#getAttchedUnits').html(data);
+            },
+            complete: function() {
+                setTimeout(worker, 1000);
+            }
+        });
+    })();
 }
 getAttchedUnits();
 
@@ -341,6 +341,7 @@ function assignUnit(str) {
         xmlhttp.send();
     }
 }
+
 function unassignUnit(str) {
     toastr.warning('Please Wait...')
     if (str == "") {
@@ -383,17 +384,17 @@ function clear911Call() {
 }
 
 function getBolos() {
-  (function worker() {
-      $.ajax({
-          url: 'inc/backend/user/dispatch/getBolos.php',
-          success: function(data) {
-              $('#getBolos').html(data);
-          },
-          complete: function() {
-              setTimeout(worker, 5000);
-          }
-      });
-  })();
+    (function worker() {
+        $.ajax({
+            url: 'inc/backend/user/dispatch/getBolos.php',
+            success: function(data) {
+                $('#getBolos').html(data);
+            },
+            complete: function() {
+                setTimeout(worker, 5000);
+            }
+        });
+    })();
 }
 
 getBolos();

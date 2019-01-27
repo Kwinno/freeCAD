@@ -2,31 +2,26 @@
 // General Configuration
 $GLOBAL['language'] = "en-us"; // Set Language
 $debug = true; // Toggle Debug
-
 // Version Number -- Do Not Change
-
 $version = "v2.0.0 (PRE-BETA)";
 
 // Set Language
 // require('languages/' . $GLOBAL['language'] . '.php');
 // Get Global Functions
-
 require_once "functions.php";
 
 // Get Site Config
-
-$sql             = "SELECT * FROM settings";
-$stmt            = $pdo->prepare($sql);
+$sql = "SELECT * FROM settings";
+$stmt = $pdo->prepare($sql);
 $stmt->execute();
 $settingsRow = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (empty($settingsRow)) {
-	throwError('Settings Table Missing/Broken', true);
-	die("Settings Table Missing/Broken");
+    throwError('Settings Table Missing/Broken', true);
+    die("Settings Table Missing/Broken");
 }
 
 // Define variables
-
 $settings['name'] = $settingsRow['site_name'];
 $settings['account_validation'] = $settingsRow['account_validation'];
 $settings['identity_validation'] = $settingsRow['identity_validation'];
@@ -37,20 +32,19 @@ $settings['add_warrant'] = $settingsRow['add_warrant'];
 $settings['discord_alerts'] = $settingsRow['discord_alerts'];
 $discord_webhook = $settingsRow['discord_webhook'];
 
-$sql2             = "SELECT * FROM servers";
-$stmt2            = $pdo->prepare($sql2);
+$sql2 = "SELECT * FROM servers";
+$stmt2 = $pdo->prepare($sql2);
 $stmt2->execute();
 $serversRow = $stmt2->fetch(PDO::FETCH_ASSOC);
 
 if (empty($serversRow)) {
-	throwError('Servers Table Missing/Broken', true);
-	die("Servers Table Missing/Broken");
+    throwError('Servers Table Missing/Broken', true);
+    die("Servers Table Missing/Broken");
 }
 
 $_SESSION['server'] = '1';
 
 // Define URLS
-
 require_once "urls.php";
 
 $ip = $_SERVER['REMOTE_ADDR'];

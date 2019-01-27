@@ -15,6 +15,7 @@ $pb_row = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if ($pb_row['priority'] === 1) {
     echo '1';
-} else {
+}
+else {
     echo '0';
 }

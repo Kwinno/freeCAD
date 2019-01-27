@@ -58,6 +58,7 @@ if (isset($_POST['updateSettingsBtn'])) {
 }
 ?>
 <?php include 'inc/page-top.php'; ?>
+
 <body>
     <?php
     if (isset($_GET['error']) && strip_tags($_GET['error']) === 'no-updates') {
@@ -72,14 +73,14 @@ if (isset($_POST['updateSettingsBtn'])) {
         <div class="container-fluid">
             <div class="row">
                 <div class="col">
-                <h4 class="page-title"><?php echo $page['name']; ?></h4>
+                    <h4 class="page-title"><?php echo $page['name']; ?></h4>
                 </div>
             </div>
             <!-- CONTENT HERE -->
             <div class="row">
                 <div class="col-6">
                     <div class="bg-picture card-box">
-                    <h4 class="m-t-0 header-title">Settings</h4>
+                        <h4 class="m-t-0 header-title">Settings</h4>
                         <div class="profile-info-name">
                             <img src="<?php echo $user['avatar']; ?>" class="img-thumbnail" alt="profile-image">
                             <div class="profile-info-detail">
@@ -109,20 +110,20 @@ if (isset($_POST['updateSettingsBtn'])) {
                 </div>
                 <div class="col-6">
                     <div class="bg-picture card-box">
-                    <h4 class="m-t-0 header-title">User Logs</h4>
-                    <!-- CONTENT -->
-                    <table id="datatable" class="table table-borderless">
-                        <thead>
-                        <tr>
-                            <th>Log ID</th>
-                            <th>Action</th>
-                            <th>Date/Time</th>
-                        </tr>
-                        </thead>
+                        <h4 class="m-t-0 header-title">User Logs</h4>
+                        <!-- CONTENT -->
+                        <table id="datatable" class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th>Log ID</th>
+                                    <th>Action</th>
+                                    <th>Date/Time</th>
+                                </tr>
+                            </thead>
 
 
-                        <tbody>
-                        <?php 
+                            <tbody>
+                                <?php
                         $sql             = "SELECT * FROM logs WHERE username=?";
                         $stmt            = $pdo->prepare($sql);
                         $stmt->execute([$user['username']]);
@@ -138,13 +139,13 @@ if (isset($_POST['updateSettingsBtn'])) {
                         ';
                         }
                         ?>
-                        </tbody>
-                    </table>
-                    <div class="clearfix"></div>
+                            </tbody>
+                        </table>
+                        <div class="clearfix"></div>
                     </div>
                 </div>
             </div>
-    </div>
-    <!-- CONTENT END -->
-    <?php include 'inc/copyright.php'; ?>
-    <?php include 'inc/page-bottom.php'; ?>
+        </div>
+        <!-- CONTENT END -->
+        <?php include 'inc/copyright.php'; ?>
+        <?php include 'inc/page-bottom.php'; ?>
