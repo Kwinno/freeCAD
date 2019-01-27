@@ -21,10 +21,10 @@ $page['name'] = 'Home';
         $stats['civ'] = null;
         $stats['ems'] = null;
 
-        $stats['users'] = $pdo->query('select count(*) from users')->fetchColumn();
-        $stats['staff'] = $pdo->query('select count(*) from users WHERE usergroup <> "User" AND usergroup <> "Unverified"')->fetchColumn();
-        $stats['civ'] = $pdo->query('select count(*) from characters')->fetchColumn();
-        $stats['ems'] = $pdo->query('select count(*) from identities')->fetchColumn();
+        $stats['users'] = $pdo->query('select count(*) from users')->fetchColumn(); 
+        $stats['staff'] = $pdo->query('select count(*) from users WHERE usergroup <> "User" AND usergroup <> "Unverified"')->fetchColumn(); 
+        $stats['civ'] = $pdo->query('select count(*) from characters')->fetchColumn(); 
+        $stats['ems'] = $pdo->query('select count(*) from identities')->fetchColumn(); 
         ?>
         <!-- CONTENT START -->
         <div class="wrapper m-b-15">
@@ -34,11 +34,6 @@ $page['name'] = 'Home';
                     <h4 class="page-title"><?php echo $page['name']; ?></h4>
                     </div>
                 </div>
-                <?php if ($user['root'] === 'true'): ?>
-                  <div class="alert alert-danger" role="alert">
-                    <strong>NOTICE: </strong> YOU ARE LOGGED IN AS ROOT. PLEASE DO NOT USE THIS AS YOUR MAIN ACCOUNT.
-                  </div>
-                <?php endif; ?>
                 <div class="alert alert-warning" role="alert">
                   <strong>Warning: </strong> This is a PRE-BETA release. We do not support public use of this version, as modules are missing and bugs may be present. Report any bugs on our Discord.
                 </div>

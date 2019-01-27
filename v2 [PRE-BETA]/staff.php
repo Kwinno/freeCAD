@@ -7,19 +7,7 @@ require_once 'inc/backend/user/auth/userIsLoggedIn.php';
 
 $page['name'] = 'Staff Panel';
 
-if (staff_siteSettings) {
-  $sql_rootCheck             = "SELECT * FROM users WHERE root = ?";
-  $stmt_rootCheck            = $pdo->prepare($sql_rootCheck);
-  $stmt_rootCheck->execute(['true']);
-  $user_rootCheck = $stmt_rootCheck->fetch(PDO::FETCH_ASSOC);
-
-  if ($user_rootCheck === false) {
-  	header('Location: setup/index.php');
-  	exit();
-  }
-}
-
-if (staff_access && staff_editUser) {
+if (staff_access && staff_editUsers) {
   if (isset($_POST['editUserBtn'])) {
     $updateUsername    = !empty($_POST['username']) ? trim($_POST['username']) : null;
     $updateEmail       = !empty($_POST['email']) ? trim($_POST['email']) : null;

@@ -8,22 +8,22 @@ $debug = true; // Toggle Debug
 $version = "v2.0.0 (PRE-BETA)";
 
 // Set Language
+// require('languages/' . $GLOBAL['language'] . '.php');
+// Get Global Functions
+
+require_once "functions.php";
 
 // Get Site Config
 
-$sql_settingsCheck             = "SELECT * FROM settings";
-$stmt_settingsCheck            = $pdo->prepare($sql_settingsCheck);
-$stmt_settingsCheck->execute();
-$settingsRow = $stmt_settingsCheck->fetch(PDO::FETCH_ASSOC);
+$sql             = "SELECT * FROM settings";
+$stmt            = $pdo->prepare($sql);
+$stmt->execute();
+$settingsRow = $stmt->fetch(PDO::FETCH_ASSOC);
 
 if (empty($settingsRow)) {
 	throwError('Settings Table Missing/Broken', true);
 	die("Settings Table Missing/Broken");
 }
-
-// Get Global Functions
-
-require_once "functions.php";
 
 // Define variables
 

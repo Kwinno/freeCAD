@@ -21,11 +21,6 @@ $page['name'] = 'Register';
         });
     </script>
     <body>
-        <?php
-        if (isset($_GET['setup']) && strip_tags($_GET['setup']) === 'complete') {
-            clientNotify('success', 'You have finished the setup, but still are highly recommended to create a seperate account besides root.');
-        }
-        ?>
         <div class="account-pages"></div>
         <div class="clearfix"></div>
         <div class="wrapper-page">
