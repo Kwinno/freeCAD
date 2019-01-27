@@ -88,6 +88,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
             }
         });
         $('#new911call').ajaxForm(function (error) {
+            console.log(error);
             var error = JSON.parse(error);
             if (error['msg'] === "") {
                 $('#new911callModal').modal('hide');
@@ -660,7 +661,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                                   <div class="row">
                                      <div class="col">
                                         <div class="form-group">
-                                           <input type="text" name="call_location" class="form-control" placeholder="Street" data-lpignore="true" required />
+                                           <input type="text" id="street_ac2" name="call_location" class="form-control" placeholder="Street" data-lpignore="true" required />
                                         </div>
                                      </div>
                                      <div class="col">

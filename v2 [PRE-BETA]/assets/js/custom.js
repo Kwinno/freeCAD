@@ -317,4 +317,8 @@ $( function() {
     minLength: 5,
     source: availableTags
   });
+  $( "#street_ac2" ).autocomplete({
+    minLength: 5,
+    source: availableTags
+  });
 });

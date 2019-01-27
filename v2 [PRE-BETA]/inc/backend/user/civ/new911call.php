@@ -17,15 +17,11 @@ if (!isset($_SESSION['character_full_name'])) {
 // Page PHP
 $call_description = !empty($_POST['call_description']) ? trim($_POST['call_description']) : null;
 $call_location = !empty($_POST['call_location']) ? trim($_POST['call_location']) : null;
-$call_postal = !empty($_POST['call_postal']) ? trim($_POST['call_postal']) : null;
 
 $call_description = strip_tags($_POST['call_description']);
 $call_location = strip_tags($_POST['call_location']);
 $call_postal = strip_tags($_POST['call_postal']);
 
-if (empty($call_postal)) {
-	$call_postal = "N/A";
-}
 
 $error = array();
 $sql          = "INSERT INTO 911calls (caller_id, call_description, call_location, call_postal, call_timestamp) VALUES (

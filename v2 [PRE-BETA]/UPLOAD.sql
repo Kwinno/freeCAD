@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2019 at 02:15 AM
+-- Generation Time: Jan 27, 2019 at 02:31 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -60,8 +60,7 @@ CREATE TABLE `911calls` (
   `caller_id` int(11) NOT NULL,
   `call_description` varchar(355) NOT NULL,
   `call_location` varchar(128) NOT NULL,
-  `call_crossstreat` varchar(128) NOT NULL,
-  `call_postal` int(11) NOT NULL,
+  `call_postal` varchar(64) DEFAULT NULL,
   `call_status` varchar(534) NOT NULL DEFAULT 'NOT ASSIGNED',
   `call_timestamp` text NOT NULL,
   `call_isPriority` enum('false','true') DEFAULT 'false'
