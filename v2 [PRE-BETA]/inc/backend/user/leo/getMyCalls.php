@@ -43,11 +43,11 @@ if ($_SESSION['on_duty'] === "LEO") {
               <tr>
                 <td width="60%">'.$rowCallInfo['call_description'].'</td>
                 <td>'.$rowCallInfo['call_location'].' / '.$rowCallInfo['call_postal'].'</td>
-                <td><a href="javascript:void(0);" data-href="inc/backend/user/dispatch/getCallInfo.php?id='.$rowCallInfo['call_id'].'" id="openCallInfoModal">View</a></td>
-              </tr>
-            </tbody>
-          </table>';
+                <td><a href="javascript:void(0);" data-href="inc/backend/user/dispatch/getCallInfo.php?id='.$rowCallInfo['call_id'].'" class="openCallInfoModal">View</a></td>
+              </tr>';
         }
+        echo '</tbody>
+      </table>';
       }
     } else {
       echo '<table class="table table-borderless">
@@ -64,14 +64,15 @@ if ($_SESSION['on_duty'] === "LEO") {
         $resultPriCall->execute(['true']);
         while ($rowPriCall = $resultPriCall->fetch(PDO::FETCH_ASSOC)) {
           echo '
-          <tr>
+          <tr class="table-danger">
             <td width="60%">'.$rowPriCall['call_description'].'</td>
             <td>'.$rowPriCall['call_location'].' / '.$rowPriCall['call_postal'].'</td>
-            <td><a href="javascript:void(0);" data-href="inc/backend/user/dispatch/getCallInfo.php?id='.$rowPriCall['call_id'].'" id="openCallInfoModal">View</a></td>
-          </tr>
-        </tbody>
-      </table>';
+            <td><a href="javascript:void(0);" data-href="inc/backend/user/dispatch/getCallInfo.php?id='.$rowPriCall['call_id'].'" class="openCallInfoModal">View</a></td>
+          </tr>';
     }
+    echo '
+    </tbody>
+  </table>';
 }
 }
 
@@ -82,7 +83,7 @@ if ($_SESSION['on_duty'] === "LEO") {
     <meta charset="utf-8">
     <script type="text/javascript">
     $(document).ready(function() {
-      $('#openCallInfoModal').on('click',function(){
+      $('.openCallInfoModal').on('click',function(){
           var dataURL = $(this).attr('data-href');
           $('#callModalBody.modal-body').load(dataURL,function(){
               $('#callInfoModal').modal({show:true});
