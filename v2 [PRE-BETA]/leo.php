@@ -438,7 +438,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 				    <!-- // -->
 						<!-- search name modal -->
 						<div class="modal fade" id="openNameSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							 <div class="modal-dialog modal-full" role="document">
+							 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 									<div class="modal-content">
 										 <div class="modal-header">
 												<h5 class="modal-title" id="exampleModalLabel">Name Database</h5>
@@ -461,7 +461,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 						<!-- // -->
 						<!-- search vehicle modal -->
 						<div class="modal fade" id="openVehicleSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							 <div class="modal-dialog modal-full" role="document">
+							 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 									<div class="modal-content">
 										 <div class="modal-header">
 												<h5 class="modal-title" id="exampleModalLabel">Vehicle Database</h5>
@@ -484,7 +484,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 						<!-- // -->
 						<!-- search firearm modal -->
 						<div class="modal fade" id="openFirearmSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-							 <div class="modal-dialog modal-full" role="document">
+							 <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 									<div class="modal-content">
 										 <div class="modal-header">
 												<h5 class="modal-title" id="exampleModalLabel">Firearms Database</h5>
