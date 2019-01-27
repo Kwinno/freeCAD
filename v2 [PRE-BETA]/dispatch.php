@@ -66,7 +66,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 }
 ?>
 <?php include 'inc/page-top.php'; ?>
-	<script src="assets/js/pages/dispatch.js"></script>
+	<script src="assets/js/pages/dispatch.js?v=2000"></script>
 	<script type="text/javascript">
 		$(document).ready(function () {
 			$('#createIdentity').ajaxForm(function (error) {
@@ -297,13 +297,13 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-6">
+							<div class="col-8">
 								<div class="card-box">
 									<h4 class="header-title mt-0 m-b-30">911 Calls</h4>
 									<div id="get911Calls"></div>
 								</div>
 							</div>
-							<div class="col-6">
+							<div class="col-4">
 								<div class="card-box">
 									<h4 class="header-title mt-0 m-b-30">BOLOs</h4>
 									<div id="getBolos"></div>
@@ -311,7 +311,11 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-8">
+							<?php if($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+								<div class="col-8">
+							<?php else: ?>
+								<div class="col-12">
+							<?php endif; ?>
 								<div class="card-box">
 									<h4 class="header-title mt-0 m-b-30">Active Units</h4>
 									<div id="getActiveUnits"></div>

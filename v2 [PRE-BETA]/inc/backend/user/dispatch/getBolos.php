@@ -29,7 +29,7 @@ if ($_SESSION['on_duty'] === "Dispatch" || $_SESSION['on_duty'] === "LEO") {
       while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
           echo "<td><center>" . $row['created_on'] . "</center></td>";
           echo "<td><center>" . truncate_string($row['description'], 100, ' .....') . "</center></td>";
-          echo '<td><center><a href="javascript:void(0);" data-href="inc/backend/user/dispatch/getBoloInfo.php?id='.$row['id'].'" id="openBoloInfoModal">View</a></center></td>';
+          echo '<td><center><a href="javascript:void(0);" data-href="inc/backend/user/dispatch/getBoloInfo.php?id='.$row['id'].'" class="openBoloInfoModal">View</a></center></td>';
           echo "</tr>";
     }
     echo '</table>';
@@ -44,7 +44,7 @@ if ($_SESSION['on_duty'] === "Dispatch" || $_SESSION['on_duty'] === "LEO") {
     <meta charset="utf-8">
     <script type="text/javascript">
     $(document).ready(function() {
-      $('#openBoloInfoModal').on('click',function(){
+      $('.openBoloInfoModal').on('click',function(){
           var dataURL = $(this).attr('data-href');
           $('#boloModalBody.modal-body').load(dataURL,function(){
               $('#boloInfoModal').modal({show:true});

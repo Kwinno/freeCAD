@@ -73,7 +73,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 
 ?>
 <?php include 'inc/page-top.php'; ?>
-<script src="assets/js/pages/civilian.js"></script>
+<script src="assets/js/pages/civilian.js?v=2000"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#createCharacter').ajaxForm(function (error) {

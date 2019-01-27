@@ -67,7 +67,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 }
 ?>
 <?php include 'inc/page-top.php'; ?>
-<script src="assets/js/pages/leo.js"></script>
+<script src="assets/js/pages/leo.js?v=2000"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#createIdentity').ajaxForm(function (error) {
