@@ -17,28 +17,28 @@ if (!isset($_SESSION['character_full_name'])) {
 // Page PHP
 $call_description = !empty($_POST['call_description']) ? trim($_POST['call_description']) : null;
 $call_location = !empty($_POST['call_location']) ? trim($_POST['call_location']) : null;
-$call_crossstreat = !empty($_POST['call_crossstreat']) ? trim($_POST['call_crossstreat']) : null;
 $call_postal = !empty($_POST['call_postal']) ? trim($_POST['call_postal']) : null;
 
 $call_description = strip_tags($_POST['call_description']);
 $call_location = strip_tags($_POST['call_location']);
-$call_crossstreat = strip_tags($_POST['call_crossstreat']);
 $call_postal = strip_tags($_POST['call_postal']);
 
+if (empty($call_postal)) {
+	$call_postal = "N/A";
+}
+
 $error = array();
-$sql          = "INSERT INTO 911calls (caller_id, call_description, call_location, call_crossstreat, call_postal, call_timestamp) VALUES (
-	:caller_id, 
-	:call_description, 
-	:call_location, 
-	:call_crossstreat, 
-	:call_postal, 
-	:call_timestamp 
+$sql          = "INSERT INTO 911calls (caller_id, call_description, call_location, call_postal, call_timestamp) VALUES (
+	:caller_id,
+	:call_description,
+	:call_location,
+	:call_postal,
+	:call_timestamp
 	)";
 $stmt         = $pdo->prepare($sql);
 $stmt->bindValue(':caller_id', $_SESSION['character_id']);
 $stmt->bindValue(':call_description', $call_description);
 $stmt->bindValue(':call_location', $call_location);
-$stmt->bindValue(':call_crossstreat', $call_crossstreat);
 $stmt->bindValue(':call_postal', $call_postal);
 $stmt->bindValue(':call_timestamp', $us_date . ' ' . $time);
 $result = $stmt->execute();

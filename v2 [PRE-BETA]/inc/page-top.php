@@ -37,7 +37,7 @@
         z-index: 9999;
     }
     .ui-autocomplete {
+      position: fixed;
       z-index: 215000000 !important;
     }
-
     </style>
