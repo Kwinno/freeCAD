@@ -37,6 +37,27 @@ $(document).ready(function() {
     });
 });
 
+function checkActiveDispatchers() {
+  $.ajax({
+      url: 'inc/backend/user/leo/checkActiveDispatchers.php',
+      success: function(data) {
+          $('#checkDispatchers').html(data);
+
+          if (data !== "") {
+              // If no dispatchers are online....
+                //Future update
+          } else {
+              // If dispatchers are online....
+                //Future update
+          }
+      },
+      complete: function() {
+          setTimeout(checkActiveDispatchers, 5000);
+      }
+  });
+}
+checkActiveDispatchers();
+
 function getActiveUnits() {
     (function worker() {
         $.ajax({

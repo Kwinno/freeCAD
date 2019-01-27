@@ -67,7 +67,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 }
 ?>
 <?php include 'inc/page-top.php'; ?>
-<script src="assets/js/pages/leo.js?v=2000"></script>
+<script src="assets/js/pages/leo.js?v=<?php echo $assets_ver ?>"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('#createIdentity').ajaxForm(function(error) {
@@ -329,11 +329,14 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                     </div>
                 </div>
             </div>
+            <div id="checkDispatchers">Loading...</div>
             <div class="row">
                 <div class="col-9">
                     <div class="card-box">
-                        <h4 class="header-title mt-0 m-b-30">My Calls</h4>
+                        <h4 class="header-title mt-0 m-b-30">My Calls
+                        </h4>
                         <div id="getMyCalls"></div>
+                        <div id="noDis911Calls"></div>
                     </div>
 
                     <div class="card-box">
@@ -347,14 +350,14 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                         <div class="form-group">
                             <select class="form-control" name="setUnitStatus" onChange='setUnitStatus(this)'>
                                 <?php
-										$sql             = "SELECT * FROM 10_codes";
-										$stmt            = $pdo->prepare($sql);
-										$stmt->execute();
-										$dbq10codes = $stmt->fetchAll(PDO::FETCH_ASSOC);
-										foreach($dbq10codes as $codes) {
-											echo '<option value="'. $codes['code'] .'">'. $codes['code'] .'</option>';
-										}
-										?>
+            										$sql             = "SELECT * FROM 10_codes";
+            										$stmt            = $pdo->prepare($sql);
+            										$stmt->execute();
+            										$dbq10codes = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            										foreach($dbq10codes as $codes) {
+            											echo '<option value="'. $codes['code'] .'">'. $codes['code'] .'</option>';
+            										}
+            										?>
                             </select>
                         </div>
                     </div>

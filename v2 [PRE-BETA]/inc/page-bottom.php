@@ -30,6 +30,6 @@
             });
             jQuery('#datepicker-inline').datepicker();
         </script>
-        <script src="assets/js/custom.js?v=2000"></script>
+        <script src="assets/js/custom.js?v=<?php echo $assets_ver ?>"></script>
 	</body>
 </html>

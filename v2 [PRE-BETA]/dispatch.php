@@ -21,8 +21,8 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
         $stmt->execute();
         $identityDB = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($identityDB === false) {
-			header('Location: '.$url['dispatch'].'?v=nosession&error=identity-not-found');
-			exit();
+					header('Location: '.$url['dispatch'].'?v=nosession&error=identity-not-found');
+					exit();
         } else {
             $identity_id             = $identityDB['identity_id'];
             $_SESSION['identity_id'] = $identity_id;
@@ -47,26 +47,26 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
             $_SESSION['on_duty'] = "Dispatch";
 
             if ($identity_owner !== $user_id) {
-				header('Location: '.$url['dispatch'].'?v=nosession&error=identity-owner');
-				exit();
-			}
+							header('Location: '.$url['dispatch'].'?v=nosession&error=identity-owner');
+							exit();
+						}
 
-			$stmt2              = $pdo->prepare("DELETE FROM `on_duty` WHERE `name`=:identity_name");
-			$stmt2->bindValue(':identity_name', $identity_name);
-			$result2 = $stmt2->execute();
-			$stmt3              = $pdo->prepare("INSERT INTO on_duty (name, department, status) VALUES (:name, :department, 'Off-Duty')");
-			$stmt3->bindValue(':name', $identity_name);
-			$stmt3->bindValue(':department', $identity_department);
-			$result3 = $stmt3->execute();
+						$stmt2              = $pdo->prepare("DELETE FROM `on_duty` WHERE `name`=:identity_name");
+						$stmt2->bindValue(':identity_name', $identity_name);
+						$result2 = $stmt2->execute();
+						$stmt3              = $pdo->prepare("INSERT INTO on_duty (name, department, status) VALUES (:name, :department, 'On-Duty')");
+						$stmt3->bindValue(':name', $identity_name);
+						$stmt3->bindValue(':department', $identity_department);
+						$result3 = $stmt3->execute();
 
-			header('Location: '.$url['dispatch'].'?v=main');
-			exit();
-        }
-    }
+						header('Location: '.$url['dispatch'].'?v=main');
+						exit();
+			        }
+			    }
 }
 ?>
 <?php include 'inc/page-top.php'; ?>
-<script src="assets/js/pages/dispatch.js?v=2000"></script>
+<script src="assets/js/pages/dispatch.js?v=<?php echo $assets_ver ?>"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('#createIdentity').ajaxForm(function(error) {
@@ -553,6 +553,69 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                 </div>
                 <!-- // -->
                 <?php break; ?>
+
+								<?php case "supervisor": ?>
+									<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+										<div class="row">
+											<div class="col-12">
+												<div class="card-box">
+		                        <h4 class="header-title mt-0 m-b-30"><?php echo $_SESSION['identity_name']; ?> <?php if ($_SESSION['identity_supervisor'] === "Yes"): ?><small>
+		                                <font color="white"><i>Supervisor</i></font>
+		                            </small><?php endif; ?></h4>
+		                        <?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+		                        <a href="dispatch.php?v=main"><button class="btn btn-info btn-sm">Back To Patrol Panel</button></a>
+		                        <?php endif; ?>
+		                    </div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-7">
+												<div class="card-box">
+                        	<h4 class="header-title mt-0 m-b-30">All LEO Identities</h4>
+													<table id="datatable" class="table table-borderless">
+														<thead>
+	                            <tr>
+	                                <th>Name</th>
+	                                <th>Supervisor</th>
+	                                <th>User</th>
+	                                <th>Status</th>
+	                                <th>Actions</th>
+	                            </tr>
+                            </thead>
+														<tbody>
+															<?php
+															$sql             = "SELECT * FROM identities WHERE department='Dispatch'";
+															$stmt            = $pdo->prepare($sql);
+															$stmt->execute();
+															$idsRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+															foreach ($idsRow as $identity) {
+															?>
+															<tr>
+																<td><?php echo $identity['name']?></td>
+																<td><?php echo $identity['supervisor']?></td>
+																<td><?php echo $identity['user_name']?></td>
+																<td><?php echo $identity['status']?></td>
+																<td><a href="dispatch.php?v=supervisor&a=edit-id&id=<?php echo $identity['identity_id']?>"><input type="button" class="btn btn-sm btn-success btn-block" value="Edit"></a></td>
+															</tr>
+															<?php } ?>
+														</tbody>
+													</table>
+												</div>
+											</div>
+											<div class="col-5">
+		                    <div class="card-box">
+	                        <h4 class="header-title mt-0 m-b-30">Pending Identities</h4>
+	                        <div id="getPendingIds"></div>
+		                    </div>
+			                </div>
+										</div>
+									<?php else: ?>
+										<div class="alert alert-danger" role="alert">
+				                You are not a supervisor.
+				            </div>
+									<?php endif; ?>
+								<?php break; ?>
 
                 <?php endswitch; ?>
             </div>

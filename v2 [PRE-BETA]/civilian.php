@@ -73,7 +73,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 
 ?>
 <?php include 'inc/page-top.php'; ?>
-<script src="assets/js/pages/civilian.js?v=2000"></script>
+<script src="assets/js/pages/civilian.js?v=<?php echo $assets_ver ?>"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('#createCharacter').ajaxForm(function(error) {
@@ -234,7 +234,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
-                                        <input type="text" class="form-control" required="" name="date_of_birth" placeholder="mm/dd/yyyy" id="datepicker">
+                                        <input class="form-control" type="date" required="" name="date_of_birth">
                                     </div>
                                 </div>
                             </div>

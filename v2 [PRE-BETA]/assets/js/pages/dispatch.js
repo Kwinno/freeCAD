@@ -417,3 +417,47 @@ function clearBOLO() {
     xmlhttp.open("GET", "inc/backend/user/dispatch/clearBolo.php", true);
     xmlhttp.send();
 }
+
+function getPendingIds() {
+    (function worker() {
+        $.ajax({
+            url: 'inc/backend/user/dispatch/getPendingIds.php',
+            success: function(data) {
+                $('#getPendingIds').html(data);
+            },
+            complete: function() {
+                // Schedule the next request when the current one's complete
+                setTimeout(worker, 1000);
+            }
+        });
+    })();
+}
+getPendingIds();
+
+function approveID(str) {
+    var i = str.id;
+
+    $.ajax({
+        url: "inc/backend/user/dispatch/approveID.php?id=" + i,
+        cache: false,
+        success: function(result) {
+            toastr.success('ID Approved.', 'System:', {
+                timeOut: 10000
+            })
+        }
+    });
+}
+
+function rejectID(str) {
+    var i = str.id;
+
+    $.ajax({
+        url: "inc/backend/user/dispatch/rejectID.php?id=" + i,
+        cache: false,
+        success: function(result) {
+            toastr.error('ID Rejected.', 'System:', {
+                timeOut: 10000
+            })
+        }
+    });
+}
