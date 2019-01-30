@@ -32,68 +32,7 @@ else {
         $user['steam_id'] = $userRow['steam_id'];
     }
 
-    // Default Values
-    $perms['banned'] = false;
-    $perms['panel_access'] = false;
-    $perms['staff_approveUsers'] = false;
-    $perms['staff_access'] = false;
-    $perms['staff_viewUsers'] = false;
-    $perms['staff_editUsers'] = false;
-    $perms['staff_siteSettings'] = false;
-    $perms['staff_banUsers'] = false;
-
-    // Define User Permissions
-    switch ($user['usergroup']) {
-        case "Banned":
-            $perms['banned'] = true;
-        break;
-
-        case "User":
-            $perms['panel_access'] = true;
-        break;
-
-        case "Moderator":
-            $perms['panel_access'] = true;
-            $perms['staff_approveUsers'] = true;
-            $perms['staff_access'] = true;
-            $perms['staff_viewUsers'] = true;
-        break;
-
-        case "Admin":
-            $perms['panel_access'] = true;
-            $perms['staff_approveUsers'] = true;
-            $perms['staff_access'] = true;
-            $perms['staff_viewUsers'] = true;
-            $perms['staff_editUsers'] = true;
-        break;
-
-        case "Super Admin":
-            $perms['panel_access'] = true;
-            $perms['staff_approveUsers'] = true;
-            $perms['staff_access'] = true;
-            $perms['staff_viewUsers'] = true;
-            $perms['staff_editUsers'] = true;
-            $perms['staff_siteSettings'] = true;
-            $perms['staff_banUsers'] = true;
-        break;
-    }
-
-    // Define Values
-    define("banned", $perms['banned']);
-    define("panel_access", $perms['panel_access']);
-    define("staff_approveUsers", $perms['staff_approveUsers']);
-    define("staff_access", $perms['staff_access']);
-    define("staff_viewUsers", $perms['staff_viewUsers']);
-    define("staff_editUsers", $perms['staff_editUsers']);
-    define("staff_siteSettings", $perms['staff_siteSettings']);
-    define("staff_banUsers", $perms['staff_banUsers']);
-
-    // Check If Banned
-    if (banned) {
-        session_destroy();
-        header('Location: ' . $url['login'] . '?error=banned');
-        exit();
-    }
+    require_once 'groupPerms.php';
 
     if (!strpos($_SERVER['REQUEST_URI'], "steam-required") !== false) {
         if ($settings['steam_required'] === "true") {

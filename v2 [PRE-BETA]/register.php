@@ -7,6 +7,7 @@ $page['name'] = 'Register';
 <script type="text/javascript">
     $(document).ready(function() {
         $('#userRegister').ajaxForm(function(error) {
+            console.log(error);
             if (error['msg'] == "") {
                 toastr.success('Account Created! You will be redirected to the Login page shortly.', 'System', {
                     timeOut: 10000

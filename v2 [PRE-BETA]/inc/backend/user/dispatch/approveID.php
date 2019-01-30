@@ -14,7 +14,7 @@ if (!isset($_SESSION['on_duty'])) {
 }
 
 // Supervisor Check
-if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings) {
+if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true') {
     // Page PHP
     $id = strip_tags($_GET['id']);
     $stmt = $pdo->prepare("UPDATE `identities` SET `status`='Active' WHERE `identity_id`=:id");

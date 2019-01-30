@@ -395,7 +395,7 @@ function getMyCalls() {
                 $('#getMyCalls').html(data);
             },
             complete: function() {
-                setTimeout(worker, 5000);
+                setTimeout(worker, 1000);
             }
         });
     })();

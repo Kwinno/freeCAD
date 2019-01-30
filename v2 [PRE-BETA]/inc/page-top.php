@@ -13,6 +13,9 @@
         <!-- DataTables -->
         <link href="assets/plugins/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/plugins/datatables/buttons.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+        <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
         <!-- Responsive datatable examples -->
         <link href="assets/plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
         <!-- Multi Item Selection examples -->
@@ -21,12 +24,10 @@
         <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/icons.css" rel="stylesheet" type="text/css" />
         <link href="assets/css/style.css?v=<?php echo $assets_ver ?>" rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
         <script src="//code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
         <script type="text/javascript" src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="assets/js/modernizr.min.js"></script>
         <script src="assets/js/ajaxform.js?v=<?php echo $assets_ver ?>"></script>
-        <link href="assets/plugins/select2/css/select2.min.css" rel="stylesheet" type="text/css" />
         <script src="assets/plugins/select2/js/select2.min.js" type="text/javascript"></script>
     </head>
     <style>

@@ -9,7 +9,7 @@ require '../../../backend/user/auth/userIsLoggedIn.php';
 
 $error = array();
 
-if (staff_access && staff_siteSettings) {
+if (staff_access === 'true' && staff_siteSettings === 'true') {
     $site_name = strip_tags($_POST['site_name']);
 
     $result = $pdo->prepare("UPDATE `settings` SET `site_name`= ?")

@@ -1,6 +1,9 @@
 function pleaseWaitMsg() {
     toastr.warning('Please wait...')
 }
+function notReadyMsg() {
+    toastr.warning('Opps! This feature is not ready for public use yet! Check back later.')
+}
 function update10codeID(id) {
     var i = id.id;
     alert(i);

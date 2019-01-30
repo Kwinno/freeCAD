@@ -15,7 +15,7 @@ if (!isset($_SESSION['on_duty'])) {
 }
 
 // Supervisor Check
-if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings) {
+if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true') {
   // Page PHP
   $sql             = "SELECT * FROM identities WHERE status='Approval Needed' AND department='Dispatch'";
   $stmt            = $pdo->prepare($sql);

@@ -240,7 +240,7 @@ function get911Calls() {
                 $('#get911Calls').html(data);
             },
             complete: function() {
-                setTimeout(worker, 5000);
+                setTimeout(worker, 1000);
             }
         });
     })();
@@ -279,7 +279,7 @@ function getAllActiveUnitsForCall() {
             },
             complete: function() {
                 // Schedule the next request when the current one's complete
-                setTimeout(getAllActiveUnitsForCall, 5000);
+                setTimeout(getAllActiveUnitsForCall, 2000);
             }
         });
     })();
@@ -295,7 +295,7 @@ function getAllActiveUnitsForNewCall() {
             },
             complete: function() {
                 if ('#attachUnits' === "") {
-                    setTimeout(getAllActiveUnitsForNewCall, 5000);
+                    setTimeout(getAllActiveUnitsForNewCall, 2000);
                 } else {
                     setTimeout(getAllActiveUnitsForNewCall, 60000);
                 }
@@ -391,7 +391,7 @@ function getBolos() {
                 $('#getBolos').html(data);
             },
             complete: function() {
-                setTimeout(worker, 5000);
+                setTimeout(worker, 2000);
             }
         });
     })();

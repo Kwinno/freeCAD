@@ -7,7 +7,7 @@ require_once 'inc/backend/user/auth/userIsLoggedIn.php';
 
 $page['name'] = 'Staff Panel';
 
-if (staff_access && staff_editUsers) {
+if (staff_access === 'true' && staff_editUsers === 'true') {
   if (isset($_POST['editUserBtn'])) {
     $updateUsername    = !empty($_POST['username']) ? trim($_POST['username']) : null;
     $updateEmail       = !empty($_POST['email']) ? trim($_POST['email']) : null;
@@ -17,33 +17,54 @@ if (staff_access && staff_editUsers) {
     $updateEmail       = strip_tags($updateEmail);
     $updateUsergroup   = strip_tags($updateUsergroup);
 
-    $sql = "UPDATE users SET username=?, email=?, usergroup=? WHERE user_id=?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([$updateUsername, $updateEmail, $updateUsergroup, $_SESSION['editing_user_id']]);
+    if ($updateUsergroup === '6') {
+        if (staff_SuperAdmin === 'true') {
+            $sql = "UPDATE users SET username=?, email=?, usergroup=? WHERE user_id=?";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$updateUsername, $updateEmail, $updateUsergroup, $_SESSION['editing_user_id']]);
+        } else {
+            echo "<script> location.replace('staff.php?m=users&error=group-perm'); </script>";
+            exit();
+        }
+    } else {
+        $sql = "UPDATE users SET username=?, email=?, usergroup=? WHERE user_id=?";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$updateUsername, $updateEmail, $updateUsergroup, $_SESSION['editing_user_id']]);
+    }
 
     echo "<script> location.replace('staff.php?m=users&user=edited'); </script>";
     exit();
   } elseif (isset($_POST['banUserBtn'])) {
-    $banReason    = !empty($_POST['reason']) ? trim($_POST['reason']) : null;
-    $banReason    = strip_tags($banReason);
+    if (staff_banUsers === 'true') {
+      $banReason    = !empty($_POST['reason']) ? trim($_POST['reason']) : null;
+      $banReason    = strip_tags($banReason);
 
-    $sql = "UPDATE users SET usergroup=?, ban_reason=? WHERE user_id=?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['Banned', $banReason, $_SESSION['editing_user_id']]);
+      $sql = "UPDATE users SET usergroup=?, ban_reason=? WHERE user_id=?";
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute(['Banned', $banReason, $_SESSION['editing_user_id']]);
 
-    echo "<script> location.replace('staff.php?m=users&user=banned'); </script>";
-    exit();
+      echo "<script> location.replace('staff.php?m=users&user=banned'); </script>";
+      exit();
+    } else {
+      echo "<script> location.replace('staff.php?m=users'); </script>";
+      exit();
+    }
   } elseif (isset($_POST['unbanUserBtn'])) {
-    $sql = "UPDATE users SET usergroup=?, ban_reason=? WHERE user_id=?";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(['User', NULL, $_SESSION['editing_user_id']]);
+    if (staff_banUsers === 'true') {
+      $sql = "UPDATE users SET usergroup=?, ban_reason=? WHERE user_id=?";
+      $stmt = $pdo->prepare($sql);
+      $stmt->execute(['User', NULL, $_SESSION['editing_user_id']]);
 
-    echo "<script> location.replace('staff.php?m=users&user=unbanned'); </script>";
-    exit();
+      echo "<script> location.replace('staff.php?m=users&user=unbanned'); </script>";
+      exit();
+    } else {
+      echo "<script> location.replace('staff.php?m=users'); </script>";
+      exit();
+    }
   }
 }
 
-if (staff_access) {
+if (staff_access === 'true' && staff_siteSettings === 'true') {
   if (isset($_POST['enableAlertsBtn'])) {
     $webhook_url    = !empty($_POST['webhook_url']) ? trim($_POST['webhook_url']) : null;
     $webhook_url    = strip_tags($webhook_url);
@@ -78,7 +99,7 @@ if (staff_access) {
   }
 }
 
-if ($user['usergroup'] === "Super Admin") {
+if (staff_siteSettings === 'true') {
   // Makes sure the user is actually Super Admin before allowing them to wipe anything
   if (isset($_POST['wipeLogsBtn'])) {
     sleep(3);
@@ -151,6 +172,12 @@ $view = strip_tags($_GET['m']);
       clientNotify('success', 'All Characters Have Been Wiped!');
     } elseif (isset($_GET['success']) && strip_tags($_GET['success']) === 'wiped-identities') {
       clientNotify('success', 'All Characters Have Been Wiped!');
+    } elseif (isset($_GET['error']) && strip_tags($_GET['error']) === 'perm') {
+      clientNotify('error', 'You can not edit this user!');
+    } elseif (isset($_GET['error']) && strip_tags($_GET['error']) === 'group-perm') {
+      clientNotify('error', 'You can not set someones usergroup the same or higher of yours.');
+    } elseif (isset($_GET['user']) && strip_tags($_GET['user']) === 'edited') {
+      clientNotify('success', 'User edited.');
     }
     ?>
     <!-- CONTENT START -->
@@ -162,11 +189,11 @@ $view = strip_tags($_GET['m']);
                 </div>
             </div>
             <!-- CONTENT HERE -->
-            <?php if (staff_access): ?>
+            <?php if (staff_access === 'true'): ?>
             <?php switch($view):
 			         case "settings": ?>
             <?php
-               if (!staff_siteSettings) {
+               if (!staff_siteSettings === 'true') {
                 exit('<div class="alert alert-danger" role="alert"><strong>You do not have permission to access this page.</strong></div>');
                }
                ?>
@@ -254,7 +281,7 @@ $view = strip_tags($_GET['m']);
                         </form>
                     </div>
                     <div class="card-box">
-                        <h4 class="m-t-0 header-title">Site Actions (SUPER ADMIN ONLY)</h4>
+                        <h4 class="m-t-0 header-title">Site Actions</h4>
                         <div class="alert alert-danger" role="alert"><strong>Notice:</strong> These should only be used in required situations. Anything deleted can NOT be recovered.</div>
                         <form method="POST">
                             <div class="row">
@@ -322,7 +349,7 @@ $view = strip_tags($_GET['m']);
 
             <?php case "pending-users":?>
             <?php
-               if (!staff_approveUsers) {
+               if (!staff_approveUsers === 'true') {
                 exit('<div class="alert alert-danger" role="alert"><strong>You do not have permission to access this page.</strong></div>');
                }
               ?>
@@ -340,7 +367,7 @@ $view = strip_tags($_GET['m']);
 
             <?php case "users":?>
             <?php
-               if (!staff_viewUsers) {
+               if (!staff_viewUsers === 'true') {
                 exit('<div class="alert alert-danger" role="alert"><strong>You do not have permission to access this page.</strong></div>');
                }
               ?>
@@ -373,8 +400,13 @@ $view = strip_tags($_GET['m']);
                             <tr>
                               <td>'. $user['user_id'] .'</td>
                               <td>'. $user['username'] .'</td>
-                              <td>'. $user['email'] .'</td>
-                              <td>'. $user['usergroup'] .'</td>
+                              <td>'. $user['email'] .'</td>';
+                              $sql1_gugp             = "SELECT * FROM usergroups WHERE id = :usergroup";
+                              $stmt1_gugp            = $pdo->prepare($sql1_gugp);
+                              $stmt1_gugp->bindValue(':usergroup', $user['usergroup']);
+                              $stmt1_gugp->execute();
+                              $groupRow = $stmt1_gugp->fetch(PDO::FETCH_ASSOC);
+                              echo '<td>'. $groupRow['name'] .'</td>
                               <td>'. $user['join_date'] .'</td>
                               <td><a href="staff.php?m=edit-user&user-id='. $user['user_id'] .'"><input type="button" class="btn btn-sm btn-success btn-block" value="Edit"></a></td>
                           </tr>
@@ -390,7 +422,7 @@ $view = strip_tags($_GET['m']);
 
             <?php case "edit-user": ?>
             <?php
-               if (!staff_editUsers) {
+               if (!staff_editUsers === 'true') {
                 exit('<div class="alert alert-danger" role="alert"><strong>You do not have permission to access this page.</strong></div>');
                }
               ?>
@@ -416,13 +448,13 @@ $view = strip_tags($_GET['m']);
                         $editing_user['steam_id'] = $userDB['steam_id'];
                         $editing_user['avatar'] = $userDB['avatar'];
 
-                        if ($editing_user['usergroup'] === "Banned") {
+                        if ($editing_user['usergroup'] === $settings['banGroup']) {
                           $editing_user['isBanned'] = true;
                         } else {
                           $editing_user['isBanned'] = false;
                         }
 
-                        if ($user['usergroup'] === "Admin" && $editing_user['usergroup'] === "Super Admin" || $editing_user['usergroup'] === "Admin") {
+                        if ($editing_user['user_id'] === $user_id) {
                           echo "<script> location.replace('staff.php?m=users&error=perm'); </script>";
                           exit();
                         }
@@ -432,9 +464,9 @@ $view = strip_tags($_GET['m']);
             <div class="row">
                 <div class="col-12">
                     <?php if($editing_user['isBanned']): ?>
-                    <div class="alert alert-danger" role="alert">
-                        <strong>THIS USER IS BANNED. YOU CAN NOT EDIT THIS USER UNLESS THEY ARE UNBANNED.</strong>
-                    </div>
+                      <div class="alert alert-danger" role="alert">
+                          <strong>THIS USER IS BANNED. YOU CAN NOT EDIT THIS USER UNLESS THEY ARE UNBANNED.</strong>
+                      </div>
                     <?php endif; ?>
                 </div>
                 <div class="col-6">
@@ -459,23 +491,38 @@ $view = strip_tags($_GET['m']);
                                     <div class="form-group">
                                         <div class="col-12">
                                             <label for="usergroup">Usergroup</label>
-                                            <select class="custom-select my-1 mr-sm-2" id="usergroup" name="usergroup">
-                                                <option selected value="<?php echo $editing_user['usergroup']; ?>"><?php echo $editing_user['usergroup']; ?> (Current)</option>
-                                                <option value="Unverified">Unverified</option>
-                                                <option value="User">User</option>
-                                                <option value="Moderator">Moderator</option>
-                                                <option value="Admin">Admin</option>
-                                                <option value="Super Admin">Super Admin</option>
+                                            <select class="form-control custom-select my-1 mr-sm-2" id="usergroup" name="usergroup">
+                                              <?php
+                                              $sql2_gugp             = "SELECT * FROM usergroups WHERE id = :usergroup";
+                                              $stmt2_gugp            = $pdo->prepare($sql2_gugp);
+                                              $stmt2_gugp->bindValue(':usergroup', $editing_user['usergroup']);
+                                              $stmt2_gugp->execute();
+                                              $groupRow2 = $stmt2_gugp->fetch(PDO::FETCH_ASSOC);
+                                              ?>
+                                                <option selected value="<?php echo $editing_user['usergroup']; ?>"><?php echo $groupRow2['name'] ?> (Current)</option>
+                                                <?php
+                                                $sql_getAllGroups             = "SELECT * FROM usergroups where id <> ?";
+                                                $stmt2_getAllGroups            = $pdo->prepare($sql_getAllGroups);
+                                                $stmt2_getAllGroups->execute([$editing_user['usergroup']]);
+                                                $groups = $stmt2_getAllGroups->fetchAll(PDO::FETCH_ASSOC);
+
+                                                foreach ($groups as $groupDB) {
+                                                ?>
+                                                <option value="<?php echo $groupDB['id'] ?>"><?php echo $groupDB['name'] ?></option>
+
+                                                <?php } ?>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="form-group text-center">
                                         <div class="col-12">
+                                          <?php if ($editing_user['usergroup'] === '6' && staff_SuperAdmin === 'true'): ?>
                                             <?php if($editing_user['isBanned']): ?>
-                                            <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" disabled>Edit User</button>
+                                              <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" disabled>Edit User</button>
                                             <?php else: ?>
-                                            <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit" name="editUserBtn">Edit User</button>
+                                              <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit" name="editUserBtn">Edit User</button>
                                             <?php endif; ?>
+                                          <?php endif; ?>
                                         </div>
                                     </div>
                                 </form>
@@ -488,24 +535,30 @@ $view = strip_tags($_GET['m']);
                     <div class="bg-picture card-box">
                         <h4 class="m-t-0 header-title">Ban Manager</h4>
                         <form method="POST">
-                            <?php if($editing_user['isBanned']): ?>
-                            <div class="form-group text-center">
-                                <div class="col-12">
-                                    <button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="unbanUserBtn">Unban User</button>
+                            <?php if ($editing_user['usergroup'] === '6' && staff_SuperAdmin === 'true'): ?>
+                                <?php if($editing_user['isBanned']): ?>
+                                <div class="form-group text-center">
+                                    <div class="col-12">
+                                        <button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="unbanUserBtn">Unban User</button>
+                                    </div>
                                 </div>
-                            </div>
+                                <?php else: ?>
+                                <div class="form-group">
+                                    <div class="col-12">
+                                        <label for="reason">Reason</label>
+                                        <input class="form-control" type="text" required="" id="reason" name="reason" placeholder="Reason">
+                                    </div>
+                                </div>
+                                <div class="form-group text-center">
+                                    <div class="col-12">
+                                        <button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="banUserBtn">Ban User</button>
+                                    </div>
+                                </div>
+                              <?php endif; ?>
                             <?php else: ?>
-                            <div class="form-group">
-                                <div class="col-12">
-                                    <label for="reason">Reason</label>
-                                    <input class="form-control" type="text" required="" id="reason" name="reason" placeholder="Reason">
-                                </div>
-                            </div>
-                            <div class="form-group text-center">
-                                <div class="col-12">
-                                    <button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="banUserBtn">Ban User</button>
-                                </div>
-                            </div>
+                              <div class="alert alert-danger" role="alert">
+                                  <strong>No Permission.</strong>
+                              </div>
                             <?php endif; ?>
                         </form>
                         <div class="clearfix"></div>
@@ -526,7 +579,7 @@ $view = strip_tags($_GET['m']);
 
 
                             <tbody>
-                                <?php
+                            <?php
                           $sql             = "SELECT * FROM logs WHERE username=?";
                           $stmt            = $pdo->prepare($sql);
                           $stmt->execute([$editing_user['username']]);
@@ -549,6 +602,89 @@ $view = strip_tags($_GET['m']);
                 </div>
             </div>
         </div>
+        <?php break; ?>
+
+        <?php case "usergroups": ?>
+          <?php if (staff_siteSettings === 'false'): ?>
+            <div class="alert alert-danger" role="alert">
+              You can not edit usergroups.
+            </div>
+          <?php endif; ?>
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="card-box">
+                      <h4 class="m-t-0 header-title">Usergroups</h4>
+                      <table id="datatable" class="table table-borderless">
+                          <thead>
+                              <tr>
+                                  <th>ID</th>
+                                  <th>Name</th>
+                                  <th># of Users In Group</th>
+                                  <th><center>Actions</center></th>
+                              </tr>
+                          </thead>
+
+
+                          <tbody>
+                        <?php
+                        $sql             = "SELECT * FROM usergroups";
+                        $stmt            = $pdo->prepare($sql);
+                        $stmt->execute();
+                        $usergroupsRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                        foreach ($usergroupsRow as $userGroup) {
+                          echo '
+                          <tr>
+                            <td>'. $userGroup['id'] .'</td>
+                            <td>'. $userGroup['name'] .'</td>';
+                            $sql_countGroupMembers = "SELECT count(*) FROM `users` WHERE usergroup = ?";
+                            $result_countGroupMembers = $pdo->prepare($sql_countGroupMembers);
+                            $result_countGroupMembers->execute([$userGroup['id']]);
+                            $countUsergroupMembers = $result_countGroupMembers->fetchColumn();
+
+
+                            echo '
+                            <td>'. $countUsergroupMembers .'</td>
+                            <td><input type="button" onClick="notReadyMsg();" class="btn btn-sm btn-success btn-block" value="Edit"></td>
+                            </tr>
+                          ';
+                        }
+                        ?>
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+          </div>
+        <?php break; ?>
+
+        <?php case "group-id": ?>
+            <?php
+                if (isset($_GET['group-id']) && strip_tags($_GET['group-id'])) {
+                $id   = $_GET['group-id'];
+                $sql  = "SELECT * FROM usergroups WHERE id = :id";
+                $stmt = $pdo->prepare($sql);
+                $stmt->bindValue(':id', $id);
+                $stmt->execute();
+                $groupDB = $stmt->fetch(PDO::FETCH_ASSOC);
+                    if ($groupDB === false) {
+                        echo "<script> location.replace('staff.php?m=users'); </script>";
+                        exit();
+                    } else {
+                        $editing_group['id'] = $groupDB['id'];
+                        $_SESSION['editing_group_id'] = $editing_group['id'];
+                        $editing_group['perm_isBanned'] = $groupDB['isBanned'];
+                        $editing_group['perm_panel_access'] = $groupDB['panel_access'];
+                        $editing_group['perm_staff_approveUsers'] = $groupDB['staff_approveUsers'];
+                        $editing_group['perm_staff_access'] = $groupDB['staff_access'];
+                        $editing_group['perm_staff_viewUsers'] = $groupDB['staff_viewUsers'];
+                        $editing_group['perm_staff_editAdmins'] = $groupDB['staff_editAdmins'];
+                        $editing_group['perm_staff_siteSettings'] = $groupDB['staff_siteSettings'];
+                        $editing_group['perm_staff_banUsers'] = $groupDB['staff_banUsers'];
+                        $editing_group['default_group'] = $groupDB['default_group'];
+                    }
+                }
+            ?>
+
         <?php break; ?>
 
         <?php endswitch; ?>

@@ -72,10 +72,10 @@
                         <li class="has-submenu">
                             <a href="dispatch.php?v=nosession"><i class="mdi mdi-phone-in-talk"></i> <span> Dispatch </span> </a>
                         </li>
-                        <?php if (staff_access): ?>
+                        <?php if (staff_access === 'true'): ?>
                           <li class="has-submenu">
                             <a href="#"><i class="mdi mdi-file-lock"></i><span> Staff </span></a>
-                              <?php if (staff_access): ?>
+                              <?php if (staff_access === 'true'): ?>
                                 <ul class="submenu megamenu">
                                     <li>
                                         <ul>
@@ -90,6 +90,11 @@
                                     <li>
                                         <ul>
                                             <a href="<?php echo $url['staff']; ?>?m=pending-users">Pending Users</a>
+                                        <ul>
+                                    </li>
+                                    <li>
+                                        <ul>
+                                            <a href="<?php echo $url['staff']; ?>?m=usergroups">Usergroups</a>
                                         <ul>
                                     </li>
                                 </ul>

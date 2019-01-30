@@ -29,6 +29,7 @@
         $stmt3->bindValue(':division', $_SESSION['identity_division']);
         $stmt3->bindValue(':name', $_SESSION['identity_name']);
         $result = $stmt3->execute();
+        logAction('Started Shift (LEO) - '.$datetime.'', $_SESSION['identity_name']);
     } else {
         $sql5          = "INSERT INTO on_duty (name, department, division, status) VALUES (:name, :department, :division, '10-41')";
         $stmt5         = $pdo->prepare($sql5);
@@ -36,10 +37,12 @@
         $stmt5->bindValue(':department', $_SESSION['identity_department']);
         $stmt5->bindValue(':division', $_SESSION['identity_division']);
         $result = $stmt5->execute();
+        logAction('Started Shift (LEO) - '.$datetime.'', $_SESSION['identity_name']);
     }
     } else {
       $stmt2              = $pdo->prepare("UPDATE `on_duty` SET `status`=:status WHERE `name`=:name");
       $stmt2->bindValue(':status', $status);
       $stmt2->bindValue(':name', $_SESSION['identity_name']);
       $result = $stmt2->execute();
+      logAction('Started Shift (LEO) - '.$datetime.'', $_SESSION['identity_name']);
     }

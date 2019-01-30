@@ -4,7 +4,7 @@ $GLOBAL['language'] = "en-us"; // Set Language
 $debug = true; // Toggle Debug
 // Version Number -- Do Not Change
 $version = "v2.0.0 (PRE-BETA)";
-$assets_ver = "2003";
+$assets_ver = "2008";
 
 // Set Language
 // require('languages/' . $GLOBAL['language'] . '.php');
@@ -32,6 +32,11 @@ $settings['civ_side_warrants'] = $settingsRow['civ_side_warrants'];
 $settings['add_warrant'] = $settingsRow['add_warrant'];
 $settings['discord_alerts'] = $settingsRow['discord_alerts'];
 $discord_webhook = $settingsRow['discord_webhook'];
+
+//group settings
+$settings['unverifiedGroup'] = $settingsRow['group_unverifiedGroup'];
+$settings['verifiedGroup'] = $settingsRow['group_verifiedGroup'];
+$settings['banGroup'] = $settingsRow['group_banGroup'];
 
 $sql2 = "SELECT * FROM servers";
 $stmt2 = $pdo->prepare($sql2);

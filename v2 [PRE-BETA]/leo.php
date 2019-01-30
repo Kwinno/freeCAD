@@ -60,8 +60,8 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 			$stmt3->bindValue(':division', $identity_division);
 			$result3 = $stmt3->execute();
 
-            header('Location: '.$url['leo'].'?v=main');
-			exit();
+          header('Location: '.$url['leo'].'?v=main');
+	         exit();
         }
     }
 }
@@ -323,7 +323,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                         <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#notepadModal">Notepad</button>
                         <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#activeUnitsModal">Active Units</button>
                         <button class="btn btn-danger btn-sm" onclick="officerPanicBtn();">PANIC BUTTON</button>
-                        <?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+                        <?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
                         <a href="leo.php?v=supervisor"><button class="btn btn-darkred btn-sm">Supervisor Panel</button></a>
                         <?php endif; ?>
                     </div>
@@ -362,7 +362,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                         </div>
                     </div>
 
-                    <?php if($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+                    <?php if($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
                     <div class="card-box">
                         <h4 class="header-title mt-0 m-b-30">AOP Editor</h4>
                         <form method="post" action="inc/backend/user/leo/setAOP.php" id="changeAOP">
@@ -380,7 +380,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                     </div>
                     <?php endif; ?>
 
-                    <?php if($settings['add_warrant'] === "supervisor" && $_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+                    <?php if($settings['add_warrant'] === "supervisor" && $_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
                     <div class="card-box">
                         <h4 class="header-title mt-0 m-b-30">Quick Warrant Creator</h4>
                         <form method="post" action="inc/backend/user/leo/addWarrant.php" id="addWarrant">
@@ -630,7 +630,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
             <?php break; ?>
 
             <?php case "supervisor": ?>
-            <?php if($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+            <?php if($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
             <?php if(isset($_GET['a']) && strip_tags($_GET['a']) === 'edit-id'): ?>
             <?php
 								$id   = $_GET['id'];
@@ -818,7 +818,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                         <h4 class="header-title mt-0 m-b-30"><?php echo $_SESSION['identity_name']; ?> <?php if ($_SESSION['identity_supervisor'] === "Yes"): ?><small>
                                 <font color="white"><i>Supervisor</i></font>
                             </small><?php endif; ?></h4>
-                        <?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+                        <?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
                         <a href="leo.php?v=main"><button class="btn btn-info btn-sm">Back To Patrol Panel</button></a>
                         <?php endif; ?>
                     </div>

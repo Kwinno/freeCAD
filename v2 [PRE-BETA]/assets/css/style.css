@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);
+@import url(https://fonts.googleapis.com/css?family=Varela+Round);
 /* =============
   == Core List==
 
@@ -16,7 +16,7 @@
 ============= */
 body {
   background: #253138;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Varela Round', sans-serif;
   margin: 0;
   padding-bottom: 65px;
   overflow: scroll;
@@ -43,7 +43,7 @@ html {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 10px 0;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Varela Round', sans-serif;
   color: rgba(255, 255, 255, 0.9);
 }
 
@@ -169,7 +169,7 @@ hr {
   line-height: 16px;
   margin-bottom: 8px;
   margin-top: 0;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Varela Round', sans-serif;
 }
 
 /* =============
@@ -908,7 +908,7 @@ select[multiple] {
   color: #98a6ad;
   font-size: 15px;
   font-weight: 600;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Varela Round', sans-serif;
 }
 
 .nav > li > a:focus, .nav > li > a:hover {
@@ -3586,7 +3586,7 @@ File: Pages
 /* Sweet Alert */
 /* =========== */
 .swal2-modal {
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Varela Round', sans-serif;
   box-shadow: 0 10px 33px rgba(0, 0, 0, 0.1) !important;
 }
 
@@ -4275,7 +4275,7 @@ h3.timeline-title {
 ============= */
 div.hopscotch-bubble, div.hopscotch-bubble h3,
 div.hopscotch-bubble .hopscotch-content {
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Varela Round', sans-serif;
 }
 
 div.hopscotch-bubble {
@@ -4360,7 +4360,7 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
 
 .pricing-column .plan-title {
   font-size: 16px;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Varela Round', sans-serif;
   margin-bottom: 10px;
   color: #188ae2;
   text-transform: uppercase;
@@ -4370,7 +4370,7 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
 
 .pricing-column .plan-price {
   font-size: 48px;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Varela Round', sans-serif;
   margin-bottom: 10px;
   color: #ffffff;
 }
@@ -4471,7 +4471,7 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
   margin-top: 0px;
   font-size: 15px;
   font-weight: 500;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Varela Round', sans-serif;
 }
 
 .kanban-box .kanban-detail h4 a {
@@ -4601,7 +4601,7 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
 
 .wrapper-page .logo {
   font-size: 42px;
-  font-family: 'Nunito', cursive;
+  font-family: 'Quicksand', cursive;
   color: #FFFFFF;
 }
 

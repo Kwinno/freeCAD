@@ -14,7 +14,7 @@ if (!isset($_SESSION['on_duty'])) {
 	exit();
 }
 
-if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings) {
+if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true') {
 	// Page PHP
 
 	$id = strip_tags($_GET['id']);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 27, 2019 at 04:40 PM
+-- Generation Time: Jan 30, 2019 at 10:41 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -213,7 +213,7 @@ CREATE TABLE `servers` (
 --
 
 INSERT INTO `servers` (`id`, `name`, `aop`, `priority`) VALUES
-(1, 'Server 1', 'Blaine County', 0);
+(1, 'Server 1', 'Not Set', 0);
 
 -- --------------------------------------------------------
 
@@ -231,15 +231,18 @@ CREATE TABLE `settings` (
   `discord_webhook` text,
   `timezone` varchar(128) NOT NULL DEFAULT 'America/Los_Angeles',
   `civ_side_warrants` varchar(36) NOT NULL DEFAULT 'false',
-  `add_warrant` enum('all','supervisor') NOT NULL DEFAULT 'supervisor'
+  `add_warrant` enum('all','supervisor') NOT NULL DEFAULT 'supervisor',
+  `group_unverifiedGroup` int(11) NOT NULL DEFAULT '2',
+  `group_verifiedGroup` int(11) NOT NULL DEFAULT '3',
+  `group_banGroup` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `settings`
 --
 
-INSERT INTO `settings` (`setting_id`, `site_name`, `account_validation`, `identity_validation`, `steam_required`, `discord_alerts`, `discord_webhook`, `timezone`, `civ_side_warrants`, `add_warrant`) VALUES
-(1, 'Hydrid CAD/MDT', 'no', 'no', 'false', 'false', NULL, 'America/New_York', 'false', 'supervisor');
+INSERT INTO `settings` (`setting_id`, `site_name`, `account_validation`, `identity_validation`, `steam_required`, `discord_alerts`, `discord_webhook`, `timezone`, `civ_side_warrants`, `add_warrant`, `group_unverifiedGroup`, `group_verifiedGroup`, `group_banGroup`) VALUES
+(1, 'Hydrid CAD/MDT', 'no', 'yes', 'false', 'false', NULL, 'America/New_York', 'false', 'supervisor', 2, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -262,6 +265,40 @@ CREATE TABLE `tickets` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `usergroups`
+--
+
+CREATE TABLE `usergroups` (
+  `id` int(11) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `isBanned` enum('false','true') NOT NULL DEFAULT 'false',
+  `panel_access` enum('false','true') NOT NULL DEFAULT 'true',
+  `staff_approveUsers` enum('false','true') NOT NULL DEFAULT 'false',
+  `staff_access` enum('false','true') NOT NULL DEFAULT 'false',
+  `staff_viewUsers` enum('false','true') NOT NULL DEFAULT 'false',
+  `staff_editUsers` enum('false','true') NOT NULL DEFAULT 'false',
+  `staff_editAdmins` enum('false','true') NOT NULL DEFAULT 'false',
+  `staff_siteSettings` enum('false','true') NOT NULL DEFAULT 'false',
+  `staff_banUsers` enum('false','true') NOT NULL DEFAULT 'false',
+  `staff_SuperAdmin` enum('false','true') NOT NULL DEFAULT 'false',
+  `default_group` enum('false','true') NOT NULL DEFAULT 'false'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `usergroups`
+--
+
+INSERT INTO `usergroups` (`id`, `name`, `isBanned`, `panel_access`, `staff_approveUsers`, `staff_access`, `staff_viewUsers`, `staff_editUsers`, `staff_editAdmins`, `staff_siteSettings`, `staff_banUsers`, `staff_SuperAdmin`, `default_group`) VALUES
+(1, 'Banned', 'true', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'true'),
+(2, 'Unverified', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'true'),
+(3, 'User', 'false', 'true', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'true'),
+(4, 'Moderator', 'false', 'true', 'true', 'true', 'true', 'false', 'false', 'false', 'false', 'false', 'true'),
+(5, 'Admin', 'false', 'true', 'true', 'true', 'true', 'true', 'false', 'false', 'true', 'false', 'true'),
+(6, 'Super Admin', 'false', 'true', 'true', 'true', 'true', 'true', 'true', 'true', 'true', 'true', 'true');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -270,7 +307,7 @@ CREATE TABLE `users` (
   `username` varchar(36) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(164) NOT NULL,
-  `usergroup` enum('Banned','Unverified','User','Moderator','Admin','Super Admin') NOT NULL DEFAULT 'User',
+  `usergroup` int(11) DEFAULT NULL,
   `join_date` varchar(126) NOT NULL,
   `join_ip` varchar(126) NOT NULL,
   `last_ip` varchar(36) DEFAULT NULL,
@@ -414,11 +451,18 @@ ALTER TABLE `tickets`
   ADD PRIMARY KEY (`ticket_id`);
 
 --
+-- Indexes for table `usergroups`
+--
+ALTER TABLE `usergroups`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
-  ADD UNIQUE KEY `username` (`username`);
+  ADD UNIQUE KEY `username` (`username`),
+  ADD KEY `usergroup` (`usergroup`);
 
 --
 -- Indexes for table `vehicles`
@@ -521,6 +565,12 @@ ALTER TABLE `tickets`
   MODIFY `ticket_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `usergroups`
+--
+ALTER TABLE `usergroups`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
@@ -543,6 +593,16 @@ ALTER TABLE `warrants`
 --
 ALTER TABLE `weapons`
   MODIFY `wpn_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `users`
+--
+ALTER TABLE `users`
+  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`usergroup`) REFERENCES `usergroups` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

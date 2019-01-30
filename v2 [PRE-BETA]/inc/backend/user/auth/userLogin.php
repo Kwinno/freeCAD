@@ -26,23 +26,15 @@ if ($user === false) {
 else {
     $validPassword = password_verify($passwordAttempt, $user['password']);
     if ($validPassword) {
-        if ($user['usergroup'] === "") {
-            $error['msg'] = "An error occured while creating your account. Please contact Staff.";
+        if ($user['usergroup'] === NULL) {
+            $sql2 = "UPDATE `users` SET `usergroup`= ? WHERE `user_id`= ?";
+            $stmt2 = $pdo->prepare($sql2);
+            $updateUserGroup = $stmt2->execute([$settings['unverifiedGroup'], $user['user_id']]);
+        }
+        if ($settings['account_validation'] === "Yes" && $user['usergroup'] === $settings['unverifiedGroup']) {
+            $error['msg'] = "Your account is pending Validation from an Admin.";
             echo json_encode($error);
             exit();
-        }
-        elseif ($user['usergroup'] === "Unverified") {
-            if ($settings['account_validation'] == "Yes") {
-                $error['msg'] = "Your account is pending Validation from an Admin.";
-                echo json_encode($error);
-                exit();
-            }
-            else {
-                $default_usergroup = "User";
-                $sql2 = "UPDATE `users` SET `usergroup`= ? WHERE `user_id`= ?";
-                $stmt2 = $pdo->prepare($sql2);
-                $updateUserGroup = $stmt2->execute([$default_usergroup, $user['user_id']]);
-            }
         }
         $_SESSION['user_id'] = $user['user_id'];
         $_SESSION['logged_in'] = time();

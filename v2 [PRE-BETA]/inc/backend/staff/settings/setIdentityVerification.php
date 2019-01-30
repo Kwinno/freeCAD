@@ -7,7 +7,7 @@ require '../../../config.php';
 
 require '../../../backend/user/auth/userIsLoggedIn.php';
 
-if (staff_access && staff_siteSettings) {
+if (staff_access === 'true' && staff_siteSettings === 'true') {
     if (isset($_GET['q'])) {
         $q = strip_tags($_GET['q']);
         $error = array();

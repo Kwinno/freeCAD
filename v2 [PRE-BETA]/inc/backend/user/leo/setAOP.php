@@ -12,7 +12,7 @@ if (!isset($_SESSION['identity_name'])) {
 }
 
 // Supervisor Check
-if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings) {
+if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true') {
   // Page PHP
   $newAOP['aop'] = strip_tags($_POST['newAOP']);
   $error = array();

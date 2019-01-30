@@ -305,7 +305,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                         <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#new911callModal">Create Call</button>
                         <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#newBoloModel">Create BOLO</button>
                         <button class="btn btn-danger btn-sm" onclick="changeSignal();">Signal 100</button>
-                        <?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+                        <?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
                         <a href="dispatch.php?v=supervisor"><button class="btn btn-darkred btn-sm">Supervisor Panel</button></a>
                         <?php endif; ?>
                     </div>
@@ -326,7 +326,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                 </div>
             </div>
             <div class="row">
-                <?php if($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+                <?php if($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
                 <div class="col-8">
                     <?php else: ?>
                     <div class="col-12">
@@ -336,7 +336,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                             <div id="getActiveUnits"></div>
                         </div>
                     </div>
-                    <?php if($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+                    <?php if($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
                     <div class="col-4">
                         <div class="card-box">
                             <h4 class="header-title mt-0 m-b-30">AOP Editor</h4>
@@ -555,14 +555,14 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                 <?php break; ?>
 
 								<?php case "supervisor": ?>
-									<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+									<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
 										<div class="row">
 											<div class="col-12">
 												<div class="card-box">
 		                        <h4 class="header-title mt-0 m-b-30"><?php echo $_SESSION['identity_name']; ?> <?php if ($_SESSION['identity_supervisor'] === "Yes"): ?><small>
 		                                <font color="white"><i>Supervisor</i></font>
 		                            </small><?php endif; ?></h4>
-		                        <?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings): ?>
+		                        <?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
 		                        <a href="dispatch.php?v=main"><button class="btn btn-info btn-sm">Back To Patrol Panel</button></a>
 		                        <?php endif; ?>
 		                    </div>
