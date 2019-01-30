@@ -13,7 +13,7 @@ if (!isset($_SESSION['on_duty'])) {
 }
 
 // Page PHP
-$sql             = "SELECT * FROM on_duty";
+$sql             = 'SELECT * FROM on_duty WHERE status <> "Off-Duty" AND department <> "Dispatch"';
 $stmt            = $pdo->prepare($sql);
 $stmt->execute();
 $ondutyDBcall = $stmt->fetchAll(PDO::FETCH_ASSOC);

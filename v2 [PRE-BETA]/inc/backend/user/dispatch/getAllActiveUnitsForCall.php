@@ -11,7 +11,7 @@ require '../../../backend/user/auth/userIsLoggedIn.php';
 if ($_SESSION['on_duty'] === "Dispatch") {
     if (isset($_GET['opt']) && strip_tags($_GET['opt']) === '1') {
         echo '<option disabled="disabled" selected="true"> Select Unit To Add </option>';
-        $sql = 'SELECT * FROM on_duty where status <> "Off-Duty"';
+        $sql = 'SELECT * FROM on_duty where status <> "Off-Duty" AND department <> "Dispatch"';
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $getUnits = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -26,7 +26,7 @@ if ($_SESSION['on_duty'] === "Dispatch") {
         }
     }
     elseif (isset($_GET['opt']) && strip_tags($_GET['opt']) === '2') {
-        $sql = 'SELECT * FROM on_duty where status <> "Off-Duty"';
+        $sql = 'SELECT * FROM on_duty where status <> "Off-Duty" AND department <> "Dispatch"';
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $getUnits = $stmt->fetchAll(PDO::FETCH_ASSOC);

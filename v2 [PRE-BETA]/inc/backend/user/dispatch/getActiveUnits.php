@@ -10,7 +10,7 @@ require '../../../backend/user/auth/userIsLoggedIn.php';
 // Makes sure the person actually has a character set
 if ($_SESSION['on_duty'] === "Dispatch") {
     // First we will check if any units are actually online
-    $countUnits = $pdo->query('select count(*) from on_duty WHERE status <> "Off-Duty"')
+    $countUnits = $pdo->query('select count(*) from on_duty WHERE status <> "Off-Duty" AND department <> "Dispatch"')
         ->fetchColumn();
     if ($countUnits === 0) {
         echo 'No Active Units';
@@ -25,7 +25,7 @@ if ($_SESSION['on_duty'] === "Dispatch") {
       <th><center>Status</center></th>
     </tr>
     ';
-        $getActiveUnits = 'SELECT * FROM on_duty where status <> "Off-Duty"';
+        $getActiveUnits = 'SELECT * FROM on_duty where status <> "Off-Duty" AND department <> "Dispatch"';
         $result = $pdo->prepare($getActiveUnits);
         $result->execute();
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
