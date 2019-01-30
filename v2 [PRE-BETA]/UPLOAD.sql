@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 30, 2019 at 10:41 PM
+-- Generation Time: Jan 31, 2019 at 12:06 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -315,7 +315,8 @@ CREATE TABLE `users` (
   `avatar` varchar(355) DEFAULT 'assets/images/users/placeholder.png',
   `failed_logins` int(11) NOT NULL DEFAULT '0',
   `locked` varchar(36) DEFAULT NULL,
-  `ban_reason` varchar(126) DEFAULT NULL
+  `ban_reason` varchar(126) DEFAULT NULL,
+  `root_user` enum('true','false') NOT NULL DEFAULT 'false'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------

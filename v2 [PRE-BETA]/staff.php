@@ -7,6 +7,11 @@ require_once 'inc/backend/user/auth/userIsLoggedIn.php';
 
 $page['name'] = 'Staff Panel';
 
+$sql3 = "SELECT * FROM users WHERE root_user = 'true'";
+$stmt3 = $pdo->prepare($sql3);
+$stmt3->execute();
+$countRoot = $stmt3->fetch(PDO::FETCH_ASSOC);
+
 if (staff_access === 'true' && staff_editUsers === 'true') {
   if (isset($_POST['editUserBtn'])) {
     $updateUsername    = !empty($_POST['username']) ? trim($_POST['username']) : null;
@@ -17,14 +22,14 @@ if (staff_access === 'true' && staff_editUsers === 'true') {
     $updateEmail       = strip_tags($updateEmail);
     $updateUsergroup   = strip_tags($updateUsergroup);
 
-    if ($updateUsergroup === '6') {
-        if (staff_SuperAdmin === 'true') {
-            $sql = "UPDATE users SET username=?, email=?, usergroup=? WHERE user_id=?";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute([$updateUsername, $updateEmail, $updateUsergroup, $_SESSION['editing_user_id']]);
+    if ($updateUsergroup == '6') {
+        if ($user['root'] == 'true') {
+          $sql = "UPDATE users SET username=?, email=?, usergroup=? WHERE user_id=?";
+          $stmt = $pdo->prepare($sql);
+          $stmt->execute([$updateUsername, $updateEmail, $updateUsergroup, $_SESSION['editing_user_id']]);
         } else {
-            echo "<script> location.replace('staff.php?m=users&error=group-perm'); </script>";
-            exit();
+          echo "<script> location.replace('staff.php?m=users&error=root'); </script>";
+          exit();
         }
     } else {
         $sql = "UPDATE users SET username=?, email=?, usergroup=? WHERE user_id=?";
@@ -102,30 +107,84 @@ if (staff_access === 'true' && staff_siteSettings === 'true') {
 if (staff_siteSettings === 'true') {
   // Makes sure the user is actually Super Admin before allowing them to wipe anything
   if (isset($_POST['wipeLogsBtn'])) {
-    sleep(3);
+    sleep(6);
     $stmt       = $pdo->prepare("DELETE FROM logs");
     $stmt->execute();
-    sleep(3);
+    sleep(15);
     $sql2 = "INSERT INTO logs (action, username, timestamp) VALUES (?,?,?)";
     $pdo->prepare($sql2)->execute(['Wiped All Logs', $user['username'], $datetime]);
 
     header('Location: '.$url['staff'].'?m=settings&success=wiped-logs');
     exit();
   } elseif (isset($_POST['wipeCharactersBtn'])) {
-    sleep(3);
+    sleep(6);
     $stmt       = $pdo->prepare("DELETE FROM characters");
     $stmt->execute();
-    sleep(3);
+    sleep(6);
+    //
+
+    $stmt3       = $pdo->prepare("DELETE FROM arrest_reports");
+    $stmt3->execute();
+    sleep(6);
+    //
+
+    $stmt4       = $pdo->prepare("DELETE FROM tickets");
+    $stmt4->execute();
+    sleep(6);
+    //
+
+    $stmt5       = $pdo->prepare("DELETE FROM vehicles");
+    $stmt5->execute();
+    sleep(6);
+    //
+
+    $stmt6       = $pdo->prepare("DELETE FROM warrants");
+    $stmt6->execute();
+    sleep(6);
+    //
+
+    $stmt7       = $pdo->prepare("DELETE FROM weapons");
+    $stmt7->execute();
+    sleep(6);
+    //
+
     $sql2 = "INSERT INTO logs (action, username, timestamp) VALUES (?,?,?)";
     $pdo->prepare($sql2)->execute(['Wiped All Characters', $user['username'], $datetime]);
 
     header('Location: '.$url['staff'].'?m=settings&success=wiped-characters');
     exit();
   } elseif (isset($_POST['wipeIdentitiesBtn'])) {
-    sleep(3);
+    sleep(6);
     $stmt       = $pdo->prepare("DELETE FROM identities");
     $stmt->execute();
-    sleep(3);
+    sleep(6);
+    //
+
+    $stmt3       = $pdo->prepare("DELETE FROM arrest_reports");
+    $stmt3->execute();
+    sleep(6);
+    //
+
+    $stmt4       = $pdo->prepare("DELETE FROM assigned_callunits");
+    $stmt4->execute();
+    sleep(6);
+    //
+
+    $stmt5       = $pdo->prepare("DELETE FROM bolos");
+    $stmt5->execute();
+    sleep(6);
+    //
+
+    $stmt6       = $pdo->prepare("DELETE FROM on_duty");
+    $stmt6->execute();
+    sleep(6);
+    //
+
+    $stmt7       = $pdo->prepare("DELETE FROM tickets");
+    $stmt7->execute();
+    sleep(6);
+    //
+
     $sql2 = "INSERT INTO logs (action, username, timestamp) VALUES (?,?,?)";
     $pdo->prepare($sql2)->execute(['Wiped All Identities', $user['username'], $datetime]);
 
@@ -178,6 +237,10 @@ $view = strip_tags($_GET['m']);
       clientNotify('error', 'You can not set someones usergroup the same or higher of yours.');
     } elseif (isset($_GET['user']) && strip_tags($_GET['user']) === 'edited') {
       clientNotify('success', 'User edited.');
+    } elseif (isset($_GET['error']) && strip_tags($_GET['error']) === 'root') {
+      clientNotify('error', 'Only users set as ROOT can do this.');
+    } elseif (isset($_GET['root']) && strip_tags($_GET['root']) === 'set') {
+      clientNotify('success', 'Root user updated.');
     }
     ?>
     <!-- CONTENT START -->
@@ -188,6 +251,12 @@ $view = strip_tags($_GET['m']);
                     <h4 class="page-title"><?php echo $page['name']; ?></h4>
                 </div>
             </div>
+            <?php
+            if (empty($countRoot)) {
+                throwError('No ROOT user is currently setup. Please set one up, or you will not be able to add new Super Admins and other site features will be disabled.');
+                echo '<div class="alert alert-danger" role="alert"><strong>Please <a href="staff.php?m=root-setup">select</a> a user as root.</strong></div>';
+            }
+            ?>
             <!-- CONTENT HERE -->
             <?php if (staff_access === 'true'): ?>
             <?php switch($view):
@@ -447,6 +516,7 @@ $view = strip_tags($_GET['m']);
                         $editing_user['join_ip'] = $userDB['join_ip'];
                         $editing_user['steam_id'] = $userDB['steam_id'];
                         $editing_user['avatar'] = $userDB['avatar'];
+                        $editing_user['root'] = $userDB['root_user'];
 
                         if ($editing_user['usergroup'] === $settings['banGroup']) {
                           $editing_user['isBanned'] = true;
@@ -454,9 +524,18 @@ $view = strip_tags($_GET['m']);
                           $editing_user['isBanned'] = false;
                         }
 
-                        if ($editing_user['user_id'] === $user_id) {
-                          echo "<script> location.replace('staff.php?m=users&error=perm'); </script>";
-                          exit();
+                        if ($editing_user['root'] == 'true') {
+                          if ($user['root'] == 'false') {
+                            echo "<script> location.replace('staff.php?m=users&error=root'); </script>";
+                            exit();
+                          }
+                        }
+
+                        if ($editing_user['usergroup'] == '6') {
+                          if ($user['root'] == 'false') {
+                            echo "<script> location.replace('staff.php?m=users&error=root'); </script>";
+                            exit();
+                          }
                         }
                     }
                 }
@@ -516,12 +595,10 @@ $view = strip_tags($_GET['m']);
                                     </div>
                                     <div class="form-group text-center">
                                         <div class="col-12">
-                                          <?php if ($editing_user['usergroup'] === '6' && staff_SuperAdmin === 'true'): ?>
-                                            <?php if($editing_user['isBanned']): ?>
-                                              <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" disabled>Edit User</button>
-                                            <?php else: ?>
-                                              <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit" name="editUserBtn">Edit User</button>
-                                            <?php endif; ?>
+                                          <?php if($editing_user['isBanned']): ?>
+                                            <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" disabled>Edit User</button>
+                                          <?php else: ?>
+                                            <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit" name="editUserBtn">Edit User</button>
                                           <?php endif; ?>
                                         </div>
                                     </div>
@@ -535,31 +612,25 @@ $view = strip_tags($_GET['m']);
                     <div class="bg-picture card-box">
                         <h4 class="m-t-0 header-title">Ban Manager</h4>
                         <form method="POST">
-                            <?php if ($editing_user['usergroup'] === '6' && staff_SuperAdmin === 'true'): ?>
-                                <?php if($editing_user['isBanned']): ?>
-                                <div class="form-group text-center">
-                                    <div class="col-12">
-                                        <button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="unbanUserBtn">Unban User</button>
-                                    </div>
-                                </div>
-                                <?php else: ?>
-                                <div class="form-group">
-                                    <div class="col-12">
-                                        <label for="reason">Reason</label>
-                                        <input class="form-control" type="text" required="" id="reason" name="reason" placeholder="Reason">
-                                    </div>
-                                </div>
-                                <div class="form-group text-center">
-                                    <div class="col-12">
-                                        <button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="banUserBtn">Ban User</button>
-                                    </div>
-                                </div>
-                              <?php endif; ?>
-                            <?php else: ?>
-                              <div class="alert alert-danger" role="alert">
-                                  <strong>No Permission.</strong>
+                          <?php if($editing_user['isBanned']): ?>
+                          <div class="form-group text-center">
+                              <div class="col-12">
+                                  <button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="unbanUserBtn">Unban User</button>
                               </div>
-                            <?php endif; ?>
+                          </div>
+                          <?php else: ?>
+                          <div class="form-group">
+                              <div class="col-12">
+                                  <label for="reason">Reason</label>
+                                  <input class="form-control" type="text" required="" id="reason" name="reason" placeholder="Reason">
+                              </div>
+                          </div>
+                          <div class="form-group text-center">
+                              <div class="col-12">
+                                  <button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="banUserBtn">Ban User</button>
+                              </div>
+                          </div>
+                        <?php endif; ?>
                         </form>
                         <div class="clearfix"></div>
                     </div>
@@ -685,6 +756,54 @@ $view = strip_tags($_GET['m']);
                 }
             ?>
 
+        <?php break; ?>
+
+        <?php case "root-setup": ?>
+          <?php if (staff_SuperAdmin == 'false'): ?>
+            <div class="alert alert-danger" role="alert">
+                <strong>Only Super Admin's Can access this.</strong>
+            </div>
+          <?php else: ?>
+            <?php
+            if (isset($_POST['setRootBtn'])) {
+              $newRootUser    = !empty($_POST['newRootUser']) ? trim($_POST['newRootUser']) : null;
+              $newRootUser    = strip_tags($newRootUser);
+
+              $sql = "UPDATE users SET root_user=? WHERE user_id=?";
+              $stmt = $pdo->prepare($sql);
+              $stmt->execute(['true', $newRootUser]);
+
+              echo "<script> location.replace('staff.php?m=settings&root=set'); </script>";
+              exit();
+            }
+            ?>
+            <div class="alert alert-info" role="alert">
+                <strong>Please note that root users have FULL access to the entire panel and all settings.</strong>
+            </div>
+            <form method="POST">
+              <div class="form-group">
+                  <div class="col-12">
+                      <label for="usergroup">Select new root user...</label>
+                      <select class="form-control custom-select my-1 mr-sm-2" id="newRootUser" name="newRootUser">
+                        <?php
+                        $sql_getAllUsers             = "SELECT * FROM users where usergroup = '6'";
+                        $stmt2_getAllUsers            = $pdo->prepare($sql_getAllUsers);
+                        $stmt2_getAllUsers->execute();
+                        $usersList = $stmt2_getAllUsers->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($usersList as $usersDB) {
+                        ?>
+                        <option value="<?php echo $usersDB['user_id'] ?>"><?php echo $usersDB['username'] ?></option>
+                        <?php } ?>
+                      </select>
+                  </div>
+              </div>
+              <div class="form-group">
+                <div class="col-12">
+                    <button class="btn btn-info btn-bordred btn-block waves-effect waves-light" type="submit" name="setRootBtn">Confirm</button>
+                </div>
+              </div>
+            </form>
+          <?php endif; ?>
         <?php break; ?>
 
         <?php endswitch; ?>

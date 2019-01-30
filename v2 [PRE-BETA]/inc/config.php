@@ -48,6 +48,7 @@ if (empty($serversRow)) {
     die("Servers Table Missing/Broken");
 }
 
+
 $_SESSION['server'] = '1';
 
 // Define URLS
