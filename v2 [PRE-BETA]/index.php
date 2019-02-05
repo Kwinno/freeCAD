@@ -23,7 +23,7 @@ $page['name'] = 'Home';
         $stats['ems'] = null;
 
         $stats['users'] = $pdo->query('select count(*) from users')->fetchColumn();
-        $stats['staff'] = $pdo->query('select count(*) from users WHERE usergroup <> "User" AND usergroup <> "Unverified"')->fetchColumn();
+        $stats['staff'] = $pdo->query('select count(*) from users WHERE usergroup <> "1" AND usergroup <> "2" AND usergroup <> "3"')->fetchColumn();
         $stats['civ'] = $pdo->query('select count(*) from characters')->fetchColumn();
         $stats['ems'] = $pdo->query('select count(*) from identities')->fetchColumn();
         ?>
