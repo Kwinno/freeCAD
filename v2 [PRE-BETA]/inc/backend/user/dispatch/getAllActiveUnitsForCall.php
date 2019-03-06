@@ -21,7 +21,7 @@ if ($_SESSION['on_duty'] === "Dispatch") {
             $checkUnit = $stmt2->fetch();
 
             if ($checkUnit === false) {
-                echo '<option value="' . $unit['id'] . '">' . $unit['name'] . '</option>';
+                echo '<option value="' . $unit['id'] . '">' . $unit['name'] . ' (' . $unit['division'] . ' / ' . $unit['department'] . ')</option>';
             }
         }
     }

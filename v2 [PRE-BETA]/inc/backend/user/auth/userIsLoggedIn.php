@@ -25,9 +25,7 @@ else {
     $user['ip'] = $userRow['join_ip'];
     $user['join_date'] = $userRow['join_date'];
     $user['avatar'] = $userRow['avatar'];
-    $user['failed_logins'] = $userRow['failed_logins'];
     $user['last_ip'] = $userRow['last_ip'];
-    $user['root'] = $userRow['root_user'];
 
     if ($settings['steam_required'] === "true") {
         $user['steam_id'] = $userRow['steam_id'];

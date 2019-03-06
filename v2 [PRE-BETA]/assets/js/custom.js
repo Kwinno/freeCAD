@@ -22,6 +22,12 @@ function changeSignal() {
 
 $(document).ready(function () {
     // document.oncontextmenu = document.body.oncontextmenu = function () { return false; }
+    // toastr.warning("This is not meant for Production use. Please report any bugs to Tyler#7918", {
+    //   timeOut: 10000
+    // })
+
+    $('#staffPanelWizard').bootstrapWizard({'tabClass': 'nav nav-tabs navtab-wizard nav-justified'});
+    $('#editingUserPanelWizard').bootstrapWizard({'tabClass': 'nav nav-tabs navtab-wizard nav-justified'});
 });
 
 function disableClick() {

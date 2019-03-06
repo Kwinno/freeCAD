@@ -50,15 +50,15 @@ define("staff_siteSettings", $group['staff_siteSettings']);
 define("staff_banUsers", $group['staff_banUsers']);
 define("staff_SuperAdmin", $group['staff_SuperAdmin']);
 
-if (isBanned) {
+if (isBanned === 'true') {
     session_unset();
     session_destroy();
     header('Location: login.php?error=banned');
     exit();
-} elseif (!panel_access) {
+} elseif (panel_access === 'false') {
     session_unset();
     session_destroy();
-    header('Location: login.php?error=access');
+    header('Location: login.php?error=vc');
     exit();
 }
 ?>

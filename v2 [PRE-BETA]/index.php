@@ -18,15 +18,13 @@ $page['name'] = 'Home';
             clientNotify('success', 'Your Steam Account Has Been Linked.');
         }
         $stats['users'] = null;
-        $stats['staff'] = null;
         $stats['civ'] = null;
         $stats['ems'] = null;
 
         $stats['users'] = $pdo->query('select count(*) from users')->fetchColumn();
-        $stats['staff'] = $pdo->query('select count(*) from users WHERE usergroup <> "1" AND usergroup <> "2" AND usergroup <> "3"')->fetchColumn();
         $stats['civ'] = $pdo->query('select count(*) from characters')->fetchColumn();
         $stats['ems'] = $pdo->query('select count(*) from identities')->fetchColumn();
-        ?>
+      ?>
     <!-- CONTENT START -->
     <div class="wrapper m-b-15">
         <div class="container-fluid">
@@ -43,12 +41,6 @@ $page['name'] = 'Home';
                     <div class="card-box">
                         <h4 class="header-title mt-0 m-b-30">Total Users</h4>
                         <h2 class="p-t-10 mb-0"><?php echo $stats['users']; ?></h2>
-                    </div>
-                </div>
-                <div class="col col-xs-6">
-                    <div class="card-box">
-                        <h4 class="header-title mt-0 m-b-30">Total Staff</h4>
-                        <h2 class="p-t-10 mb-0"><?php echo $stats['staff']; ?></h2>
                     </div>
                 </div>
                 <div class="col col-xs-6">

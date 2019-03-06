@@ -27,20 +27,20 @@ if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true')
       <strong>No Pending Identites.</strong>
     </div>';
   } else {
+		echo "<table style='width:100%'>
+		<tr>
+			<th>Name</th>
+			<th>Owner</th>
+			<th>Actions</th>
+		</tr>";
     foreach($pendingIdsRow as $pending_id) {
-        echo "<table style='width:100%'>
-        <tr>
-          <th>Name</th>
-          <th>Owner</th>
-          <th>Actions</th>
-        </tr>";
         echo "<tr>";
         echo "<td>" . $pending_id['name'] . "</td>";
         echo "<td>" . $pending_id['user_name'] . "</td>";
         echo '<td><input type="button" class="btn btn-sm btn-success" name="approve" value="Approve" id='.$pending_id['identity_id'].' onclick="approveID(this)"> <input type="button" class="btn btn-sm btn-danger" name="reject" value="Reject" id='.$pending_id['identity_id'].' onclick="rejectID(this)"></td>';
         echo "</tr>";
-        echo "</table>";
     }
+		echo "</table>";
   }
 } else {
   $error['msg'] = "Permission Error";

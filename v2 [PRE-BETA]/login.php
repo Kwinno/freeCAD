@@ -31,15 +31,17 @@ $page['name'] = 'Login';
             throwError('Your account has been banned from accessing this Panel. If you have any further questions, Please make a ban appeal.');
         } elseif (isset($_GET['error']) && strip_tags($_GET['error']) === 'access') {
             throwError('You must be logged in to access that page.');
+        } elseif (isset($_GET['error']) && strip_tags($_GET['error']) === 'vc') {
+            throwError('This community requires account verification to access.');
         }
         ?>
     <div class="account-pages"></div>
     <div class="clearfix"></div>
     <div class="wrapper-page">
-        <div class="text-center">
-            <a href="<?php echo $url['index']; ?>" class="logo"><span>HydridSystems</span></a>
-        </div>
         <div class="m-t-40 card-box">
+          <div class="text-center">
+              <a href="<?php echo $url['index']; ?>" class="logo"><span>HydridSystems</span></a>
+          </div>
             <div class="text-center">
                 <h4 class="text-uppercase font-bold mb-0">Login</h4>
             </div>

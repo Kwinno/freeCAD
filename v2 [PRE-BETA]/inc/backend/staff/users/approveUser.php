@@ -10,7 +10,7 @@ require '../../../backend/user/auth/userIsLoggedIn.php';
 if (staff_access === 'true' && staff_siteSettings === 'true') {
     $id = strip_tags($_GET['id']);
     $result = $pdo->prepare("UPDATE `users` SET `usergroup`= ? WHERE `user_id` = ?")
-        ->execute(['User', $id]);
+        ->execute([$settings['verifiedGroup'], $id]);
 
     logAction('Approved A New User ID:' . $id, $user['username']);
 }

@@ -317,309 +317,299 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                         <h4 class="header-title mt-0 m-b-30">911 Calls</h4>
                         <div id="get911Calls"></div>
                     </div>
+										<div class="card-box">
+												<h4 class="header-title mt-0 m-b-30">Active Units</h4>
+												<div id="getActiveUnits"></div>
+										</div>
                 </div>
-                <div class="col-4">
-                    <div class="card-box">
-                        <h4 class="header-title mt-0 m-b-30">BOLOs</h4>
-                        <div id="getBolos"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <?php if($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
-                <div class="col-8">
-                    <?php else: ?>
-                    <div class="col-12">
-                        <?php endif; ?>
-                        <div class="card-box">
-                            <h4 class="header-title mt-0 m-b-30">Active Units</h4>
-                            <div id="getActiveUnits"></div>
-                        </div>
-                    </div>
-                    <?php if($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
-                    <div class="col-4">
-                        <div class="card-box">
-                            <h4 class="header-title mt-0 m-b-30">AOP Editor</h4>
-                            <form method="post" action="inc/backend/user/leo/setAOP.php" id="changeAOP">
-                                <div class="form-group">
-                                    <div class="col">
-                                        <input class="form-control" type="text" required="" name="newAOP" placeholder="New AOP">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col">
-                                        <button class="btn btn-warning btn-bordred btn-block waves-effect waves-light" onClick="disableClick()" type="submit">Change AOP</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <?php endif; ?>
-                </div>
-
-                <!-- MODALS -->
-                <!-- New Bolo Modal -->
-                <div class="modal fade" id="newBoloModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">New BOLO</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="newBolo" action="inc/backend/user/dispatch/newBolo.php" method="post">
-                                    <div class="form-group">
-                                        <textarea class="form-control" placeholder="Description (Please include as much detail as possible)" id="description" name="description" style="white-space: pre-line;" wrap="hard" rows="6" required></textarea>
-                                    </div>
-                            </div>
-                            <div class="modal-footer">
-                                <div class="form-group">
-                                    <input class="btn btn-primary" onClick="disableClick()" type="submit" value="Create New BOLO">
-                                </div>
-                            </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- // -->
-                <!-- New Call Modal -->
-                <div class="modal fade" id="new911callModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">New 911 Call</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="new911call" action="inc/backend/user/dispatch/new911call.php" method="post">
-                                    <div class="form-group">
-                                        <input type="text" name="call_description" class="form-control" placeholder="Call Desc" data-lpignore="true" required />
-                                    </div>
-                                    <div class="row">
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <input type="text" id="street_ac2" name="call_location" class="form-control" placeholder="Street" data-lpignore="true" required />
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <input type="text" name="call_postal" class="form-control" pattern="\d*" placeholder="Postal" data-lpignore="true" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <label>All Call</label>
-                                            <input type="checkbox" class="allcallCheckbox" name="allCall" value="1" />
-                                        </div>
-                                    </div>
-                            </div>
-                            <div class="modal-footer">
-                                <div class="form-group">
-                                    <input class="btn btn-primary" onClick="disableClick()" type="submit" value="Create New Call">
-                                </div>
-                            </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <!-- // -->
-                <!-- Call Info Modal -->
-                <div class="modal fade" id="callInfoModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Call Info</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div id="callModalBody" class="modal-body">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- // -->
-                <!-- BOLO Info Modal -->
-                <div class="modal fade" id="boloInfoModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Bolo Info</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div id="boloModalBody" class="modal-body">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- // -->
-                <!-- search name modal -->
-                <div class="modal fade" id="openNameSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Name Database</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <select class="select2" name="nameSearch" id="getAllCharacters" onchange="showName(this.value)">
-                                        <option selected="true" disabled="disabled">Loading Characters...</option>
-                                    </select>
-                                </form>
-                                <br>
-                                <div id="showPersonInfo"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- // -->
-                <!-- search vehicle modal -->
-                <div class="modal fade" id="openVehicleSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Vehicle Database</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <select class="select2" name="vehicleSearch" id="getAllVehicles" onchange="showVehicle(this.value)">
-                                        <option selected="true" disabled="disabled">Loading Vehicles...</option>
-                                    </select>
-                                </form>
-                                <br>
-                                <div id="showVehicleInfo"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- // -->
-                <!-- search firearm modal -->
-                <div class="modal fade" id="openFirearmSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Firearms Database</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <select class="select2" name="firearmSearch" id="getAllFirearms" onchange="showFirearm(this.value)">
-                                        <option selected="true" disabled="disabled">Loading Firearms...</option>
-                                    </select>
-                                </form>
-                                <br>
-                                <div id="showFirearmInfo"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- // -->
-                <!-- notepad modal -->
-                <div class="modal fade" id="notepadModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">Notepad</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form method="post" action="leo-index.php">
-                                    <div class="form-group">
-                                        <textarea class="form-control" name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="104"><?php echo $_SESSION['notepad']; ?></textarea>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- // -->
-                <?php break; ?>
-
-								<?php case "supervisor": ?>
+								<div class="col-4">
+									<div class="card-box">
+											<h4 class="header-title mt-0 m-b-30">BOLOs</h4>
+											<div id="getBolos"></div>
+									</div>
 									<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
-										<div class="row">
-											<div class="col-12">
-												<div class="card-box">
-		                        <h4 class="header-title mt-0 m-b-30"><?php echo $_SESSION['identity_name']; ?> <?php if ($_SESSION['identity_supervisor'] === "Yes"): ?><small>
-		                                <font color="white"><i>Supervisor</i></font>
-		                            </small><?php endif; ?></h4>
-		                        <?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
-		                        <a href="dispatch.php?v=main"><button class="btn btn-info btn-sm">Back To Patrol Panel</button></a>
-		                        <?php endif; ?>
-		                    </div>
-											</div>
+										<div class="card-box">
+												<h4 class="header-title mt-0 m-b-30">AOP Editor</h4>
+												<form method="post" action="inc/backend/user/leo/setAOP.php" id="changeAOP">
+														<div class="form-group">
+																<div class="col">
+																		<input class="form-control" type="text" required="" name="newAOP" placeholder="New AOP">
+																</div>
+														</div>
+														<div class="form-group">
+																<div class="col">
+																		<button class="btn btn-warning btn-bordred btn-block waves-effect waves-light" onClick="disableClick()" type="submit">Change AOP</button>
+																</div>
+														</div>
+												</form>
 										</div>
-										<div class="row">
-											<div class="col-7">
-												<div class="card-box">
-                        	<h4 class="header-title mt-0 m-b-30">All LEO Identities</h4>
-													<table id="datatable" class="table table-borderless">
-														<thead>
-	                            <tr>
-	                                <th>Name</th>
-	                                <th>Supervisor</th>
-	                                <th>User</th>
-	                                <th>Status</th>
-	                                <th>Actions</th>
-	                            </tr>
-                            </thead>
-														<tbody>
-															<?php
-															$sql             = "SELECT * FROM identities WHERE department='Dispatch'";
-															$stmt            = $pdo->prepare($sql);
-															$stmt->execute();
-															$idsRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-															foreach ($idsRow as $identity) {
-															?>
-															<tr>
-																<td><?php echo $identity['name']?></td>
-																<td><?php echo $identity['supervisor']?></td>
-																<td><?php echo $identity['user_name']?></td>
-																<td><?php echo $identity['status']?></td>
-																<td><a href="dispatch.php?v=supervisor&a=edit-id&id=<?php echo $identity['identity_id']?>"><input type="button" class="btn btn-sm btn-success btn-block" value="Edit"></a></td>
-															</tr>
-															<?php } ?>
-														</tbody>
-													</table>
-												</div>
-											</div>
-											<div class="col-5">
-		                    <div class="card-box">
-	                        <h4 class="header-title mt-0 m-b-30">Pending Identities</h4>
-	                        <div id="getPendingIds"></div>
-		                    </div>
-			                </div>
-										</div>
-									<?php else: ?>
-										<div class="alert alert-danger" role="alert">
-				                You are not a supervisor.
-				            </div>
 									<?php endif; ?>
-								<?php break; ?>
-
-                <?php endswitch; ?>
+								</div>
             </div>
+
+            <!-- MODALS -->
+            <!-- New Bolo Modal -->
+            <div class="modal fade" id="newBoloModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">New BOLO</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="newBolo" action="inc/backend/user/dispatch/newBolo.php" method="post">
+                                <div class="form-group">
+                                    <textarea class="form-control" placeholder="Description (Please include as much detail as possible)" id="description" name="description" style="white-space: pre-line;" wrap="hard" rows="6" required></textarea>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                <input class="btn btn-primary" onClick="disableClick()" type="submit" value="Create New BOLO">
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- // -->
+            <!-- New Call Modal -->
+            <div class="modal fade" id="new911callModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">New 911 Call</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="new911call" action="inc/backend/user/dispatch/new911call.php" method="post">
+                                <div class="form-group">
+                                    <input type="text" name="call_description" class="form-control" placeholder="Call Desc" data-lpignore="true" required />
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <input type="text" id="street_ac2" name="call_location" class="form-control" placeholder="Street" data-lpignore="true" required />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-group">
+                                            <input type="text" name="call_postal" class="form-control" pattern="\d*" placeholder="Postal" data-lpignore="true" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label>All Call</label>
+                                        <input type="checkbox" class="allcallCheckbox" name="allCall" value="1" />
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="form-group">
+                                <input class="btn btn-primary" onClick="disableClick()" type="submit" value="Create New Call">
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- // -->
+            <!-- Call Info Modal -->
+            <div class="modal fade" id="callInfoModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Call Info</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div id="callModalBody" class="modal-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- // -->
+            <!-- BOLO Info Modal -->
+            <div class="modal fade" id="boloInfoModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Bolo Info</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div id="boloModalBody" class="modal-body">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- // -->
+            <!-- search name modal -->
+            <div class="modal fade" id="openNameSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Name Database</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <select class="select2" name="nameSearch" id="getAllCharacters" onchange="showName(this.value)">
+                                    <option selected="true" disabled="disabled">Loading Characters...</option>
+                                </select>
+                            </form>
+                            <br>
+                            <div id="showPersonInfo"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- // -->
+            <!-- search vehicle modal -->
+            <div class="modal fade" id="openVehicleSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Vehicle Database</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <select class="select2" name="vehicleSearch" id="getAllVehicles" onchange="showVehicle(this.value)">
+                                    <option selected="true" disabled="disabled">Loading Vehicles...</option>
+                                </select>
+                            </form>
+                            <br>
+                            <div id="showVehicleInfo"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- // -->
+            <!-- search firearm modal -->
+            <div class="modal fade" id="openFirearmSearch" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Firearms Database</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <select class="select2" name="firearmSearch" id="getAllFirearms" onchange="showFirearm(this.value)">
+                                    <option selected="true" disabled="disabled">Loading Firearms...</option>
+                                </select>
+                            </form>
+                            <br>
+                            <div id="showFirearmInfo"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- // -->
+            <!-- notepad modal -->
+            <div class="modal fade" id="notepadModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Notepad</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" action="leo-index.php">
+                                <div class="form-group">
+                                    <textarea class="form-control" name="textarea" oninput="updateNotepad(this.value)" rows="12" cols="104"><?php echo $_SESSION['notepad']; ?></textarea>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- // -->
+            <?php break; ?>
+
+						<?php case "supervisor": ?>
+							<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
+								<div class="row">
+									<div class="col-12">
+										<div class="card-box">
+                        <h4 class="header-title mt-0 m-b-30"><?php echo $_SESSION['identity_name']; ?> <?php if ($_SESSION['identity_supervisor'] === "Yes"): ?><small>
+                                <font color="white"><i>Supervisor</i></font>
+                            </small><?php endif; ?></h4>
+                        <?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
+                        <a href="dispatch.php?v=main"><button class="btn btn-info btn-sm">Back To Patrol Panel</button></a>
+                        <?php endif; ?>
+                    </div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-7">
+										<div class="card-box">
+                    	<h4 class="header-title mt-0 m-b-30">All Dispatch Identities</h4>
+											<table id="datatable" class="table table-borderless">
+												<thead>
+                          <tr>
+                              <th>Name</th>
+                              <th>Supervisor</th>
+                              <th>User</th>
+                              <th>Status</th>
+                              <th>Actions</th>
+                          </tr>
+                        </thead>
+												<tbody>
+													<?php
+													$sql             = "SELECT * FROM identities WHERE department='Dispatch'";
+													$stmt            = $pdo->prepare($sql);
+													$stmt->execute();
+													$idsRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+													foreach ($idsRow as $identity) {
+													?>
+													<tr>
+														<td><?php echo $identity['name']?></td>
+														<td><?php echo $identity['supervisor']?></td>
+														<td><?php echo $identity['user_name']?></td>
+														<td><?php echo $identity['status']?></td>
+														<td><a href="dispatch.php?v=supervisor&a=edit-id&id=<?php echo $identity['identity_id']?>"><input type="button" class="btn btn-sm btn-success btn-block" value="Edit"></a></td>
+													</tr>
+													<?php } ?>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="col-5">
+                    <div class="card-box">
+                      <h4 class="header-title mt-0 m-b-30">Pending Identities</h4>
+                      <div id="getPendingIds"></div>
+                    </div>
+	                </div>
+								</div>
+							<?php else: ?>
+								<div class="alert alert-danger" role="alert">
+		                You are not a supervisor.
+		            </div>
+							<?php endif; ?>
+						<?php break; ?>
+
+            <?php endswitch; ?>
         </div>
-        <!-- CONTENT END -->
-        <?php include 'inc/copyright.php'; ?>
-        <?php include 'inc/page-bottom.php'; ?>
+    </div>
+    <!-- CONTENT END -->
+    <?php include 'inc/copyright.php'; ?>
+    <?php include 'inc/page-bottom.php'; ?>

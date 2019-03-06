@@ -15,6 +15,9 @@
         <script src="assets/plugins/datatables/responsive.bootstrap4.min.js"></script>
         <!-- Selection table -->
         <script src="assets/plugins/datatables/dataTables.select.min.js"></script>
+        <!-- Form wizard -->
+        <script src="assets/plugins/bootstrap-wizard/jquery.bootstrap.wizard.js"></script>
+        <script src="assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
          <script>
            // Default Datatable
            $('#datatable').DataTable();

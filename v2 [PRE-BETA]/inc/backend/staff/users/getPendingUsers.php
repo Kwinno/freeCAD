@@ -10,9 +10,9 @@ require '../../../backend/user/auth/userIsLoggedIn.php';
 if (staff_access === 'true' && staff_approveUsers === 'true') {
     $stmt = $pdo->query("SELECT * FROM users");
 
-    $sql = "SELECT * FROM users WHERE usergroup='Unverified'";
+    $sql = "SELECT * FROM users WHERE usergroup=?";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute();
+    $stmt->execute([$settings['unverifiedGroup']]);
     $pendingUsersRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     if (empty($pendingUsersRow)) {
