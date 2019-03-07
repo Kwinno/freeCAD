@@ -15,8 +15,10 @@ if ($_SESSION['on_duty'] === "Dispatch") {
     if ($status === "10-42") {
         $stmt = $pdo->prepare("DELETE FROM on_duty WHERE `id`= ?");
         $result = $stmt->execute([$unit]);
-    }
-    else {
+    } elseif ($status === "Clear Duty") {
+      $stmt = $pdo->prepare("DELETE FROM on_duty WHERE `id`= ?");
+      $result = $stmt->execute([$unit]);
+    } else {
         $sql = "UPDATE on_duty SET status=? WHERE id=?";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$status, $unit]);

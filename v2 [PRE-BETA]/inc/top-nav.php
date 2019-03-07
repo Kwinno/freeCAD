@@ -67,7 +67,7 @@
                             <a href="<?php echo $url['leo']; ?>?v=nosession"><i class="mdi mdi-pistol"></i> <span> Law Enforcement </span> </a>
                         </li>
                         <li class="has-submenu">
-                            <a href="#"><i class="mdi mdi-heart-pulse"></i> <span> Fire / EMS </span> </a>
+                            <a href="fire.php?v=nosession"><i class="mdi mdi-heart-pulse"></i> <span> Fire / EMS </span> </a>
                         </li>
                         <li class="has-submenu">
                             <a href="dispatch.php?v=nosession"><i class="mdi mdi-phone-in-talk"></i> <span> Dispatch </span> </a>
