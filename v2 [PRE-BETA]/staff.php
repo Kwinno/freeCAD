@@ -129,6 +129,42 @@ if (staff_siteSettings === 'true') {
     exit();
   }
 }
+
+if (isset($_POST['postNewsBtn'])) {
+  if (staff_newsAccess === 'false') {
+    die('Internal Error.');
+  }
+  $title  = !empty($_POST['title']) ? trim($_POST['title']) : null;
+  $title  = strip_tags($title);
+
+  $message  = !empty($_POST['message']) ? trim($_POST['message']) : null;
+  $message  = strip_tags($message);
+
+  $sql = "INSERT INTO news (title, message, datetime, author) VALUES (?,?,?,?)";
+  $stmt = $pdo->prepare($sql);
+  $result = $stmt->execute([$title, $message, $datetime, $user['username']]);
+
+  header('Location: staff.php?success=news-posted');
+  exit();
+}
+
+if (staff_newsAccess === 'true') {
+  if (isset($_GET['a']) && strip_tags($_GET['a']) === 'deleteNews') {
+      if (isset($_GET['newsId']) && strip_tags($_GET['newsId'])) {
+        $newsId = strip_tags($_GET['newsId']);
+        $stmt = $pdo->prepare("DELETE FROM news WHERE id =:id");
+        $stmt->bindParam(':id', $newsId);
+        $stmt->execute();
+        sleep(3);
+        header('Location: staff.php?success=news-deleted');
+        exit();
+      } else {
+        header('Location: staff.php');
+        exit();
+      }
+  }
+}
+
 include 'inc/page-top.php'; ?>
 <script src="assets/js/pages/staff.js"></script>
 <script type="text/javascript">
@@ -171,6 +207,10 @@ include 'inc/page-top.php'; ?>
       clientNotify('error', 'Error while trying to edit!');
     } elseif (isset($_GET['error']) && strip_tags($_GET['error']) === 'see') {
       clientNotify('error', 'You can not edit yourself via the admin panel. Please use the settings menu!');
+    } elseif (isset($_GET['success']) && strip_tags($_GET['success']) === 'news-posted') {
+      clientNotify('success', 'News posted!');
+    } elseif (isset($_GET['success']) && strip_tags($_GET['success']) === 'news-deleted') {
+      clientNotify('success', 'News has been deleted!');
     }
     ?>
     <!-- CONTENT START -->
@@ -197,6 +237,9 @@ include 'inc/page-top.php'; ?>
                             <?php endif; ?>
                             <?php if (staff_viewUsers === 'true'): ?>
                               <li class="nav-item"><a href="#activeUsersTab" data-toggle="tab" class="nav-link">Active Users</a></li>
+                            <?php endif; ?>
+                            <?php if (staff_newsAccess === 'true'): ?>
+                              <li class="nav-item"><a href="#newsTab" data-toggle="tab" class="nav-link">News System</a></li>
                             <?php endif; ?>
                           </ul>
 
@@ -353,31 +396,108 @@ include 'inc/page-top.php'; ?>
 
 
                                           <tbody>
-                                              <?php
-                                        $sql             = "SELECT * FROM users";
+                                          <?php
+                                          $sql             = "SELECT * FROM users";
+                                          $stmt            = $pdo->prepare($sql);
+                                          $stmt->execute();
+                                          $usersRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                                          foreach ($usersRow as $user) {
+                                            echo '
+                                            <tr>
+                                              <td>'. $user['user_id'] .'</td>
+                                              <td>'. $user['username'] .'</td>
+                                              <td>'. $user['email'] .'</td>';
+                                              $sql1_gugp             = "SELECT * FROM usergroups WHERE id = :usergroup";
+                                              $stmt1_gugp            = $pdo->prepare($sql1_gugp);
+                                              $stmt1_gugp->bindValue(':usergroup', $user['usergroup']);
+                                              $stmt1_gugp->execute();
+                                              $groupRow = $stmt1_gugp->fetch(PDO::FETCH_ASSOC);
+                                              echo '<td>'. $groupRow['name'] .'</td>
+                                              <td>'. $user['join_date'] .'</td>
+                                              <td><a href="staff-edituser.php?user-id='. $user['user_id'] .'"><input type="button" class="btn btn-sm btn-success btn-block" value="Edit"></a></td>
+                                          </tr>
+                                            ';
+                                          }
+                                          ?>
+                                          </tbody>
+                                      </table>
+                                    </div>
+                                  </div>
+                                </div>
+                              <?php endif; ?>
+                              <?php if (staff_newsAccess === 'true'): ?>
+                                <div class="tab-pane m-t-10 fade" id="newsTab">
+                                  <div class="row">
+                                    <div class="col-12">
+                                      <button type="button" class="btn btn-md btn-success" data-toggle="modal" data-target="#newNewsPost">
+                                        Create +
+                                      </button>
+                                      <!-- Modal -->
+                                      <div class="modal fade" id="newNewsPost" tabindex="-1" role="dialog" aria-labelledby="newNewsPost" aria-hidden="true">
+                                        <div class="modal-dialog modal-md modal-dialog-centered" role="document">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <h5 class="modal-title" id="newNewsPost">Create New News Post</h5>
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                              </button>
+                                            </div>
+                                            <div class="modal-body">
+                                              <form method="POST">
+                                                <div class="form-group">
+                                                  <div class="col-12">
+                                                      <input class="form-control" type="text" required="" name="title" placeholder="Title">
+                                                  </div>
+                                                </div>
+                                                <div class="form-group">
+                                                  <div class="col-12">
+                                                    <textarea class="form-control" rows="4" cols="50" name="message" placeholder="Message"></textarea>
+                                                  </div>
+                                                </div>
+                                                <div class="form-group text-center">
+                                                  <div class="col-12">
+                                                      <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit" name="postNewsBtn">Post</button>
+                                                  </div>
+                                                </div>
+                                              </form>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <table id="datatable" class="table table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th>News ID</th>
+                                                <th>Title</th>
+                                                <th>Date / Time</th>
+                                                <th>Author</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+
+
+                                        <tbody>
+                                        <?php
+                                        $sql             = "SELECT * FROM news";
                                         $stmt            = $pdo->prepare($sql);
                                         $stmt->execute();
-                                        $usersRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                                        $newsRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-                                        foreach ($usersRow as $user) {
+                                        foreach ($newsRow as $news) {
                                           echo '
                                           <tr>
-                                            <td>'. $user['user_id'] .'</td>
-                                            <td>'. $user['username'] .'</td>
-                                            <td>'. $user['email'] .'</td>';
-                                            $sql1_gugp             = "SELECT * FROM usergroups WHERE id = :usergroup";
-                                            $stmt1_gugp            = $pdo->prepare($sql1_gugp);
-                                            $stmt1_gugp->bindValue(':usergroup', $user['usergroup']);
-                                            $stmt1_gugp->execute();
-                                            $groupRow = $stmt1_gugp->fetch(PDO::FETCH_ASSOC);
-                                            echo '<td>'. $groupRow['name'] .'</td>
-                                            <td>'. $user['join_date'] .'</td>
-                                            <td><a href="staff-edituser.php?user-id='. $user['user_id'] .'"><input type="button" class="btn btn-sm btn-success btn-block" value="Edit"></a></td>
-                                        </tr>
+                                            <td>'. $news['id'] .'</td>
+                                            <td>'. $news['title'] .'</td>
+                                            <td>'. $news['datetime'] .'</td>
+                                            <td>'. $news['author'] .'</td>
+                                            <td><a href="staff.php?a=deleteNews&newsId='. $news['id'] .'" class="btn btn-sm btn-danger btn-block">Delete</a></td>
+                                          </tr>
                                           ';
                                         }
                                         ?>
-                                          </tbody>
+                                        </tbody>
                                       </table>
                                     </div>
                                   </div>

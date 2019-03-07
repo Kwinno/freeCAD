@@ -10,6 +10,7 @@ $group['staff_editAdmins'] = false;
 $group['staff_siteSettings'] = false;
 $group['staff_banUsers'] = false;
 $group['staff_SuperAdmin'] = false;
+$group['staff_newsAccess'] = false;
 
 // Pull the usergroup from the database
 $sql1_gp             = "SELECT * FROM usergroups WHERE id = :usergroup";
@@ -38,6 +39,7 @@ $group['staff_editAdmins'] = $groupRow['staff_editAdmins'];
 $group['staff_siteSettings'] = $groupRow['staff_siteSettings'];
 $group['staff_banUsers'] = $groupRow['staff_banUsers'];
 $group['staff_SuperAdmin'] = $groupRow['staff_SuperAdmin'];
+$group['staff_newsAccess'] = $groupRow['staff_newsAccess'];
 
 define("isBanned", $group['banned']);
 define("panel_access", $group['panel_access']);
@@ -49,6 +51,7 @@ define("staff_editAdmins", $group['staff_editAdmins']);
 define("staff_siteSettings", $group['staff_siteSettings']);
 define("staff_banUsers", $group['staff_banUsers']);
 define("staff_SuperAdmin", $group['staff_SuperAdmin']);
+define("staff_newsAccess", $group['staff_newsAccess']);
 
 if (isBanned === 'true') {
     session_unset();

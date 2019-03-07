@@ -8,6 +8,15 @@ require_once 'inc/config.php';
 require_once 'inc/backend/user/auth/userIsLoggedIn.php';
 
 $page['name'] = 'Home';
+$stats['users'] = null;
+$stats['civ'] = null;
+$stats['ems'] = null;
+$stats['news_count'] = null;
+
+$stats['users'] = $pdo->query('select count(*) from users')->fetchColumn();
+$stats['civ'] = $pdo->query('select count(*) from characters')->fetchColumn();
+$stats['ems'] = $pdo->query('select count(*) from identities')->fetchColumn();
+$stats['news_count'] = $pdo->query('select count(*) from news')->fetchColumn();
 ?>
 <?php include 'inc/page-top.php'; ?>
 
@@ -17,13 +26,6 @@ $page['name'] = 'Home';
         if (isset($_GET['notify']) && strip_tags($_GET['notify']) === 'steam-linked') {
             clientNotify('success', 'Your Steam Account Has Been Linked.');
         }
-        $stats['users'] = null;
-        $stats['civ'] = null;
-        $stats['ems'] = null;
-
-        $stats['users'] = $pdo->query('select count(*) from users')->fetchColumn();
-        $stats['civ'] = $pdo->query('select count(*) from characters')->fetchColumn();
-        $stats['ems'] = $pdo->query('select count(*) from identities')->fetchColumn();
       ?>
     <!-- CONTENT START -->
     <div class="wrapper m-b-15">
@@ -56,14 +58,27 @@ $page['name'] = 'Home';
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col">
+            <?php if ($stats['news_count'] > '0'): ?>
+              <div class="row">
+                  <div class="col">
                     <div class="card-box">
-                        <h4 class="header-title mt-0 m-b-30">Welcome To The New HydridSystems CAD/MDT</h4>
-                        <p>In this version, the development team has taken great view from the issues in our original release, along with feedback from the community! We welcome any feedback to given on our <a href="https://discord.gg/NeRrWZC">Discord</a>. You can Navigate through the panel using the Navigation bar at the top! <i>This is a BETA version. Please report any bugs to Community Staff, or Hydrid Staff.</i></p>
+                      <h4 class="header-title mt-0 m-b-30">Community News</h4>
+                      <?php
+                        $sql = "SELECT * FROM news ORDER BY id desc";
+                        $stmt = $pdo->prepare($sql);
+                        $stmt->execute();
+                        while ($newsDB = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                            echo '<div class="card-box text-white bg-success outline-white-c">
+                                <h4 class="header-title mt-0 m-b-30">'. $newsDB['title'] .'</h4>
+                                <p>'.$newsDB['message'].'<br /><hr />
+                                <strong>'.$newsDB['datetime'].'</strong> - Posted By: <strong>'.$newsDB['author'].'</strong></p>
+                            </div>';
+                        }
+                      ?>
                     </div>
-                </div>
-            </div>
+                  </div>
+              </div>
+            <?php endif; ?>
         </div>
     </div>
     <!-- CONTENT END -->

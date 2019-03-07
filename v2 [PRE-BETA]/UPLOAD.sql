@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 31, 2019 at 12:06 AM
+-- Generation Time: Mar 07, 2019 at 09:14 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -184,6 +184,27 @@ CREATE TABLE `logs` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `news`
+--
+
+CREATE TABLE `news` (
+  `id` int(11) NOT NULL,
+  `title` varchar(64) NOT NULL,
+  `message` text NOT NULL,
+  `datetime` varchar(64) NOT NULL,
+  `author` varchar(64) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `news`
+--
+
+INSERT INTO `news` (`id`, `title`, `message`, `datetime`, `author`) VALUES
+(1, 'Thank you for using Hydrid <3', 'This is a default news message! Thank you for choosing Hydrid as your communities CAD/MDT system! We have had support for the past year from the community, and we wouldn\'t be around without all of it! If you have any issues, suggestions, etc... stop by our <a href=\"https://discord.gg/NeRrWZC\">Discord</a>', '3/7/2019', 'System');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `on_duty`
 --
 
@@ -242,7 +263,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`setting_id`, `site_name`, `account_validation`, `identity_validation`, `steam_required`, `discord_alerts`, `discord_webhook`, `timezone`, `civ_side_warrants`, `add_warrant`, `group_unverifiedGroup`, `group_verifiedGroup`, `group_banGroup`) VALUES
-(1, 'Hydrid CAD/MDT', 'no', 'yes', 'false', 'false', NULL, 'America/New_York', 'false', 'supervisor', 2, 3, 1);
+(1, 'CAD/MDT', 'yes', 'no', 'false', 'false', NULL, 'America/New_York', 'true', 'all', 2, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -281,6 +302,7 @@ CREATE TABLE `usergroups` (
   `staff_siteSettings` enum('false','true') NOT NULL DEFAULT 'false',
   `staff_banUsers` enum('false','true') NOT NULL DEFAULT 'false',
   `staff_SuperAdmin` enum('false','true') NOT NULL DEFAULT 'false',
+  `staff_newsAccess` enum('true','false') NOT NULL DEFAULT 'false',
   `default_group` enum('false','true') NOT NULL DEFAULT 'false'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -288,13 +310,14 @@ CREATE TABLE `usergroups` (
 -- Dumping data for table `usergroups`
 --
 
-INSERT INTO `usergroups` (`id`, `name`, `isBanned`, `panel_access`, `staff_approveUsers`, `staff_access`, `staff_viewUsers`, `staff_editUsers`, `staff_editAdmins`, `staff_siteSettings`, `staff_banUsers`, `staff_SuperAdmin`, `default_group`) VALUES
-(1, 'Banned', 'true', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'true'),
-(2, 'Unverified', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'true'),
-(3, 'User', 'false', 'true', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'true'),
-(4, 'Moderator', 'false', 'true', 'true', 'true', 'true', 'false', 'false', 'false', 'false', 'false', 'true'),
-(5, 'Admin', 'false', 'true', 'true', 'true', 'true', 'true', 'false', 'false', 'true', 'false', 'true'),
-(6, 'Super Admin', 'false', 'true', 'true', 'true', 'true', 'true', 'true', 'true', 'true', 'true', 'true');
+INSERT INTO `usergroups` (`id`, `name`, `isBanned`, `panel_access`, `staff_approveUsers`, `staff_access`, `staff_viewUsers`, `staff_editUsers`, `staff_editAdmins`, `staff_siteSettings`, `staff_banUsers`, `staff_SuperAdmin`, `staff_newsAccess`, `default_group`) VALUES
+(1, 'Banned', 'true', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'true'),
+(2, 'Unverified', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'true'),
+(3, 'User', 'false', 'true', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'false', 'true'),
+(4, 'Moderator', 'false', 'true', 'true', 'true', 'true', 'false', 'false', 'false', 'false', 'false', 'false', 'true'),
+(5, 'Admin', 'false', 'true', 'true', 'true', 'true', 'true', 'false', 'false', 'true', 'false', 'false', 'true'),
+(6, 'Super Admin', 'false', 'true', 'true', 'true', 'true', 'true', 'true', 'true', 'true', 'true', 'true', 'true'),
+(7, 'Owner', 'false', 'true', 'true', 'true', 'true', 'true', 'true', 'true', 'true', 'true', 'true', 'false');
 
 -- --------------------------------------------------------
 
@@ -313,10 +336,7 @@ CREATE TABLE `users` (
   `last_ip` varchar(36) DEFAULT NULL,
   `steam_id` varchar(355) DEFAULT NULL,
   `avatar` varchar(355) DEFAULT 'assets/images/users/placeholder.png',
-  `failed_logins` int(11) NOT NULL DEFAULT '0',
-  `locked` varchar(36) DEFAULT NULL,
-  `ban_reason` varchar(126) DEFAULT NULL,
-  `root_user` enum('true','false') NOT NULL DEFAULT 'false'
+  `ban_reason` varchar(126) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -426,6 +446,12 @@ ALTER TABLE `leo_division`
 --
 ALTER TABLE `logs`
   ADD PRIMARY KEY (`log_id`);
+
+--
+-- Indexes for table `news`
+--
+ALTER TABLE `news`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `on_duty`
@@ -542,6 +568,12 @@ ALTER TABLE `logs`
   MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `news`
+--
+ALTER TABLE `news`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `on_duty`
 --
 ALTER TABLE `on_duty`
@@ -569,7 +601,7 @@ ALTER TABLE `tickets`
 -- AUTO_INCREMENT for table `usergroups`
 --
 ALTER TABLE `usergroups`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `users`
