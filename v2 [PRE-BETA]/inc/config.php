@@ -4,7 +4,7 @@ $GLOBAL['language'] = "en-us"; // Set Language
 $debug = true; // Toggle Debug
 // Version Number -- Do Not Change
 $version = "v2.0.0";
-$assets_ver = "2013";
+$assets_ver = "2015";
 
 // Set Language
 // require('languages/' . $GLOBAL['language'] . '.php');
