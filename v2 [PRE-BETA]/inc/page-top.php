@@ -29,6 +29,8 @@
         <script src="assets/js/modernizr.min.js"></script>
         <script src="assets/js/ajaxform.js?v=<?php echo $assets_ver ?>"></script>
         <script src="assets/plugins/select2/js/select2.min.js" type="text/javascript"></script>
+        <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+
     </head>
     <style>
     .ui-front {

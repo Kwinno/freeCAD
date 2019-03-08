@@ -31,7 +31,11 @@
     $charWanted->execute([$charID]);
     $characterWarrants = $charWanted->fetchAll();
 
+    // Always sets the alert cookie as false at first
+    setcookie('personWantedAlert', 'false', time() + (120 * 30), "/");
+
     if (!empty($characterWarrants)) {
+      setcookie('personWantedAlert', 'true', time() + (120 * 30), "/");
       echo '<div class="alert alert-danger" role="alert">This Person Is WANTED. Proceed with caution</div>';
     }
 
@@ -154,5 +158,4 @@
         }
 
       echo '</div>
-    </div>
-    ';
+    </div>';
