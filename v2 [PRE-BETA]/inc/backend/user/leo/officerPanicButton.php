@@ -14,7 +14,7 @@ if (!isset($_SESSION['on_duty'])) {
 	exit();
 }
 
-$sql          = "INSERT INTO 911calls (call_description, call_location, call_postal, call_timestamp, call_isPriority, call_status) VALUES (
+$sql = "INSERT INTO 911calls (call_description, call_location, call_postal, call_timestamp, call_isPriority, call_status) VALUES (
   :call_description,
   :call_location,
   :call_postal,
@@ -31,6 +31,10 @@ $stmt->bindValue(':call_isPriority', 'true');
 $stmt->bindValue(':call_status', 'PRIORITY');
 $result = $stmt->execute();
 if ($result) {
+	$stmt_pbu = $pdo->prepare("UPDATE `servers` SET `priority`='1' WHERE `id`=:server_id");
+	$stmt_pbu->bindValue(':server_id', $_SESSION['server']);
+	$result_pbu = $stmt_pbu->execute();
+
   if ($settings['discord_alerts'] === 'true') {
   discordAlert('**NEW 911 CALL**
   **Description:** '. $call_description .'

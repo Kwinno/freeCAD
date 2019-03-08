@@ -616,6 +616,10 @@ font-family: 'Didact Gothic', sans-serif;if;
   color: #ffffff !important;
 }
 
+.text-black {
+  color: #000000 !important;
+}
+
 .text-danger {
   color: #ff5b5b !important;
 }

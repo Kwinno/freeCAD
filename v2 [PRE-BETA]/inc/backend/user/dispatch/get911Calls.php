@@ -30,7 +30,7 @@ if ($_SESSION['on_duty'] === "Dispatch") {
         $result->execute();
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             if ($row['call_status'] === "PRIORITY") {
-                echo "<tr class='table-danger'>";
+                echo "<tr class='table-danger text-black'>";
             }
             else {
                 echo "<tr>";

@@ -239,7 +239,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                                             var audio = new Audio('assets/sounds/signal100.mp3');
                                             audio.play();
                                             setTimeout(() => {
-                                                var msg = new SpeechSynthesisUtterance('Signal 100 Activated - Check CAD For Details');
+                                                var msg = new SpeechSynthesisUtterance('ALL UNITS HOLD TRAFFIC - SIGNAL 100 ACTIVATED - STAND BY FOR DETAILS.');
                                                 var voices = window.speechSynthesis.getVoices();
                                                 window.speechSynthesis.speak(msg);
                                             }, 3000);

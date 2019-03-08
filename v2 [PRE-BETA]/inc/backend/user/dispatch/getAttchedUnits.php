@@ -30,7 +30,7 @@ if ($_SESSION['on_duty'] === "Dispatch" || $_SESSION['on_duty'] === "LEO") {
         $unitInfo = $stmt2->fetch(PDO::FETCH_ASSOC);
 
         echo "<tr>";
-        echo '<td><center>' . $unitInfo['name'] . '</center></td>';
+        echo '<td><center>' . $unitInfo['name'] . ' [' . $unitInfo['division'] . ']</center></td>';
         echo '<td><center>' . $unitInfo['status'] . '</center></td>';
         if ($_SESSION['on_duty'] === "Dispatch") {
             echo '<td><center><input type="button" class="btn btn-danger btn-sm" name="unassignUnit" value="Unassign" id=' . $unitInfo['id'] . ' onclick="unassignUnit(this.id)"></center></td>';

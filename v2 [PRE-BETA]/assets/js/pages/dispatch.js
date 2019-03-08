@@ -461,3 +461,26 @@ function rejectID(str) {
         }
     });
 }
+
+function updateCallStatus(str) {
+    var i = str.value;
+    toastr.warning('Please Wait...')
+    if (str == "") {
+        return;
+    } else {
+        if (window.XMLHttpRequest) {
+            // code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // code for IE6, IE5
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                toastr.success('Unit Assigned To Call.')
+            }
+        };
+        xmlhttp.open("GET", "inc/backend/user/dispatch/updateCallStatus.php?newStatus=" + i, true);
+        xmlhttp.send();
+    }
+}

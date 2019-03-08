@@ -266,7 +266,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                                             var audio = new Audio('assets/sounds/signal100.mp3');
                                             audio.play();
                                             setTimeout(() => {
-                                                var msg = new SpeechSynthesisUtterance('Signal 100 Activated - Check CAD For Details');
+																								var msg = new SpeechSynthesisUtterance('ALL UNITS HOLD TRAFFIC - SIGNAL 100 ACTIVATED - STAND BY FOR DETAILS.');
                                                 var voices = window.speechSynthesis.getVoices();
                                                 window.speechSynthesis.speak(msg);
                                             }, 3000);
@@ -420,7 +420,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
             <!-- // -->
             <!-- Call Info Modal -->
             <div class="modal fade" id="callInfoModal" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-dialog modal-dialog-centered modal-full" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Call Info</h5>

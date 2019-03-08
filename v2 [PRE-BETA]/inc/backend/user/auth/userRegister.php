@@ -53,12 +53,24 @@ $passwordHash = password_hash($pass, PASSWORD_BCRYPT, array(
     "cost" => 12
 ));
 
-$sql3 = "INSERT INTO users (username, email, password, join_date, join_ip) VALUES (?,?,?,?,?)";
-$stmt3= $pdo->prepare($sql3);
-$result = $stmt3->execute([$username, $email, $passwordHash, $us_date, $ip]);
+if ($settings['account_validation'] === "yes") {
+  $sql3 = "INSERT INTO users (username, email, usergroup, password, join_date, join_ip) VALUES (?,?,?,?,?,?)";
+  $stmt3 = $pdo->prepare($sql3);
+  $result = $stmt3->execute([$username, $email, '2', $passwordHash, $us_date, $ip]);
 
-if ($result) {
-    $error['msg'] = "";
-    echo json_encode($error);
-    exit();
+  if ($result) {
+      $error['msg'] = "";
+      echo json_encode($error);
+      exit();
+  }
+} else {
+  $sql3 = "INSERT INTO users (username, email, password, join_date, join_ip) VALUES (?,?,?,?,?)";
+  $stmt3 = $pdo->prepare($sql3);
+  $result = $stmt3->execute([$username, $email, $passwordHash, $us_date, $ip]);
+
+  if ($result) {
+      $error['msg'] = "";
+      echo json_encode($error);
+      exit();
+  }
 }

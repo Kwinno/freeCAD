@@ -51,7 +51,16 @@ if ($_SESSION['on_duty'] === "Dispatch" || $_SESSION['on_duty'] === "LEO") {
       <div class="col-6">
         <div class="form-group">
           <label for="callStatus">Call Status</label>
-          <input class="form-control" type="text" readonly="" value="<?php echo $callInfo['call_status']; ?>">
+          <div class="form-group">
+              <select class="form-control" name="updateCallStatus" onChange='updateCallStatus(this)'>
+                  <option selected="true" disabled="true"><?php echo $callInfo['call_status']; ?></option>
+                  <?php if ($callInfo['call_status'] === "ASSIGNED" || $callInfo['call_status'] === "NOT ASSIGNED"): ?>
+                    <option value="PRIORITY">PRIORITY</option>
+                  <?php else: ?>
+                    <option value="ASSIGNED">UN-PRIORITIZE</option>
+                  <?php endif; ?>
+              </select>
+          </div>
         </div>
       </div>
     </div>
@@ -77,7 +86,7 @@ if ($_SESSION['on_duty'] === "Dispatch" || $_SESSION['on_duty'] === "LEO") {
         </div>
       <?php else: ?>
         <div class="row">
-          <div class="col-6">
+          <div class="col-5">
             <div class="form-group">
               <label for="getAllActiveUnitsForCall">Assign Unit</label>
               <select class="form-control" name="getAllActiveUnitsForCall" id="getAllActiveUnitsForCall" onchange="assignUnit(this.value)">
@@ -85,13 +94,13 @@ if ($_SESSION['on_duty'] === "Dispatch" || $_SESSION['on_duty'] === "LEO") {
               </select>
             </div>
           </div>
-          <div class="col-6">
+          <div class="col-7">
             <div id="getAttchedUnits"></div>
           </div>
         </div>
       <?php endif; ?>
       <div class="row">
-        <div class="col-4">
+        <div class="col-5">
           <input type="button" class="btn btn-danger btn-block" name="clearCall" value="Clear Call" onclick="clear911Call()">
         </div>
       </div>
