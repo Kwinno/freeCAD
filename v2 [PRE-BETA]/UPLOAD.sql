@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 08, 2019 at 08:57 PM
+-- Generation Time: Mar 10, 2019 at 03:48 PM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.0
 
@@ -64,6 +64,21 @@ CREATE TABLE `911calls` (
   `call_status` varchar(534) NOT NULL DEFAULT 'NOT ASSIGNED',
   `call_timestamp` text NOT NULL,
   `call_isPriority` enum('false','true') DEFAULT 'false'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `911call_log`
+--
+
+CREATE TABLE `911call_log` (
+  `id` int(11) NOT NULL,
+  `call_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `dispatcher` varchar(64) NOT NULL,
+  `action` varchar(355) NOT NULL,
+  `timestamp` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -263,7 +278,7 @@ CREATE TABLE `settings` (
 --
 
 INSERT INTO `settings` (`setting_id`, `site_name`, `account_validation`, `identity_validation`, `steam_required`, `discord_alerts`, `discord_webhook`, `timezone`, `civ_side_warrants`, `add_warrant`, `group_unverifiedGroup`, `group_verifiedGroup`, `group_banGroup`) VALUES
-(1, 'CAD/MDT', 'yes', 'no', 'false', 'false', NULL, 'America/New_York', 'true', 'all', 2, 3, 1);
+(1, 'CAD/MDT', 'no', 'no', 'false', 'false', NULL, 'America/New_York', 'true', 'all', 2, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -406,6 +421,12 @@ ALTER TABLE `911calls`
   ADD PRIMARY KEY (`call_id`);
 
 --
+-- Indexes for table `911call_log`
+--
+ALTER TABLE `911call_log`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `arrest_reports`
 --
 ALTER TABLE `arrest_reports`
@@ -524,6 +545,12 @@ ALTER TABLE `10_codes`
 --
 ALTER TABLE `911calls`
   MODIFY `call_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `911call_log`
+--
+ALTER TABLE `911call_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `arrest_reports`

@@ -546,6 +546,175 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 
 						<?php case "supervisor": ?>
 							<?php if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true'): ?>
+								<?php if(isset($_GET['a']) && strip_tags($_GET['a']) === 'edit-id'): ?>
+		            <?php
+										$id   = $_GET['id'];
+										$sql  = "SELECT * FROM identities WHERE identity_id = :identity_id AND department='Dispatch'";
+										$stmt = $pdo->prepare($sql);
+										$stmt->bindValue(':identity_id', $id);
+										$stmt->execute();
+										$idDB = $stmt->fetch(PDO::FETCH_ASSOC);
+										if ($idDB === false) {
+											 echo '<script> location.replace("' . $url['dispatch']. '?v=supervisor&error=id-not-found"); </script>';
+											 exit();
+										} else {
+											$editing_id['id']	= $idDB['identity_id'];
+											$_SESSION['editing_identity_id']	= $editing_id['id'];
+
+											$editing_id['name']	= $idDB['name'];
+											$editing_id['division']	= $idDB['division'];
+											$editing_id['supervisor']	= $idDB['supervisor'];
+											$editing_id['user']	= $idDB['user_name'];
+											$editing_id['status']	= $idDB['status'];
+										}
+
+										if (isset($_POST['suspendIdBtn'])) {
+											$sql = "UPDATE identities SET status=? WHERE identity_id=?";
+											$stmt = $pdo->prepare($sql);
+											$stmt->execute(['Suspended', $_SESSION['editing_identity_id']]);
+											echo '<script> location.replace("' . $url['dispatch']. '?v=supervisor&id=suspended"); </script>';
+											exit();
+										}
+										if (isset($_POST['unsuspendIdBtn'])) {
+											$sql = "UPDATE identities SET status=? WHERE identity_id=?";
+											$stmt = $pdo->prepare($sql);
+											$stmt->execute(['Active', $_SESSION['editing_identity_id']]);
+											echo '<script> location.replace("' . $url['dispatch']. '?v=supervisor&id=unsuspended"); </script>';
+											exit();
+										}
+										if (isset($_POST['editIdBtn'])) {
+											$updateSupervisor    = !empty($_POST['supervisor']) ? trim($_POST['supervisor']) : null;
+		  								$updateSupervisor    = strip_tags($updateSupervisor);
+
+											$sql = "UPDATE identities SET supervisor=? WHERE identity_id=?";
+											$stmt = $pdo->prepare($sql);
+											$stmt->execute([$updateSupervisor, $_SESSION['editing_identity_id']]);
+											echo '<script> location.replace("' . $url['dispatch']. '?v=supervisor&id=edited"); </script>';
+											exit();
+										}
+										?>
+		            <div class="row">
+		                <div class="col-12">
+		                    <?php if($editing_id['status'] === "Suspended"): ?>
+		                    <div class="alert alert-danger" role="alert">
+		                        <strong>This identity is Suspended.</strong>
+		                    </div>
+		                    <?php endif; ?>
+		                    <div class="card-box">
+		                        <h4 class="header-title mt-0 m-b-30">Identity Editor (<?php echo $editing_id['name']; ?>)</h4>
+		                        <form method="POST">
+		                            <div class="form-group">
+		                                <div class="col-12">
+		                                    <label for="supervisor">Supervisor</label>
+		                                    <select class="custom-select my-1 mr-sm-2" id="supervisor" name="supervisor">
+		                                        <option selected value="<?php echo $editing_id['supervisor']; ?>"><?php echo $editing_id['supervisor']; ?> (Current)</option>
+		                                        <option value="No">No</option>
+		                                        <option value="Yes">Yes</option>
+		                                    </select>
+		                                </div>
+		                            </div>
+
+		                            <div class="form-group text-center">
+		                                <div class="row">
+		                                    <div class="col-6">
+		                                        <button class="btn btn-success btn-bordred btn-block waves-effect waves-light" type="submit" name="editIdBtn">Edit</button>
+		                                    </div>
+		                                    <div class="col-6">
+		                                        <?php if($editing_id['status'] === "Suspended"): ?>
+		                                        <button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="unsuspendIdBtn">Unsuspend</button>
+		                                        <?php else: ?>
+		                                        <button class="btn btn-danger btn-bordred btn-block waves-effect waves-light" type="submit" name="suspendIdBtn">Suspend</button>
+		                                        <?php endif; ?>
+		                                    </div>
+		                                </div>
+		                            </div>
+		                        </form>
+		                    </div>
+		                </div>
+		            </div>
+							 <?php elseif(isset($_GET['a']) && strip_tags($_GET['a']) === 'view-call'): ?>
+		            <?php
+										$id   = $_GET['id'];
+										$sql  = "SELECT * FROM 911calls WHERE call_id = :id AND call_status='Archived'";
+										$stmt = $pdo->prepare($sql);
+										$stmt->bindValue(':id', $id);
+										$stmt->execute();
+										$callDB = $stmt->fetch(PDO::FETCH_ASSOC);
+										if ($callDB === false) {
+											 echo '<script> location.replace("' . $url['dispatch']. '?v=supervisor&error=call-not-found"); </script>';
+											 exit();
+										} else {
+											$viewing_call['id']	= $callDB['call_id'];
+											$_SESSION['viewingArchivedCallID']	= $viewing_call['id'];
+
+											$viewing_call['call_desc']	= $callDB['call_description'];
+											$viewing_call['call_location']	= $callDB['call_location'];
+											$viewing_call['call_postal']	= $callDB['call_postal'];
+											$viewing_call['call_status']	= $callDB['call_status'];
+											$viewing_call['call_timestamp']	= $callDB['call_timestamp'];
+										}
+										?>
+		            <div class="row">
+		                <div class="col-12">
+		                    <div class="card-box">
+		                        <h4 class="header-title mt-0 m-b-30">Viewing Archived Call #(<?php echo $_SESSION['viewingArchivedCallID']; ?>)</h4>
+		                        <div class="row">
+															<div class="col">
+																	<div class="form-group">
+																		<textarea class="form-control" readonly="true" rows="8"><?php echo $viewing_call['call_desc'];?></textarea>
+																	</div>
+															</div>
+														</div>
+														<div class="row">
+															<div class="col">
+																	<div class="form-group">
+																			<label>Location (Street / Postal)</label>
+																			<input class="form-control" readonly="" value="<?php echo $viewing_call['call_location'];?> / <?php echo $viewing_call['call_postal'];?>"/>
+																	</div>
+															</div>
+															<div class="col">
+																	<div class="form-group">
+																			<label>Timestamp</label>
+																			<input class="form-control" readonly="" value="<?php echo $viewing_call['call_timestamp'];?>"/>
+																	</div>
+															</div>
+														</div>
+		                    </div>
+		                </div>
+		            </div>
+								<div class="row">
+									<div class="col-12">
+										<div class="card-box">
+												<h4 class="header-title mt-0 m-b-30">Call Log</h4>
+												<table id="datatable" class="table table-borderless">
+													<thead>
+	                          <tr>
+	                              <th>Dispatcher</th>
+	                              <th>Timestamp</th>
+	                              <th width="60%">Action</th>
+	                          </tr>
+	                        </thead>
+													<tbody>
+														<?php
+														$sql             = "SELECT * FROM 911call_log WHERE call_id= ?";
+														$stmt            = $pdo->prepare($sql);
+														$stmt->execute([$_SESSION['viewingArchivedCallID']]);
+														$callLogRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+														foreach ($callLogRow as $log) {
+														?>
+														<tr>
+															<td><?php echo $log['dispatcher']?></td>
+															<td><?php echo $log['timestamp']?></td>
+															<td><?php echo $log['action']?></td>
+														</tr>
+														<?php } ?>
+													</tbody>
+												</table>
+										</div>
+									</div>
+								</div>
+								<?php else: ?>
 								<div class="row">
 									<div class="col-12">
 										<div class="card-box">
@@ -600,6 +769,39 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                     </div>
 	                </div>
 								</div>
+								<div class="row">
+									<div class="col-12">
+										<div class="card-box">
+                    	<h4 class="header-title mt-0 m-b-30">Archived Calls (BETA)</h4>
+											<table id="datatable2" class="table table-borderless">
+												<thead>
+                          <tr>
+                              <th>Call ID</th>
+                              <th>Timestamp</th>
+                              <th>Actions</th>
+                          </tr>
+                        </thead>
+												<tbody>
+													<?php
+													$sql             = "SELECT * FROM 911calls WHERE call_status='Archived'";
+													$stmt            = $pdo->prepare($sql);
+													$stmt->execute();
+													$callsRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+													foreach ($callsRow as $call) {
+													?>
+													<tr>
+														<td><?php echo $call['call_id']?></td>
+														<td><?php echo $call['call_timestamp']?></td>
+														<td><a href="dispatch.php?v=supervisor&a=view-call&id=<?php echo $call['call_id']?>"><input type="button" class="btn btn-sm btn-success btn-block" value="View"></a></td>
+													</tr>
+													<?php } ?>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							<?php endif; ?>
 							<?php else: ?>
 								<div class="alert alert-danger" role="alert">
 		                You are not a supervisor.

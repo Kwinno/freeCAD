@@ -151,7 +151,7 @@ function rejectID(str) {
 function getMyCalls() {
     (function worker() {
         $.ajax({
-            url: 'inc/backend/user/leo/getMyCalls.php',
+            url: 'inc/backend/user/fire/getMyCalls.php',
             success: function(data) {
                 $('#getMyCalls').html(data);
             },

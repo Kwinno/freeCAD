@@ -671,7 +671,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 									$updateDivision    = !empty($_POST['division']) ? trim($_POST['division']) : null;
 									$updateDivision    = strip_tags($updateDivision);
 									$updateSupervisor    = !empty($_POST['supervisor']) ? trim($_POST['supervisor']) : null;
-    								$updateSupervisor    = strip_tags($updateSupervisor);
+  								$updateSupervisor    = strip_tags($updateSupervisor);
 
 									$sql = "UPDATE identities SET division=?, supervisor=? WHERE identity_id=?";
 									$stmt = $pdo->prepare($sql);
@@ -706,16 +706,16 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                                     <select class="custom-select my-1 mr-sm-2" id="division" name="division">
                                         <option selected value="<?php echo $editing_id['division']; ?>"><?php echo $editing_id['division']; ?> (Current)</option>
                                         <?php
-														$sql             = "SELECT * FROM leo_division";
-														$stmt            = $pdo->prepare($sql);
-														$stmt->execute();
-														$divRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
-														foreach($divRow as $leoDivision) {
-															echo '
-																<option value="' . $leoDivision['name'] . '">' . $leoDivision['name'] . '</option>
-															';
-														}
-														?>
+              														$sql             = "SELECT * FROM leo_division";
+              														$stmt            = $pdo->prepare($sql);
+              														$stmt->execute();
+              														$divRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+              														foreach($divRow as $leoDivision) {
+              															echo '
+              																<option value="' . $leoDivision['name'] . '">' . $leoDivision['name'] . '</option>
+              															';
+              														}
+            														?>
                                     </select>
                                 </div>
                             </div>
@@ -747,26 +747,25 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                                 </tr>
                             </thead>
 
-
                             <tbody>
-                                <?php
-											$sql             = "SELECT * FROM arrest_reports WHERE arresting_officer=:editing_idname";
-											$stmt            = $pdo->prepare($sql);
-											$stmt->bindValue(':editing_idname', $editing_id['name']);
-											$stmt->execute();
-											$arrestsRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            <?php
+        											$sql             = "SELECT * FROM arrest_reports WHERE arresting_officer=:editing_idname";
+        											$stmt            = $pdo->prepare($sql);
+        											$stmt->bindValue(':editing_idname', $editing_id['name']);
+        											$stmt->execute();
+        											$arrestsRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-											foreach ($arrestsRow as $arrest) {
-												echo '
-												<tr>
-													<td>'. $arrest['arrest_id'] .'</td>
-													<td>'. $arrest['timestamp'] .'</td>
-													<td>'. $arrest['suspect'] .'</td>
-													<td width="50%">'. $arrest['summary'] .'</td>
-												</tr>
-												';
-											}
-											?>
+        											foreach ($arrestsRow as $arrest) {
+        												echo '
+        												<tr>
+        													<td>'. $arrest['arrest_id'] .'</td>
+        													<td>'. $arrest['timestamp'] .'</td>
+        													<td>'. $arrest['suspect'] .'</td>
+        													<td width="50%">'. $arrest['summary'] .'</td>
+        												</tr>
+        												';
+        											}
+      											?>
                         </table>
                     </div>
                     <div class="card-box">
@@ -780,27 +779,25 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                                     <th>Reason</th>
                                 </tr>
                             </thead>
-
-
                             <tbody>
-                                <?php
-											$sql2             = "SELECT * FROM tickets WHERE officer=:editing_idname";
-											$stmt2            = $pdo->prepare($sql2);
-											$stmt2->bindValue(':editing_idname', $editing_id['name']);
-											$stmt2->execute();
-											$ticketRow = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+                            <?php
+        											$sql2             = "SELECT * FROM tickets WHERE officer=:editing_idname";
+        											$stmt2            = $pdo->prepare($sql2);
+        											$stmt2->bindValue(':editing_idname', $editing_id['name']);
+        											$stmt2->execute();
+        											$ticketRow = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
-											foreach ($ticketRow as $ticket) {
-												echo '
-												<tr>
-													<td>'. $ticket['ticket_id'] .'</td>
-													<td>'. $ticket['ticket_timestamp'] .'</td>
-													<td>'. $ticket['suspect'] .'</td>
-													<td width="50%">'. $ticket['reasons'] .'</td>
-												</tr>
-												';
-											}
-											?>
+        											foreach ($ticketRow as $ticket) {
+        												echo '
+        												<tr>
+        													<td>'. $ticket['ticket_id'] .'</td>
+        													<td>'. $ticket['ticket_timestamp'] .'</td>
+        													<td>'. $ticket['suspect'] .'</td>
+        													<td width="50%">'. $ticket['reasons'] .'</td>
+        												</tr>
+        												';
+        											}
+      											?>
                         </table>
                     </div>
                 </div>
@@ -840,25 +837,25 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php
-										$sql             = "SELECT * FROM identities WHERE department='Law Enforcement'";
-										$stmt            = $pdo->prepare($sql);
-										$stmt->execute();
-										$leoIdsRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                            <?php
+          										$sql             = "SELECT * FROM identities WHERE department='Law Enforcement'";
+          										$stmt            = $pdo->prepare($sql);
+          										$stmt->execute();
+          										$leoIdsRow = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-										foreach ($leoIdsRow as $identity) {
-											echo '
-											<tr>
-												<td>'. $identity['name'] .'</td>
-												<td>'. $identity['division'] .'</td>
-												<td>'. $identity['supervisor'] .'</td>
-												<td>'. $identity['user_name'] .'</td>
-												<td>'. $identity['status'] .'</td>
-												<td><a href="leo.php?v=supervisor&a=edit-id&id='. $identity['identity_id'] .'"><input type="button" class="btn btn-sm btn-success btn-block" value="Edit"></a></td>
-											</tr>
-											';
-										}
-										?>
+          										foreach ($leoIdsRow as $identity) {
+          											echo '
+          											<tr>
+          												<td>'. $identity['name'] .'</td>
+          												<td>'. $identity['division'] .'</td>
+          												<td>'. $identity['supervisor'] .'</td>
+          												<td>'. $identity['user_name'] .'</td>
+          												<td>'. $identity['status'] .'</td>
+          												<td><a href="leo.php?v=supervisor&a=edit-id&id='. $identity['identity_id'] .'"><input type="button" class="btn btn-sm btn-success btn-block" value="Edit"></a></td>
+          											</tr>
+          											';
+          										}
+        										?>
                         </table>
                     </div>
                 </div>

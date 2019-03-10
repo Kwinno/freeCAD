@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Didact+Gothic');
+@import url('https://fonts.googleapis.com/css?family=Raleway');
 /* =============
   == Core List==
 
@@ -16,7 +16,7 @@
 ============= */
 body {
   background: #253138;
-font-family: 'Didact Gothic', sans-serif;if;
+font-family: 'Raleway', sans-serif;if;
   margin: 0;
   padding-bottom: 65px;
   overflow: scroll;
@@ -43,7 +43,7 @@ html {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 10px 0;
-font-family: 'Didact Gothic', sans-serif;if;
+font-family: 'Raleway', sans-serif;if;
   color: rgba(255, 255, 255, 0.9);
 }
 
@@ -169,7 +169,7 @@ hr {
   line-height: 16px;
   margin-bottom: 8px;
   margin-top: 0;
-font-family: 'Didact Gothic', sans-serif;if;
+font-family: 'Raleway', sans-serif;if;
 }
 
 /* =============
@@ -912,7 +912,7 @@ select[multiple] {
   color: #98a6ad;
   font-size: 15px;
   font-weight: 600;
-font-family: 'Didact Gothic', sans-serif;if;
+font-family: 'Raleway', sans-serif;if;
 }
 
 .nav > li > a:focus, .nav > li > a:hover {
@@ -3590,7 +3590,7 @@ File: Pages
 /* Sweet Alert */
 /* =========== */
 .swal2-modal {
-font-family: 'Didact Gothic', sans-serif;if;
+font-family: 'Raleway', sans-serif;if;
   box-shadow: 0 10px 33px rgba(0, 0, 0, 0.1) !important;
 }
 
@@ -4279,7 +4279,7 @@ h3.timeline-title {
 ============= */
 div.hopscotch-bubble, div.hopscotch-bubble h3,
 div.hopscotch-bubble .hopscotch-content {
-font-family: 'Didact Gothic', sans-serif;if;
+font-family: 'Raleway', sans-serif;if;
 }
 
 div.hopscotch-bubble {
@@ -4364,7 +4364,7 @@ div.hopscotch-bubble .hopscotch-bubble-arrow-container.down .hopscotch-bubble-ar
 
 .pricing-column .plan-title {
   font-size: 16px;
-font-family: 'Didact Gothic', sans-serif;if;
+font-family: 'Raleway', sans-serif;if;
   margin-bottom: 10px;
   color: #188ae2;
   text-transform: uppercase;
@@ -4374,7 +4374,7 @@ font-family: 'Didact Gothic', sans-serif;if;
 
 .pricing-column .plan-price {
   font-size: 48px;
-font-family: 'Didact Gothic', sans-serif;if;
+font-family: 'Raleway', sans-serif;if;
   margin-bottom: 10px;
   color: #ffffff;
 }
@@ -4475,7 +4475,7 @@ font-family: 'Didact Gothic', sans-serif;if;
   margin-top: 0px;
   font-size: 15px;
   font-weight: 500;
-font-family: 'Didact Gothic', sans-serif;if;
+font-family: 'Raleway', sans-serif;if;
 }
 
 .kanban-box .kanban-detail h4 a {
@@ -4607,7 +4607,7 @@ font-family: 'Didact Gothic', sans-serif;if;
 
 .wrapper-page .logo {
   font-size: 42px;
-font-family: 'Didact Gothic', sans-serif;if;
+font-family: 'Raleway', sans-serif;if;
   color: #FFFFFF;
 }
 

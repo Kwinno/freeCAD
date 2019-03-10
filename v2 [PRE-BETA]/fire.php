@@ -198,8 +198,10 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                                     if (data === "Off-Duty") {
                                       document.getElementById("divisionSetter").style.display= "block";
                                       document.getElementById("statusSetter").style.display= "none";
+                                      document.getElementById("getMyCalls").style.display= "none";
                                     } else {
                                       document.getElementById("statusSetter").style.display= "block";
+                                      document.getElementById("getMyCalls").style.display= "block";
                                       document.getElementById("divisionSetter").style.display= "none";
                                     }
                                 },

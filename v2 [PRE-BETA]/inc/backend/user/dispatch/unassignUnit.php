@@ -11,6 +11,8 @@ require '../../../backend/user/auth/userIsLoggedIn.php';
 if ($_SESSION['on_duty'] === "Dispatch") {
     $unit = strip_tags($_GET['unit']);
 
+    log911Action('Un-Assigned Unit');
+
     $stmt = $pdo->prepare("DELETE FROM assigned_callunits WHERE `unit_id`= ?");
     $result = $stmt->execute([$unit]);
 }

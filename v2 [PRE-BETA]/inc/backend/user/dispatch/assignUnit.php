@@ -11,6 +11,8 @@ require '../../../backend/user/auth/userIsLoggedIn.php';
 if ($_SESSION['on_duty'] === "Dispatch") {
     $unit = strip_tags($_GET['unit']);
 
+    log911Action('Attached New Unit');
+
     $sql = "INSERT INTO assigned_callunits (call_id, unit_id) VALUES (?,?)";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$_SESSION['viewingCallID'], $unit]);

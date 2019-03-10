@@ -109,6 +109,18 @@ function logAction($action, $user) {
     $result_log = $stmt_log->execute();
 }
 
+// Log Function For 911 Calls
+function log911Action($action) {
+    global $pdo;
+    global $time;
+    global $us_date;
+    global $user_id;
+
+    $sql_callLogger = "INSERT INTO 911call_log (call_id, user_id, dispatcher, action, timestamp) VALUES (?,?,?,?,?)";
+    $stmt_callLogger = $pdo->prepare($sql_callLogger);
+    $result_callLogger = $stmt_callLogger->execute([$_SESSION['viewingCallID'], $user_id, $_SESSION['identity_name'], $action, $us_date . ' ' . $time]);
+}
+
 function truncate_string($string, $maxlength, $extension) {
 
     // Set the replacement for the "string break" in the wordwrap function

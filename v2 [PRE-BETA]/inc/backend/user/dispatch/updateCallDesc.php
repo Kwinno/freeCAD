@@ -12,6 +12,8 @@ $error = array();
 if ($_SESSION['on_duty'] === "Dispatch" || $_SESSION['on_duty'] === "LEO") {
     $updated_desc = htmlspecialchars($_POST['callDesc']);
 
+    log911Action('Updated Call Desc');
+
     $sql = "UPDATE 911calls SET call_description=? WHERE call_id=?";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([$updated_desc, $_SESSION['viewingCallID']]);
