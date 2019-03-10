@@ -29,7 +29,7 @@ if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings) {
     if ($settings['discord_alerts'] === 'true') {
     discordAlert('**Warrant Deleted**
     	  Warrant ID #'.$id.' has been deleted by '.$_SESSION['identity_name'].';
-    	  - **Hydrid CAD System**');
+    	  - **freeCAD System**');
     }
   } else {
   	$error['msg'] = "FATAL SYSTEM ERROR";

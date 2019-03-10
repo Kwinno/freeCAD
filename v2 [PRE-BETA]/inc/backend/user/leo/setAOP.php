@@ -26,7 +26,7 @@ if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true')
     discordAlert('**AOP Updated**
     The Area of Patrol has been updated for Server **'. $_SESSION['server'] .'**
     New AOP: **'. $newAOP['aop'] . '**
-      - **Hydrid CAD System**');
+      - **freeCAD System**');
     }
     $error['msg'] = "";
     echo json_encode($error);

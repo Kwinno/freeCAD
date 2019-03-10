@@ -5,7 +5,7 @@
         <title><?php echo $page['name']. ' - ' . $settings['name']; ?></title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
         <meta content="Computer Aided Dispatch (CAD) System and Mobile Data Terminal (MDT) for GTA V Roleplaying." name="description" />
-        <meta content="HydridSystems" name="author" />
+        <meta content="freeCAD" name="author" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <!-- <link rel="shortcut icon" href="assets/images/favicon.ico"> -->
         <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.css" integrity="sha256-2kJr1Z0C1y5z0jnhr/mCu46J3R6Uud+qCQHA39i1eYo=" crossorigin="anonymous" />

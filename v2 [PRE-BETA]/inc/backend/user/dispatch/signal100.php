@@ -18,7 +18,7 @@ if ($_SESSION['on_duty'] === "Dispatch" || $_SESSION['on_duty'] === "LEO") {
         if ($settings['discord_alerts'] === 'true') {
             discordAlert('**Signal 100 Is No Longer In Effect**
             Dispatcher (' . $_SESSION['identity_name'] . ') Has Deactivated Signal 100
-            - **Hydrid CAD System**');
+            - **freeCAD System**');
         }
         $stmt4 = $pdo->prepare("UPDATE `servers` SET `priority`='0' WHERE `id`=:server_id");
         $stmt4->bindValue(':server_id', $_SESSION['server']);
@@ -28,7 +28,7 @@ if ($_SESSION['on_duty'] === "Dispatch" || $_SESSION['on_duty'] === "LEO") {
         if ($settings['discord_alerts'] === 'true') {
             discordAlert('**Signal 100 IS NOW IN EFFECT**
             Dispatcher (' . $_SESSION['identity_name'] . ') Has Activated Signal 100 - Check CAD For Further Details
-            - **Hydrid CAD System**');
+            - **freeCAD System**');
         }
         $stmt3 = $pdo->prepare("UPDATE `servers` SET `priority`='1' WHERE `id`=:server_id");
         $stmt3->bindValue(':server_id', $_SESSION['server']);

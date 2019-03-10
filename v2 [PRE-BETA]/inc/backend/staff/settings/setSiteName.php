@@ -20,7 +20,7 @@ if (staff_access === 'true' && staff_siteSettings === 'true') {
     if ($settings['discord_alerts'] === 'true') {
         discordAlert('**Panel Settings Changed**
 	  Name has been updated by ' . $user['username'] . '
-      - **Hydrid CAD System**');
+      - **freeCAD System**');
     }
     $error['msg'] = "";
     echo json_encode($error);

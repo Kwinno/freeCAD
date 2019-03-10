@@ -45,7 +45,7 @@ if ($result) {
 	'.$realChar['first_name'] . ' ' . $realChar['last_name'].' is now WANTED.
 	Warrant added by '.$_SESSION['identity_name'].'
 	Reason: '.$newWarrant['reason'].'
-		- **Hydrid CAD System**');
+		- **freeCAD System**');
 	}
   $error['msg'] = "";
 	echo json_encode($error);

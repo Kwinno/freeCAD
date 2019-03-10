@@ -43,7 +43,7 @@ function hydridErrors($errno, $errstr, $errfile, $errline, $errcontext) {
     if ($debug) {
         echo "<br>
         Hello - <br>
-        You are seeing this message because an error has occured and Hydrid has stopped working.<br>
+        You are seeing this message because an error has occured and freeCAD has stopped working.<br>
         <br>
         Error Information: <br><hr>
         Page: <b>" . $_SERVER['REQUEST_URI'] . "</b><br>
@@ -51,7 +51,7 @@ function hydridErrors($errno, $errstr, $errfile, $errline, $errcontext) {
         Broken File: <b> $errfile </b><br>
         Line: <b> $errline </b><br>
         <hr>
-        If you are the website owner, please report this error to Hydrid Staff.<br>
+        If you are the website owner, please report this error to freeCAD Staff.<br>
         If you are not the owner, please try again later!
         ";
         die();
@@ -59,11 +59,11 @@ function hydridErrors($errno, $errstr, $errfile, $errline, $errcontext) {
     else {
         echo "<br>
         Hello - <br>
-        You are seeing this message because an error has occured and Hydrid has stopped working.<br>
+        You are seeing this message because an error has occured and freeCAD has stopped working.<br>
         <br>
         Error Information is hidden because the Community Owner has disabled debug.
         <hr>
-        If you are the website owner, please report this error to Hydrid Staff.<br>
+        If you are the website owner, please report this error to freeCAD Staff.<br>
         If you are not the owner, please try again later!
         ";
         die();

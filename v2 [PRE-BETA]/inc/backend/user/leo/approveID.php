@@ -24,7 +24,7 @@ if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true')
     if ($settings['discord_alerts'] === 'true') {
         discordAlert('**ID Approved**
 		  ID #' . $id . ' has been Approved for Law Enforcement
-		  - **Hydrid CAD System**');
+		  - **freeCAD System**');
     }
 }
 else {

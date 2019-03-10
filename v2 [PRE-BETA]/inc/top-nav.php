@@ -3,8 +3,8 @@
                 <div class="container-fluid">
                     <div class="logo">
                     <a href="<?php echo $url['index']; ?>" class="logo">
-                    <span class="logo-small"> HS </span>
-                    <span class="logo-large"> HydridSystems </span>
+                    <span class="logo-small"> CAD </span>
+                    <span class="logo-large"> freeCAD </span>
                     </a>
                     </div>
                     <!-- End Logo container-->

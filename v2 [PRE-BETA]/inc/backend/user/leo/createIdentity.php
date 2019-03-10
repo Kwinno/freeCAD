@@ -75,7 +75,7 @@ elseif ($settings['identity_validation'] === "yes") {
     }
 }
 else {
-    $error['msg'] = "Fatal System Error - Contact Hydrid Support";
+    $error['msg'] = "Fatal System Error - Contact freeCAD Support";
     echo json_encode($error);
     exit();
 }

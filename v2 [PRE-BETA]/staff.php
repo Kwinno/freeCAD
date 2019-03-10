@@ -26,8 +26,8 @@ if (staff_access === 'true' && staff_siteSettings === 'true') {
     $result = $stmt->execute(['true', $webhook_url, '1']);
 
     if ($result) {
-      discordAlert('This message is to verify that you have successfully setup Discord Alerts on **Hydrid**. If you would like to disable Discord Alerts, you can do so from the Admin Panel.
-      - **Hydrid CAD System**');
+      discordAlert('This message is to verify that you have successfully setup Discord Alerts on **freeCAD**. If you would like to disable Discord Alerts, you can do so from the Admin Panel.
+      - **freeCAD System**');
     }
     echo "<script> location.replace('staff.php?m=settings&success=webhook-setup'); </script>";
     exit();
@@ -299,7 +299,7 @@ include 'inc/page-top.php'; ?>
                                               1 - Create a Channel In Discord that that alerts will be sent in.<br>
                                               2 - Right Click the server --> Server Settings --> Web Hooks<br>
                                               3 - Press "Create Webhook"<br>
-                                              4 - Name (Hydrid CAD Alerts) : Channel (The channel you setup) : Copy the "WEBHOOK URL"<br>
+                                              4 - Name (freeCAD Alerts) : Channel (The channel you setup) : Copy the "WEBHOOK URL"<br>
                                               5 - Paste the Webhook URL in the textbox below
                                           </div>
                                           <form method="POST">

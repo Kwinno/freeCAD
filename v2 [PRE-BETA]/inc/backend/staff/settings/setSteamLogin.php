@@ -20,7 +20,7 @@ if (staff_access === 'true' && staff_siteSettings === 'true') {
         if ($settings['discord_alerts'] === 'true') {
             discordAlert('**Panel Settings Changed**
     Steam Login Settings have been updated by ' . $user['username'] . '
-      - **Hydrid CAD System**');
+      - **freeCAD System**');
         }
     }
     else {

@@ -25,7 +25,7 @@ if ($_SESSION['identity_supervisor'] === "Yes" || staff_siteSettings === 'true')
 	if ($settings['discord_alerts'] === 'true') {
 	discordAlert('**ID Rejected**
 		  ID #'. $id .' has been Rejected for Law Enforcement
-		  - **Hydrid CAD System**');
+		  - **freeCAD System**');
 	}
 } else {
 	header('Location: ../../../../' . $url['leo'] . '?v=nosession');

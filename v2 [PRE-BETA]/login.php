@@ -40,7 +40,7 @@ $page['name'] = 'Login';
     <div class="wrapper-page">
         <div class="m-t-40 card-box">
           <div class="text-center">
-              <a href="<?php echo $url['index']; ?>" class="logo"><span>HydridSystems</span></a>
+              <a href="<?php echo $url['index']; ?>" class="logo"><span>freeCAD</span></a>
           </div>
             <div class="text-center">
                 <h4 class="text-uppercase font-bold mb-0">Login</h4>
