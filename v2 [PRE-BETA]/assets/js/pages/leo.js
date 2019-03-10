@@ -211,11 +211,6 @@ function showName(str) {
         xmlhttp.open("GET", "inc/backend/user/leo/searchNameDB.php?id=" + str, true);
         xmlhttp.send();
 
-        setTimeout(() => {
-            var msg = new SpeechSynthesisUtterance('Person is wanted - Proceed with caution');
-            var voices = window.speechSynthesis.getVoices();
-            window.speechSynthesis.speak(msg);
-        }, 1000);
     }
 }
 

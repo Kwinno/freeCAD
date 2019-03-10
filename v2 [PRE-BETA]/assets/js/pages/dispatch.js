@@ -109,6 +109,7 @@ function showName(str) {
         };
         xmlhttp.open("GET", "inc/backend/user/leo/searchNameDB.php?id=" + str, true);
         xmlhttp.send();
+
     }
 }
 
