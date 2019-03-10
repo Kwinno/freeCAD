@@ -29,7 +29,7 @@ else {
         if ($user['usergroup'] === NULL) {
             $sql2 = "UPDATE `users` SET `usergroup`= ? WHERE `user_id`= ?";
             $stmt2 = $pdo->prepare($sql2);
-            $updateUserGroup = $stmt2->execute([$settings['unverifiedGroup'], $user['user_id']]);
+            $updateUserGroup = $stmt2->execute([$settings['verifiedGroup'], $user['user_id']]);
         }
         if ($settings['account_validation'] === "yes" && $user['usergroup'] === $settings['unverifiedGroup']) {
             $error['msg'] = "Your account is pending Validation from an Admin.";
