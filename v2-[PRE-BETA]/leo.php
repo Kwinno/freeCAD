@@ -224,6 +224,20 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                             })
                         }
                     });
+                    $('#addCivNote').ajaxForm(function(error) {
+                        console.log(error);
+                        error = JSON.parse(error);
+                        if (error['msg'] === "") {
+                            $("#addCivNote")[0].reset();
+                            toastr.success('Note Added.', 'System:', {
+                                timeOut: 10000
+                            })
+                        } else {
+                            toastr.error(error['msg'], 'System:', {
+                                timeOut: 10000
+                            })
+                        }
+                    });
 
                     function startTime() {
                         var today = new Date();
@@ -427,7 +441,28 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                         </form>
                     </div>
                     <?php endif; ?>
-
+                    <div class="card-box">
+                        <h4 class="header-title mt-0 m-b-30">Add a note to civilian</h4>
+                        <form method="post" action="inc/backend/user/leo/addCivNote.php" id="addCivNote">
+                            <div class="form-group">
+                                <div class="col">
+                                    <select class="select2" name="civilian" id="getAllCharacters5">
+                                        <option selected="true" disabled="disabled">Loading Characters...</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col">
+                                    <input class="form-control" type="text" required="" name="note" placeholder="Note">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col">
+                                    <button class="btn btn-info btn-bordred btn-block waves-effect waves-light" onClick="disableClick()" type="submit">Add Note</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
             <!-- MODALS -->

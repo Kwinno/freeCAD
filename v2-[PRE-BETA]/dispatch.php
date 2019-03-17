@@ -776,7 +776,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 												<thead>
                           <tr>
                               <th>Call ID</th>
-                              <th>Timestamp</th>
+                              <th>Call Description</th>
                               <th>Actions</th>
                           </tr>
                         </thead>
@@ -791,7 +791,7 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
 													?>
 													<tr>
 														<td><?php echo $call['call_id']?></td>
-														<td><?php echo $call['call_timestamp']?></td>
+														<td><?php echo $call['call_description']?></td>
 														<td><a href="dispatch.php?v=supervisor&a=view-call&id=<?php echo $call['call_id']?>"><input type="button" class="btn btn-sm btn-success btn-block" value="View"></a></td>
 													</tr>
 													<?php } ?>

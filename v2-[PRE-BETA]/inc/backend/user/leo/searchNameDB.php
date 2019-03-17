@@ -27,6 +27,10 @@
     $charTickets->execute([$charID]);
     $characterTickets = $charTickets->fetchAll();
 
+    $charNotes = $pdo->prepare("SELECT * FROM civ_notes WHERE person_id=?");
+    $charNotes->execute([$charID]);
+    $characterNotes = $charNotes->fetchAll();
+
     $charArrests = $pdo->prepare("SELECT * FROM arrest_reports WHERE suspect_id=?");
     $charArrests->execute([$charID]);
     $characterArrests = $charArrests->fetchAll();
@@ -124,9 +128,23 @@
         }
 
       echo '</div>
-    </div><br />
-
-    <div class="row">
+    </div><br />';
+      if (!empty($characterNotes)) {
+        echo '<div class="row">
+        <div class="col-6">
+        <h4 class="header-title mt-0 m-b-30">Notes</h4>
+        <hr />
+        <table class="table table-borderless">';
+        foreach($characterNotes as $note) {
+          echo '<tr>
+                  <td>' . $note['note'] . '</td>
+              </tr>';
+        }
+        echo '</table>
+        </div>
+    </div><br />';
+      }
+  echo '<div class="row">
       <div class="col-12">
         <h4 class="header-title mt-0 m-b-30">Warrants</h4>
         <hr />';

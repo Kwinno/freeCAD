@@ -77,6 +77,7 @@ function getAllCharacters() {
           $('#getAllCharacters2').html(data);
           $('#getAllCharacters3').html(data);
           $('#getAllCharacters4').html(data);
+          $('#getAllCharacters5').html(data);
       },
       complete: function() {
           // Schedule the next request when the current one's complete
