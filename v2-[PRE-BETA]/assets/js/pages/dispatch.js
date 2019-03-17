@@ -1,17 +1,15 @@
 $(document).ready(function() {
     function getUserIdentitys() {
-        (function worker() {
-            $.ajax({
-                url: 'inc/backend/user/dispatch/getUserIdentitys.php',
-                success: function(data) {
-                    $('#listIdentitys').html(data);
-                },
-                complete: function() {
-                    // Schedule the next request when the current one's complete
-                    setTimeout(worker, 5000);
-                }
-            });
-        })();
+      $.ajax({
+          url: 'inc/backend/user/dispatch/getUserIdentitys.php',
+          success: function(data) {
+              $('#listIdentitys').html(data);
+          },
+          complete: function() {
+              // Schedule the next request when the current one's complete
+              setTimeout(getUserIdentitys, 2000);
+          }
+      });
     }
 
     getUserIdentitys();

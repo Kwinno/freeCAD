@@ -40,7 +40,7 @@ if ($result) {
     if ($settings['discord_alerts'] === 'true') {
         discordAlert('**NEW 911 CALL**
 	**Description:** ' . $call_description . '
-	**Location:** ' . $call_location . ' / ' . $call_crossstreat . ' / ' . $call_postal . '
+	**Location:** ' . $call_location . ' / ' . $call_postal . '
 	**Called On:** ' . $datetime . '
 	  - **freeCAD System**');
     }

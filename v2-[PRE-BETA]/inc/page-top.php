@@ -7,7 +7,7 @@
         <meta content="Computer Aided Dispatch (CAD) System and Mobile Data Terminal (MDT) for GTA V Roleplaying." name="description" />
         <meta content="freeCAD" name="author" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <!-- <link rel="shortcut icon" href="assets/images/favicon.ico"> -->
+        <link rel="shortcut icon" href="assets/images/favicon.ico">
         <link rel="stylesheet" href="assets/plugins/switchery/switchery.css">
         <link href="assets/plugins/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet">
         <!-- DataTables -->

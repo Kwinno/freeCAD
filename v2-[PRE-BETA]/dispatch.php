@@ -295,8 +295,8 @@ if (isset($_GET['v']) && strip_tags($_GET['v']) === 'setsession') {
                             </b>
                         </div>
                         <h4 class="header-title mt-0 m-b-30"><?php echo $_SESSION['identity_name']; ?> <?php if ($_SESSION['identity_supervisor'] === "Yes"): ?><small>
-                                <font color="white"><i>Supervisor</i></font>
-                            </small><?php endif; ?> <label id="signal100Status">Loading...</label></h4>
+                                <font color="white">[Supervisor]</font>
+                            </small><?php endif; ?> <label id="signal100Status"></label></h4>
                         <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openNameSearch">Name Database</button>
                         <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openVehicleSearch">Vehicle Database</button>
                         <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#openFirearmSearch">Weapon Database</button>

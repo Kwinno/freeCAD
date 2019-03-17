@@ -7,7 +7,7 @@ $(document).ready(function() {
           },
           complete: function() {
               // Schedule the next request when the current one's complete
-              setTimeout(getUserCharacters, 5000);
+              setTimeout(getUserCharacters, 2000);
           }
       });
     }
